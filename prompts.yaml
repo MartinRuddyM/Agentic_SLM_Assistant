@@ -1,0 +1,72 @@
+last_n_summary: >
+  There was a Q&A conversation between a user and an expert. 
+  Given these previous questions and answers in the conversation, 
+  generate a **one-paragraph** summary of what the conversation was about.
+  Include within the paragraph all relevant technical keywords, 
+  and keep a mention of all important things related to the user context and situation.
+  Do not mention the fact that you are making a summary. ONLY write the summary itself.
+
+final_summary: >
+  There was a Q&A conversation between the user and an expert.
+  These are summaries from parts of the conversation.
+  Generate an overall **one-paragraph** conversation summary.
+  Include within the paragraph all relevant technical keywords and details from the user mentioned.
+  Do not mention the fact that you are making a summary. ONLY write the final summary itself.
+
+
+extract_permanent_user_info: |
+  There has been a conversation between an expert LLM and the user.
+  Below is the list of questions and prompts that the user has asked during the conversation.
+  We want to personalise the service so we need to identify personal information about the user.
+  Look at the list of questions and prompts and focus on personal characteristics about the user or his/her life,
+  things that are relevant for a Question & Answer service to know.
+  Return a list of ONE-SENTENCE STATEMENTS about VERY IMPORTANT information that the user reveals. Use simple, plain English in second person.
+  If there is no relevant information don't write anything.
+  There is an example below. You should return a JSON format like the following cotaining the most relevant information:
+
+  EXAMPLE USER QUESTIONS:
+  I am doing a project with AutoCAD. How can I copy an existant line and paste it in parallel with sale of 2x?
+  
+  The program is not letting me fill an area with colour.
+  
+  Okay, so I closed the line and now it is working, thank you. Now let's work on another project writing my kitchen book. Can you expand on the idea of desset recipies made of wild berries from Germany?
+  
+  What program can I use to add photos into the book's chapters?
+  
+  How to increase the length of inserted photos.
+  
+  Increase brightness and edit with some template. Have any template ideas?
+  
+  Oh yes, I meant filters instead of templates. Then which filters would you recommend?
+  
+  Allright, I tried a few and now I found a good one. Now tell me, is there any more advanced software that I can use to edit the images? This seems a bit too basic.
+  
+  I can't install the software needed for the image, it says: Software not commpatible with your system.
+  
+  I checked the setting and I am running on Windows 64 bits.
+  
+  Okay how can I share the current version of the work? My niece is coming tomorrow and I want to show her in advance, she really likes photography.
+  
+  I tried the share button but it's now working. Should I try with my Gmail account instead of Facebook?
+  
+  Thank you
+  
+
+  EXAMPLE OUTPUT WITH KEY INFORMATION FOR A PERSONALIZED Q&A SYSTEM TO KNOW:
+  {
+  "items": [
+    "1. The user does projects with AutoCAD",
+    "2. The user is writing a kitchen book",
+    "3. The user has a Windows operative system of 64 bits",
+    "4. The user has a female niece",
+    "5. The user's female niece loves photography",
+    "6. The user uses Facebook",
+    "7. The user has a Gmail account"
+  ]
+  }
+
+
+  NOTICE how unimportant tasks or intermediate steps are left behind. Focus only on the most important personal information about the user, which could be useful to help in another Q&A session.
+
+  Now search for the most important user details and list them in JSON format, if any.
+  

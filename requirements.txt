@@ -1,0 +1,6 @@
+bs4
+langchain_mistralai
+langchain
+langchain_community
+python_dotenv
+duckduckgo-search
