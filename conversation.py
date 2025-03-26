@@ -1,4 +1,4 @@
-from llm_functions import *
+from tools.llm_functions import *
 from typing import List
 
 class Interaction:
