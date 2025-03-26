@@ -8,108 +8,105 @@ from sentence_transformers import SentenceTransformer
 from datetime import datetime, timedelta
 
 class EmbeddingDB:
-    def __init__(self, db_path, faiss_path, embedding_model_name="sentence-transformers/all-MiniLM-L6-v2", create_db_files=False):
+    def __init__(self, db_path, faiss_conversation_path, faiss_user_info_path, embedding_model_name="sentence-transformers/all-MiniLM-L6-v2", create_db_files=False):
         self.db_path = db_path
-        self.faiss_path = faiss_path
+        self.faiss_conversation_path = faiss_conversation_path
+        self.faiss_user_info_path = faiss_user_info_path
         self.model = SentenceTransformer(embedding_model_name)
         self.embedding_dim = self.model.get_sentence_embedding_dimension()
 
         if create_db_files:
             self._create_db_files()
         else:
-            if not os.path.exists(db_path) or not os.path.exists(faiss_path):
-                raise FileNotFoundError("DB or FAISS file does not exist and create_db_files=False")
-
+            if not all(os.path.exists(p) for p in [db_path, faiss_conversation_path, faiss_user_info_path]):
+                raise FileNotFoundError("One or more required files do not exist and create_db_files=False")
+        
         self.conn = sqlite3.connect(self.db_path)
-        self.faiss_index = faiss.read_index(self.faiss_path)
+        self.faiss_conversations = faiss.read_index(self.faiss_conversation_path)
+        self.faiss_user_info = faiss.read_index(self.faiss_user_info_path)
 
     def _create_db_files(self):
         if not os.path.exists(self.db_path):
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS permanent_user_info (
-                    user_id TEXT PRIMARY KEY,
-                    user_info TEXT
+                CREATE TABLE IF NOT EXISTS conversation (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    text TEXT,
+                    date TEXT
                 )
             ''')
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS conversation_summaries (
+                CREATE TABLE IF NOT EXISTS user_info (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id TEXT,
-                    user_info TEXT,
-                    date TEXT,
-                    FOREIGN KEY (user_id) REFERENCES permanent_user_info(user_id)
+                    text TEXT
                 )
             ''')
             conn.commit()
             conn.close()
-        if not os.path.exists(self.faiss_path):
-            index = faiss.IndexIDMap(faiss.IndexFlatL2(self.embedding_dim))
-            faiss.write_index(index, self.faiss_path)
+
+        if not os.path.exists(self.faiss_conversation_path):
+            conv_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.embedding_dim))
+            faiss.write_index(conv_index, self.faiss_conversation_path)
+
+        if not os.path.exists(self.faiss_user_info_path):
+            user_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.embedding_dim))
+            faiss.write_index(user_index, self.faiss_user_info_path)
 
     def close_db(self):
-        faiss.write_index(self.faiss_index, self.faiss_path)
+        faiss.write_index(self.faiss_conversations, self.faiss_conversation_path)
+        faiss.write_index(self.faiss_user_info, self.faiss_user_info_path)
         self.conn.close()
 
-    def add_user_info(self, user_id, user_info_list):
-        conn = self.conn
-        cursor = conn.cursor()
-        user_info_json = json.dumps(user_info_list)
-        cursor.execute(
-            "INSERT OR REPLACE INTO permanent_user_info (user_id, user_info) VALUES (?, ?)",
-            (user_id, user_info_json)
-        )
-        conn.commit()
-
-    def add_conversation_summary(self, user_id, summary_text):
-        conn = self.conn
-        cursor = conn.cursor()
-        embedding = self.model.encode(summary_text)
-        date_str = datetime.now().isoformat()
-        cursor.execute(
-            "INSERT INTO conversation_summaries (user_id, user_info, date) VALUES (?, ?, ?)",
-            (user_id, summary_text, date_str)
-        )
-        conn.commit()
-        summary_id = cursor.lastrowid
+    def add_user_info(self, text):
+        cursor = self.conn.cursor()
+        cursor.execute("INSERT INTO user_info (text) VALUES (?)", (text,))
+        self.conn.commit()
+        info_id = cursor.lastrowid
+        embedding = self.model.encode(text)
         embedding_np = np.array([embedding]).astype("float32")
-        self.faiss_index.add_with_ids(embedding_np, np.array([summary_id]))
-        faiss.write_index(self.faiss_index, self.faiss_path)
+        self.faiss_user_info.add_with_ids(embedding_np, np.array([info_id]))
+        faiss.write_index(self.faiss_user_info, self.faiss_user_info_path)
 
-    def search(self, query, top_k=5):
+    def add_conversation_summary(self, text):
+        embedding = self.model.encode(text)
+        embedding_np = np.array([embedding]).astype("float32")
+        date_str = datetime.now().isoformat()
+        cursor = self.conn.cursor()
+        cursor.execute("INSERT INTO conversation (text, date) VALUES (?, ?)", (text, date_str))
+        self.conn.commit()
+        summary_id = cursor.lastrowid
+        self.faiss_conversations.add_with_ids(embedding_np, np.array([summary_id]))
+        faiss.write_index(self.faiss_conversations, self.faiss_conversation_path)
+
+    def search(self, query, source="conversation", top_k=5):
         query_emb = self.model.encode(query).astype("float32")
-        D, I = self.faiss_index.search(np.array([query_emb]), k=top_k)
-        conn = self.conn
-        cursor = conn.cursor()
+        faiss_index = self.faiss_conversations if source == "conversation" else self.faiss_user_info
+        D, I = faiss_index.search(np.array([query_emb]), k=top_k)
         results = []
-        for db_id in I[0]:
-            if db_id == -1:
+        cursor = self.conn.cursor()
+        for idx in I[0]:
+            if idx == -1:
                 continue
-            cursor.execute("SELECT user_id, user_info, date FROM conversation_summaries WHERE id=?", (int(db_id),))
+            if source == "conversation":
+                cursor.execute("SELECT text, date FROM conversation WHERE id = ?", (int(idx),))
+            else:
+                cursor.execute("SELECT text FROM user_info WHERE id = ?", (int(idx),))
             row = cursor.fetchone()
             if row:
                 results.append(row)
         return results
 
     def delete_old_conversations(self, max_conversation_days=30):
-        """Removes old conversations given the days past, from both normal and FAISS DBs"""
         cutoff_date = (datetime.today() - timedelta(days=max_conversation_days)).strftime('%Y-%m-%d')
-        conn = self.conn
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT id FROM conversation_summaries WHERE date < ?",
-            (cutoff_date,)
-        )
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT id FROM conversation WHERE date < ?", (cutoff_date,))
         ids_to_delete = [row[0] for row in cursor.fetchall()]
         if ids_to_delete:
             id_array = np.array(ids_to_delete, dtype=np.int64)
-            self.faiss_index.remove_ids(id_array)
-        cursor.execute(
-            "DELETE FROM conversation_summaries WHERE date < ?",
-            (cutoff_date,)
-        )
-        conn.commit()
+            self.faiss_conversations.remove_ids(id_array)
+        cursor.execute("DELETE FROM conversation WHERE date < ?", (cutoff_date,))
+        self.conn.commit()
 
 
 if __name__ == "__main__":
