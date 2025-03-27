@@ -7,7 +7,7 @@ import contextlib
 load_dotenv()
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
-def web_search(query, llm, prompts, max_retries=3):
+def run_code(query, llm, prompts, max_retries=3):
     """Takes an instruction with the descriptions of what code to run and the original user
     query for context. Then, the LLM here writes code to solve the problem and prints its output.
     The output is returned as text to the ReAct system.
@@ -16,9 +16,10 @@ def web_search(query, llm, prompts, max_retries=3):
     def generate_code(query):
         # TODO replace this by actual prompt from prompts file
         system_prompt = "You are an AI that generates Python code. Omit explanations. Respond with only the Python code needed for the query. PRINT the results. Query: "
-        return llm.predict(system_prompt + "\n" + query)
+        return llm.invoke(system_prompt + "\n" + query)
 
     def extract_code(text):
+        print(text)
         matches = re.findall(r'```(?:python)?(.*?)```', text, re.DOTALL)
         return "\n\n".join(match.strip() for match in matches) if matches else None
 
@@ -37,7 +38,7 @@ def web_search(query, llm, prompts, max_retries=3):
     retries = 0
     while retries < max_retries:
         raw_code = generate_code(query)
-        code = extract_code(raw_code)
+        code = extract_code(raw_code.content)
         if code:
             ok, output = execute_code(code)
             if ok:
@@ -51,4 +52,28 @@ def web_search(query, llm, prompts, max_retries=3):
 
 if __name__ == "__main__":
     # Sample query to test the working
-    print("Given an A/B experiment, perform a one-way ANOVA on this data: method_A = [85, 90, 88]  method_B = [78, 82, 80]. Show if there is significative difference")
+    #print("Given an A/B experiment, perform a one-way ANOVA on this data: method_A = [85, 90, 88]  method_B = [78, 82, 80]. Show if there is significative difference")
+
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    from langchain_mistralai import ChatMistralAI
+    import yaml
+    import os
+    from dotenv import load_dotenv
+
+    # API key setups
+    load_dotenv()
+    MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
+
+    with open("prompts.yaml", "r") as file:
+        prompts = yaml.safe_load(file)
+
+    default_chat = ChatMistralAI(
+        model="open-mistral-7b",
+        api_key=MISTRAL_API_KEY
+    )
+
+    query = "Make code to compute the following equation: ((123 * 300) - 200 + 45) / 33. Make sure to print ONLY UP TO 3 decimals"
+
+    print(1)
+    output = run_code(query, default_chat, prompts)
+    print(output)
