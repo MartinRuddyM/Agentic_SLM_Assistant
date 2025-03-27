@@ -38,6 +38,6 @@ def web_search(query):
     return final_searches
 
 if __name__ == "__main__":
-    results = web_search("Music events Helsinki summer 2025")
+    results = web_search("HOI4 how to win playing as Germany")
     for article_content in results:
         print(article_content)

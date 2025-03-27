@@ -33,16 +33,16 @@ with open("prompts.yaml", "r") as file:
 
 def main():
     db = EmbeddingDB(db_path="db/user_data.db", faiss_path="db/faiss_index.index")
-    conversation = Conversation(user_id, default_chat, cheap_chat, prompts)
-    print("Type exit to exit the conversation")
+    conversation = Conversation(default_chat, cheap_chat, prompts)
     while True:
         user_input = input("Type question: ")
         if len(user_input) == 4 and user_input.lower() == "exit":
             break
         # Procesar la query con ReAct framework, dando acceso a las herramientas disponibles
         # Al procesar, introudcir info relevante del usuario y de conversaciones pasadas si procede
+        # Acabar de procesar mediante una query llm para personalizarlo al usuario.
     final_summary, user_info = conversation.exit_conversation()
-    db.add_conversation_summary(user_id=user_id, summary_text=final_summary)
+    db.add_conversation_summary(summary_text=final_summary)
     # Comprobar que la user info sea realmente nueva, para ello hay que anadir una funcion de llm que devuelva solo los statements que osn realmente nuevos
     db.close_db()
     

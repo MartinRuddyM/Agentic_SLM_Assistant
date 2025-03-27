@@ -18,8 +18,7 @@ class Conversation:
     Keeps updated summaries.
     On closing, generates the final summary and appends it to DB'''
 
-    def __init__(self, user_id: str, default_chat, cheap_chat, prompts):
-        self.user_id = user_id
+    def __init__(self, default_chat, cheap_chat, prompts):
         self.default_chat = default_chat
         self.cheap_chat = cheap_chat
         self.prompts = prompts
@@ -27,6 +26,7 @@ class Conversation:
         self.recent_summary: str = None
         self.summary_history: List[str] = []
         self.summary_past_extension = 5 # How many Q&A back to use to create the summary
+        print("Type exit to exit the conversation")
 
     def add_interaction(self, question: str, answer: str):
         self.history.append(Interaction(question, answer))
@@ -60,6 +60,7 @@ class Conversation:
         return extract_permanent_user_information(all_user_prompts, self.default_chat, self.prompts)
         
     def exit_conversation(self):
+        print("Exiting conversation...")
         if len(self.conversation_history) == 0:
             return None
         return self._generate_final_summary(), self._retrieve_permanent_user_info()
