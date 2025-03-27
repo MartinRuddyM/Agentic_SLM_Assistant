@@ -1,44 +1,54 @@
 import re
-from langchain_mistralai import ChatMistralAI
 from dotenv import load_dotenv
 import os
+import io
+import contextlib
 
 load_dotenv()
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
-def generate_code(query):
-    mistral_chat = ChatMistralAI(model="mistral-large-2411", api_key=MISTRAL_API_KEY)
-    system_prompt = "You are an AI that generates Python code. Omit explanations. Respond with only the Python code needed for the query. PRINT the results. Query: "
-    return mistral_chat.predict(system_prompt + " " + query)
+def web_search(query, llm, prompts, max_retries=3):
+    """Takes an instruction with the descriptions of what code to run and the original user
+    query for context. Then, the LLM here writes code to solve the problem and prints its output.
+    The output is returned as text to the ReAct system.
+    If it was not possible to run code, an error message is returned instead."""
 
-def extract_code(text):
-    matches = re.findall(r'```(?:python)?(.*?)```', text, re.DOTALL)
-    return "\n\n".join(match.strip() for match in matches) if matches else None
+    def generate_code(query):
+        # TODO replace this by actual prompt from prompts file
+        system_prompt = "You are an AI that generates Python code. Omit explanations. Respond with only the Python code needed for the query. PRINT the results. Query: "
+        return llm.predict(system_prompt + "\n" + query)
 
-def execute_code(code):
-    print(code)
-    try:
-        exec(code, globals())
-    except Exception as e:
-        print(f"Execution failed: {e}")
-        return str(e)
-    return None
+    def extract_code(text):
+        matches = re.findall(r'```(?:python)?(.*?)```', text, re.DOTALL)
+        return "\n\n".join(match.strip() for match in matches) if matches else None
 
-def run(query, max_retries=3):
+    def execute_code(code):
+        output_buffer = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(output_buffer):
+                exec(code)
+                captured_output = output_buffer.getvalue()
+        except Exception as e:
+            #print(f"Execution failed: {e}")
+            return False, str(e)
+        return True, captured_output
+    
     original_query = query
     retries = 0
     while retries < max_retries:
-        result = generate_code(query)
-        code = extract_code(result)
+        raw_code = generate_code(query)
+        code = extract_code(raw_code)
         if code:
-            error_message = execute_code(code)
-            if not error_message:
-                return
-            print(f"Error running previous code:\n====\n{code}\n====\nError:\n====\n{error_message}\n====\nRetrying with improved prompt...\n")
-            query = f"The previous code failed with error: {error_message}.\n\n Previous code: {code}\n\n Solve the error and generate correct code"
+            ok, output = execute_code(code)
+            if ok:
+                return "The output from the code was the following: " + output
+            #print(f"Error running previous code:\n====\n{code}\n====\nError:\n====\n{error_message}\n====\nRetrying with improved prompt...\n")
+            query = f"The previous code failed with error: {output}.\n\n Previous code: {code}\n\nOriginal problem to solve: {original_query}\n\n Solve the error and generate correct code"
         else:
             print("No valid Python code found, retrying...")
         retries += 1
-    print("Max retries reached. Unable to generate working code.")
+    return "Max retries reached. Unable to generate working code. Please try with a different, better description, or with another tool."
 
-run("Given an A/B experiment, perform a one-way ANOVA on this data: method_A = [85, 90, 88]  method_B = [78, 82, 80]. Show if there is significative difference")
+if __name__ == "__main__":
+    # Sample query to test the working
+    print("Given an A/B experiment, perform a one-way ANOVA on this data: method_A = [85, 90, 88]  method_B = [78, 82, 80]. Show if there is significative difference")

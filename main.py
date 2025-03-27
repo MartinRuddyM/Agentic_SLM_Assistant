@@ -31,9 +31,6 @@ embeddings_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 with open("prompts.yaml", "r") as file:
     prompts = yaml.safe_load(file)
 
-# Global variables
-user_id = '123'
-
 def main():
     db = EmbeddingDB(db_path="db/user_data.db", faiss_path="db/faiss_index.index")
     conversation = Conversation(user_id, default_chat, cheap_chat, prompts)
