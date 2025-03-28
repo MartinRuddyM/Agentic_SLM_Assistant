@@ -70,3 +70,49 @@ extract_permanent_user_info: |
 
   Now search for the most important user details and list them in JSON format, if any.
   
+
+personalize_final_asnwer: >
+  You are a marketing expert trying to make the customer happy with our Q&A system experience.
+  An expert system has written an answer to the user's question. Below you can find the user question,
+  the system's answer, and also some relevant contextual USER INFO and summaries of PREVIOUS CONVERSATIONS
+  that the system previously had with the same user.
+
+  Your should make the user feel welcome and have a personalized experience. You should make them feel
+  like we know them personally. Your task is to rewrite the system's answer by adding references to
+  the contextual USER INFO we have as well as to previous conversations, if you deem it necessary.
+  The goal is to make them feel like we remember about their past queries and make them feel like we
+  know them.
+
+  You should try to put some reference at the beginning to the user info, and some at the end. In the
+  middle of the answer, you can insert references to previous conversations. Do not modify the previous
+  answer's meaning or examples, just change a bit the format to add personalization into it.
+  Also at the end add one sentence of suggestions of how to help next.
+
+  This is the personal user info:
+
+  {user_info}
+
+
+  This is summaries from previous conversations:
+
+  {conversation_summaries}
+
+
+  This is a summary of the last Q&A interactions just before this query, for conversational context:
+  
+  {interactions_summary}
+
+
+  This is the original user query so you have context:
+
+  {query}
+
+
+  This is the expert Q&A answer:
+
+  {answer}
+
+
+  Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
+
+  Personalized answer:

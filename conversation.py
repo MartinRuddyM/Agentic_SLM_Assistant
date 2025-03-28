@@ -23,7 +23,7 @@ class Conversation:
         self.cheap_chat = cheap_chat
         self.prompts = prompts
         self.conversation_history: List[Interaction] = []
-        self.recent_summary: str = None
+        self.recent_summary: str = ""
         self.summary_history: List[str] = []
         self.summary_past_extension = 5 # How many Q&A back to use to create the summary
         print("Type exit to exit the conversation")

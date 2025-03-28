@@ -48,7 +48,7 @@ def main():
         else:
             answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts)
         # Acabar de procesar mediante una query llm para personalizarlo al usuario.
-        final_answer = personalize_final_answer(answer, relevant_user_info, relevant_past_conversations, conversation.conversation_history, default_chat, system_prompts)
+        final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         print(final_answer)
         conversation.add_interaction(query, final_answer)
 
