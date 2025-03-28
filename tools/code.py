@@ -15,7 +15,7 @@ def run_code(query, llm, prompts, max_retries=3):
 
     def generate_code(query):
         # TODO replace this by actual prompt from prompts file
-        system_prompt = "You are an AI that generates Python code. Omit explanations. Respond with only the Python code needed for the query. PRINT the results. Query: "
+        system_prompt = "You are an AI that generates Python code. Omit explanations. Respond with only the Python code needed for the query. PRINT the results that will answer the query. Only printed results are valid to answer the query. Query: "
         return llm.invoke(system_prompt + "\n" + query)
 
     def extract_code(text):
