@@ -28,6 +28,7 @@ class EmbeddingDB:
         self.faiss_conversations = faiss.read_index(self.faiss_conversation_path)
         self.faiss_user_info = faiss.read_index(self.faiss_user_info_path)
 
+
     def _create_db_files(self):
         if not os.path.exists(self.db_path):
             conn = sqlite3.connect(self.db_path)
@@ -56,20 +57,30 @@ class EmbeddingDB:
             user_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.embedding_dim))
             faiss.write_index(user_index, self.faiss_user_info_path)
 
+
     def close_db(self):
         #faiss.write_index(self.faiss_conversations, self.faiss_conversation_path)
         #faiss.write_index(self.faiss_user_info, self.faiss_user_info_path)
         self.conn.close()
 
-    def add_user_info(self, text):
+
+    def add_user_info(self, texts: list[str]):
         cursor = self.conn.cursor()
-        cursor.execute("INSERT INTO user_info (text) VALUES (?)", (text,))
+        embeddings = []
+        ids = []
+        for text in texts:
+            cursor.execute("INSERT INTO user_info (text) VALUES (?)", (text,))
+            info_id = cursor.lastrowid
+            embedding = self.model.encode(text)
+            embeddings.append(embedding)
+            ids.append(info_id)
+        
         self.conn.commit()
-        info_id = cursor.lastrowid
-        embedding = self.model.encode(text)
-        embedding_np = np.array([embedding]).astype("float32")
-        self.faiss_user_info.add_with_ids(embedding_np, np.array([info_id]))
+        embedding_np = np.array(embeddings).astype("float32")
+        ids_np = np.array(ids)
+        self.faiss_user_info.add_with_ids(embedding_np, ids_np)
         faiss.write_index(self.faiss_user_info, self.faiss_user_info_path)
+
 
     def add_conversation_summary(self, text):
         embedding = self.model.encode(text)

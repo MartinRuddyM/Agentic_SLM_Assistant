@@ -28,9 +28,11 @@ class Conversation:
         self.summary_past_extension = 5 # How many Q&A back to use to create the summary
         print("Type exit to exit the conversation")
 
+
     def add_interaction(self, question: str, answer: str):
         self.history.append(Interaction(question, answer))
         self._update_recent_summary()
+
 
     def _update_recent_summary(self):
         "Creates a summary of the last N interactions"
@@ -39,6 +41,7 @@ class Conversation:
         self.summary_history.append(summary)
         self.recent_summary = summary
     
+
     def _generate_final_summary(self):
         '''Generates final summary of the conversation based on all stored summaries
         It takes partial summaries sequentially to cover all interactions'''
@@ -53,12 +56,15 @@ class Conversation:
             index = next_index
         return final_conversation_summary(collected_summaries, self.cheap_chat, self.prompts)
     
+
     def _retrieve_permanent_user_info(self):
         '''When the conversation ends, looks across all User prompts and decides if there is new
         User information that should be kept. Then stores in DB.'''
         all_user_prompts = "\n\n".join(interaction.question for interaction in self.conversation_history)
-        return extract_permanent_user_information(all_user_prompts, self.default_chat, self.prompts)
+        extracted_raw = extract_permanent_user_information(all_user_prompts, self.default_chat, self.prompts)
         
+        
+
     def exit_conversation(self):
         print("Exiting conversation...")
         if len(self.conversation_history) == 0:

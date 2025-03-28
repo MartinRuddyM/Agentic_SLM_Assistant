@@ -47,15 +47,16 @@ def main():
             print(steps)
         else:
             answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts)
-        # Acabar de procesar mediante una query llm para personalizarlo al usuario.
+        # Acabar de procesar mediante una query llm para personalizarlo mas al usuario.
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         print(final_answer)
         conversation.add_interaction(query, final_answer)
 
-    if len(conversation.conversation_history) != 0:
+    if len(conversation.conversation_history) > 0:
         final_summary, user_info = conversation.exit_conversation()
         db.add_conversation_summary(summary_text=final_summary)
-        # Comprobar que la user info sea realmente nueva, para ello hay que anadir una funcion de llm que devuelva solo los statements que osn realmente nuevos
+        # Comprobar que la user info sea realmente nueva, para ello hay que anadir una funcion de llm que devuelva solo los statements que son realmente nuevos
+        db.add_user_info()
     db.close_db()
     
 
