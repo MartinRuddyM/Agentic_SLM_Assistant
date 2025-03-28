@@ -143,11 +143,11 @@ contrast_user_information: |
   Andrew plays Minecraft on weekends.
 
   Truly new statements in JSON format:
-  {{
+  {
   "items": [
     "1. The user frequently attends to baasketball matches."
   ]
-  }}
+  }
 
   Example 2:
 
@@ -165,12 +165,12 @@ contrast_user_information: |
   She has coursework on graphic pencil design.
 
   Truly new statements in JSON format:
-  {{
+  {
   "items": [
     "1. The user studies in Beijing University.",
     "2. The user has coursework on graphic pencil design.",
   ]
-  }}
+  }
 
   Example 3:
 
@@ -184,10 +184,10 @@ contrast_user_information: |
   The user lives in Chile.
 
   Truly new statements in JSON format:
-  {{
+  {
   "items": [
   ]
-  }}
+  }
 
   Now provide the truly new statements for the user below.
 
