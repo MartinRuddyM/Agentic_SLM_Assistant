@@ -27,28 +27,28 @@ def main():
 
     # Load system prompts
     with open("prompts.yaml", "r") as file:
-        prompts = yaml.safe_load(file)
+        system_prompts = yaml.safe_load(file)
 
     # Load DB and start processing
     db = EmbeddingDB(db_path="db/user_data.db", faiss_path="db/faiss_index.index")
-    conversation = Conversation(default_chat, cheap_chat, prompts)
+    conversation = Conversation(default_chat, cheap_chat, system_prompts)
     debug = False
     while True:
         query = input("Type question: ")
         if len(query) == 4 and query.lower() == "exit":
             break
-        # Procesar la query con ReAct framework, dando acceso a las herramientas disponibles
-        # Al procesar, introudcir info relevante del usuario y de conversaciones pasadas si procede
+        # Informacion de contexto del usuario y conversaciones pasadas
         relevant_user_info = db.search(query, source="user_info")
         relevant_past_conversations = db.search(query, source="conversation")
+        # Procesar query con ReAct
         prompt = prepare_prompt(relevant_user_info, relevant_past_conversations, query)
         if debug:
-            steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=prompts, debug=True)
+            steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
             print(steps)
         else:
-            answer = ReAct_process(llm=default_chat, query=prompt, prompts=prompts)
+            answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts)
         # Acabar de procesar mediante una query llm para personalizarlo al usuario.
-        final_answer = personalize_final_answer(answer, conversation.conversation_history, default_chat, prompts)
+        final_answer = personalize_final_answer(answer, relevant_user_info, relevant_past_conversations, conversation.conversation_history, default_chat, system_prompts)
         print(final_answer)
         conversation.add_interaction(query, final_answer)
 

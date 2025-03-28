@@ -132,5 +132,5 @@ def ReAct_process(llm, query:str, prompts, max_iter=10, user_context:str="", deb
     final_answer = response["output"]
     intermediate_steps = "\n".join(f"{action.log}\nObservation: {observation}" for action, observation in response["intermediate_steps"])
     if debug:
-        return f"Intermediate steps:\n{intermediate_steps}\n\nFinal answer:\n{final_answer}"
-    return final_answer
+        return intermediate_steps, final_answer
+    return None, final_answer
