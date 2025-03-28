@@ -10,6 +10,7 @@ from langchain.agents import Tool, create_react_agent, AgentExecutor
 from tools.code import run_code
 from tools.web_search import web_search
 
+
 class EmbeddingDB:
     def __init__(self, db_path, faiss_conversation_path, faiss_user_info_path, embedding_model_name="sentence-transformers/all-MiniLM-L6-v2", create_db_files=False):
         self.db_path = db_path
@@ -65,6 +66,8 @@ class EmbeddingDB:
 
 
     def add_user_info(self, texts: list[str]):
+        if len(texts) == 0:
+            return
         cursor = self.conn.cursor()
         embeddings = []
         ids = []
@@ -82,7 +85,9 @@ class EmbeddingDB:
         faiss.write_index(self.faiss_user_info, self.faiss_user_info_path)
 
 
-    def add_conversation_summary(self, text):
+    def add_conversation_summary(self, text: str):
+        if not text:
+            return
         embedding = self.model.encode(text)
         embedding_np = np.array([embedding]).astype("float32")
         date_str = datetime.now().isoformat()
@@ -92,6 +97,7 @@ class EmbeddingDB:
         summary_id = cursor.lastrowid
         self.faiss_conversations.add_with_ids(embedding_np, np.array([summary_id]))
         faiss.write_index(self.faiss_conversations, self.faiss_conversation_path)
+
 
     def search(self, query, source: Literal["conversation", "user_info"]="conversation", top_k=5):
         query_emb = self.model.encode(query).astype("float32")
@@ -111,6 +117,7 @@ class EmbeddingDB:
                 results.append(row)
         return results
 
+
     def delete_old_conversations(self, max_conversation_days=30):
         cutoff_date = (datetime.today() - timedelta(days=max_conversation_days)).strftime('%Y-%m-%d')
         cursor = self.conn.cursor()
@@ -122,11 +129,21 @@ class EmbeddingDB:
         cursor.execute("DELETE FROM conversation WHERE date < ?", (cutoff_date,))
         self.conn.commit()
 
+    
+    def get_all_user_information(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT text FROM user_info")
+        rows = cursor.fetchall()
+        return [row[0] for row in rows] if rows else []
 
-def prepare_prompt():
+
+def prepare_prompt(relevant_user_info, relevant_past_conversations, query, prompts, llm):
     """Given relevant contextual user info and past conversations, prepare the prompt
     to be fed into ReAct."""
-
+    # To Do
+    ####################
+    ##################
+    ######################TODO
     pass
 
 

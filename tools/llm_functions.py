@@ -1,6 +1,10 @@
 from conversation import Interaction
 from typing import List
 from datetime import datetime
+import re
+import json
+from typing import Counter
+
 
 def last_n_interactions_summary(interactions: List[Interaction], llm, prompts):
     """Provides summary of last few interactions within the conversation
@@ -32,7 +36,7 @@ def extract_permanent_user_information(all_user_prompts: List[str], llm, prompts
     all_conversation_user_prompts = "\n".join(all_user_prompts)
     final_prompt = f"{system_prompt}\n\nUser questions:\n{all_conversation_user_prompts}"
     user_info_raw = llm.invoke(final_prompt).content
-    user_info = extract_statements(user_info_raw)
+    user_info = extract_user_statements(user_info_raw)
     return user_info
 
 
@@ -40,6 +44,7 @@ def personalize_final_answer(query:str, current_answer: str, user_information: L
     """Given past history of interactions and personal user information,
     adapts the final answer to make reference to past conversations and user info.
     This is to try to give it a more personalized appearance"""
+
     conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
     conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
     user_info = "\n".join(user_information)
@@ -54,7 +59,24 @@ def personalize_final_answer(query:str, current_answer: str, user_information: L
     return llm.invoke(final_prompt).content
 
 
-def extract_statements(text: str) -> list[str]:
+def contrast_user_information(existing_info: List[str], new_info: List[str], llm, prompts):
+    values = {
+        "user_info":"\n".join(existing_info),
+        "conversation_summaries":"\n".join(new_info),
+    }
+    final_prompt = prompts["contrast_user_information"].format(**values)
+    user_info_raw = llm.invoke(final_prompt).content
+    user_info = extract_user_statements(user_info_raw)
+    return user_info
+
+
+def extract_user_statements(text: str) -> list[str]:
+    """Function to extract the LLM-identified statements from the LLM answer.
+    It uses Regex with 3 methods in case the LLM did not give a well-structures output.
+    It requires an agreement of 2 out of 3 methods. If nothing works, it falls back to the
+    last method only. The expected format from the LLM is based on the system prompt for
+    extract_permanent_user_information which can be found in prompts.yaml"""
+    
     method_results = []
 
     # --- Method 1: Try to extract JSON block ---

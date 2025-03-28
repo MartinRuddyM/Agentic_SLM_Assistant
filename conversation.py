@@ -61,7 +61,8 @@ class Conversation:
         '''When the conversation ends, looks across all User prompts and decides if there is new
         User information that should be kept. Then stores in DB.'''
         all_user_prompts = "\n\n".join(interaction.question for interaction in self.conversation_history)
-        extracted_raw = extract_permanent_user_information(all_user_prompts, self.default_chat, self.prompts)
+        extracted_info = extract_permanent_user_information(all_user_prompts, self.default_chat, self.prompts)
+        return extracted_info
         
         
 

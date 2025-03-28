@@ -41,7 +41,7 @@ def main():
         relevant_user_info = db.search(query, source="user_info")
         relevant_past_conversations = db.search(query, source="conversation")
         # Procesar query con ReAct
-        prompt = prepare_prompt(relevant_user_info, relevant_past_conversations, query)
+        prompt = prepare_prompt(relevant_user_info, relevant_past_conversations, query, system_prompts, default_chat)
         if debug:
             steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
             print(steps)
@@ -53,10 +53,15 @@ def main():
         conversation.add_interaction(query, final_answer)
 
     if len(conversation.conversation_history) > 0:
-        final_summary, user_info = conversation.exit_conversation()
+        final_summary, new_user_info = conversation.exit_conversation()
         db.add_conversation_summary(summary_text=final_summary)
-        # Comprobar que la user info sea realmente nueva, para ello hay que anadir una funcion de llm que devuelva solo los statements que son realmente nuevos
-        db.add_user_info()
+        existing_user_info = db.get_all_user_information()
+        if len(existing_user_info) > 0:
+            # Comprobar que la user info sea realmente nueva, para ello hay que anadir una funcion de llm que devuelva solo los statements que son realmente nuevos
+            new_user_info = contrast_user_information(existing_user_info, new_user_info)
+        # Este paso se podria mejorar para que, ademas de detectar la info nueva, si hay info contradictoria modificara la BBDD para dejar la mas reciente
+        # Tambien estaria bien una posibilidad del usuario de revisar su info para modificarla o borrarla manualmente
+        db.add_user_info(new_user_info)
     db.close_db()
     
 

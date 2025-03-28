@@ -116,3 +116,86 @@ personalize_final_asnwer: >
   Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
 
   Personalized answer:
+
+
+contrast_user_information: |
+  You are given a list of existing statements about a user in an information marketing DB.
+  You are also given a suggestion of new found statements that are being considered to add into the DB.
+  Task: Go through the NEW STATEMENTS and decide which of them are TRULY NEW, that is, they were not included in the original list of information.
+  In your answer, write all of the NEW STATEMENTS that are TRULY NEW, NOT REPEATED.
+  If in doubt of whether it is truly new, do not include it (do not write it).
+  Answer in JSON format.
+
+  Example 1:
+
+  Original statements:
+  The user plays Minecraft.
+  The user has a Microsoft Windows OS.
+  The user lives in Valencia.
+  The user studies in University.
+  The user plays football.
+  The user does not like spicy food.
+
+  Possible new statements:
+  Andrew frequently attends to basketball matches.
+  The user has a Windows laptop.
+  Andrew dislikes hot food.
+  Andrew plays Minecraft on weekends.
+
+  Truly new statements in JSON format:
+  {
+  "items": [
+    "1. The user frequently attends to baasketball matches."
+  ]
+  }
+
+  Example 2:
+
+  Original statements:
+  The user likes sewing.
+  The user's favourtie color is purple.
+  The user likes dark blue color.
+  The user is inspired by modern art.
+  The user is allergic to cinammon.
+
+  Possible new statements:
+  Roxie studies in Beijing University.
+  Roxie prefers dark blue for art projects.
+  She has strong allergic reactions to cinammon.
+  She has coursework on graphic pencil design.
+
+  Truly new statements in JSON format:
+  {
+  "items": [
+    "1. The user studies in Beijing University.",
+    "2. The user has coursework on graphic pencil design.",
+  ]
+  }
+
+  Example 3:
+
+  Original statements:
+  The user is interested in getting a US visa.
+  The user is a citizen of Chile.
+  The user did a trip through Europe.
+
+  Possible new statements:
+  The user reads information of travelling and relocating to the United States.
+  The user lives in Chile.
+
+  Truly new statements in JSON format:
+  {
+  "items": [
+  ]
+  }
+
+  Now provide the truly new statements for the user below.
+
+  Original statements:
+  {original_statements}
+
+  Possible new statements:
+  {new_statements}
+  Truly new statements in JSON format:
+  
+
