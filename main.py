@@ -44,7 +44,7 @@ def main():
             steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
             print(steps)
         else:
-            answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts)
+            answer = ReAct_process(query=prompt, prompts=system_prompts, llm=default_chat, summarizer_llm=cheap_chat)
         # Acabar de procesar mediante una query llm para personalizarlo mas al usuario.
         relevant_past_conversations = db.search(query, source="conversation")
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
@@ -78,3 +78,4 @@ if __name__ == "__main__":
 
 #TODO
 # Cambiar el sistema de resumenes para que no resuma de 5 en 5 sino de 1 en 1, y ajustar las funciones que lo usan actualmente
+#Tambien con eso cambiar el sistema de generacion de resumen final en la clase Conversation

@@ -50,7 +50,7 @@ def run_code(query, llm, prompts, max_retries=3):
         else:
             print("No valid Python code found, retrying...")
         retries += 1
-    return "Max retries reached. Unable to generate working code. Please try with a different, better description, or with another tool."
+    return prompts["code_tool_error"]
 
 if __name__ == "__main__":
     # Sample query to test the working

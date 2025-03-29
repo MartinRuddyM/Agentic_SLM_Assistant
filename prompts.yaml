@@ -271,7 +271,8 @@ code_task_description: >
 
   Your python code:
 
-
+code_tool_error: >
+  Max retries reached. Unable to generate working code. Please try with a different, better description, or with another tool.
 
 
 web_search_tool_description: >
@@ -286,4 +287,33 @@ web_search_tool_description: >
   WORDS as INPUT. Think of how an expert SEO marketer would do search queries online. ONLY WRITE
   VERY FEW KEY SEARCH TERMS.
 
+web_search_summarize_findings: >
+  A web search has been performed and some results have appeared.
+  The original user query that we are trying to solve with this searchings is this:
 
+  Original user query:
+
+  {query}
+
+
+  The search terms that were used in the search:
+
+  {search_terms}
+
+  
+  Given the search results below, summarize the findings of each of the results according
+  to the user query. Make a lengthy summary of each of the results by keeping all information
+  that could be related to the user query. Do not include information that is clearly irrelevant to
+  answer the query or the search terms. For the relevant information, keep all of it, and repect it
+  leave it as it is.
+
+  SEARCH RESULTS:
+
+  {search_results}
+
+
+  YOUR LENGTHY SUMMARY OF IMPORTANT INFORMATION:
+
+
+web_search_tool_error: >
+  No valid search results were found. Some error happened in search tool.

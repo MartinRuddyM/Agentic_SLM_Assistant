@@ -152,15 +152,20 @@ def prepare_prompt(conversation, relevant_user_info, query, prompts):
 
 
 
-def ReAct_process(llm, query:str, prompts, max_iter=10, user_context:str="", debug=False):
+def ReAct_process(query:str, prompts, llm, summarizer_llm, max_iter=10, debug=False):
+    def run_code_wrapper(task_desc):
+        return run_code(task_desc, llm, prompts)
+    
+    def web_search_wrapper(search_terms):
+        return web_search(search_terms, query, prompts, summarizer_llm)
+    
     tools = [
-        Tool(name="Web Search", func=web_search, description=prompts["web_search_tool_description"]),
-        Tool(name="Run Code", func=run_code, description=prompts["code_tool_description"]),
+        Tool(name="Web Search", func=web_search_wrapper, description=prompts["web_search_tool_description"]),
+        Tool(name="Run Code", func=run_code_wrapper, description=prompts["code_tool_description"]),
     ]
     agent = create_react_agent(llm=llm, tools=tools)
-    agent_executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=True, max_iterations=max_iter, max_execution_time=180, early_stopping_method="generate", handle_parsing_errors=True)
-    full_input = f"{user_context}\n\nQuestion: {query}"
-    response = agent_executor.invoke({"input":full_input})
+    agent_executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=debug, max_iterations=max_iter, max_execution_time=180, early_stopping_method="generate", handle_parsing_errors=True)
+    response = agent_executor.invoke({"input":query})
     final_answer = response["output"]
     intermediate_steps = "\n".join(f"{action.log}\nObservation: {observation}" for action, observation in response["intermediate_steps"])
     if debug:
