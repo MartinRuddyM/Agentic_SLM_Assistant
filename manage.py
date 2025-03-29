@@ -137,14 +137,19 @@ class EmbeddingDB:
         return [row[0] for row in rows] if rows else []
 
 
-def prepare_prompt(relevant_user_info, relevant_past_conversations, query, prompts, llm):
+def prepare_prompt(conversation, relevant_user_info, query, prompts):
     """Given relevant contextual user info and past conversations, prepare the prompt
     to be fed into ReAct."""
-    # To Do
-    ####################
-    ##################
-    ######################TODO
-    pass
+    summary_last_messages = conversation.recent_summary
+    user_info = "\n".join(text[0] for text in relevant_user_info)
+    values = {
+        "query":query,
+        "past_messages":summary_last_messages,
+        "user_info":user_info,
+    }
+    final_prompt = prompts["last_n_summary"].format(**values)
+    return final_prompt
+
 
 
 def ReAct_process(llm, query:str, prompts, max_iter=10, user_context:str="", debug=False):

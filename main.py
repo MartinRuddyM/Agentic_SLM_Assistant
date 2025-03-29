@@ -38,11 +38,11 @@ def main():
         if len(query) == 4 and query.lower() == "exit":
             break
         # Informacion de contexto del usuario y conversaciones pasadas
-        relevant_user_info = db.search(query, source="user_info")
+        relevant_user_info = db.search(query, source="user_info", top_k=20)
         relevant_past_conversations = db.search(query, source="conversation")
         # Procesar query con ReAct
         # Pasarle aqui PREVIOUS MESSAGES de la misma conversacion
-        prompt = prepare_prompt(relevant_user_info, relevant_past_conversations, query, system_prompts, default_chat)
+        prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
         if debug:
             steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
             print(steps)

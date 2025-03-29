@@ -222,5 +222,27 @@ contrast_user_information: |
   Truly new statements in JSON format:
 
 
-feed_to_react: >
-  You have talked with me previously
+feed_to_react: |
+  This is my question:
+  {query}
+
+  For answering my question, remember that we have spoken before in this conversation. Below you can find
+  a summary of the last interactions we had, so you can give a contextually appropiate answer.
+
+  Summaries of past messages of this conversation (if any):
+
+  {past_messages}
+
+  Also, here is some contextual information of me as a user. This might be relevant to your answer and help
+  you to decide how to approach it.
+
+  Useful user info for the answer:
+
+  {user_info}
+
+  Now please answer my original question. Remember the question:
+
+  {query}
+
+  Your answer:
+  
