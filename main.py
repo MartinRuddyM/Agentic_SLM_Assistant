@@ -41,6 +41,7 @@ def main():
         relevant_user_info = db.search(query, source="user_info")
         relevant_past_conversations = db.search(query, source="conversation")
         # Procesar query con ReAct
+        # Pasarle aqui PREVIOUS MESSAGES de la misma conversacion
         prompt = prepare_prompt(relevant_user_info, relevant_past_conversations, query, system_prompts, default_chat)
         if debug:
             steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
