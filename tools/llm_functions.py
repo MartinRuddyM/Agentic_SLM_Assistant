@@ -10,20 +10,24 @@ def last_n_interactions_summary(interactions: List[Interaction], llm, prompts):
     """Provides summary of last few interactions within the conversation
     Could be done INCREMENTALLY but might lead to loss of information"""
 
-    system_prompt = prompts["last_n_summary"]
     conversation_text = "\n".join(
         [f"Q: {interaction.question}\nA: {interaction.answer}" for interaction in interactions]
     )
-    final_prompt = f"{system_prompt}\n\n{conversation_text}"
+    values = {
+        "conversation_text":conversation_text,
+    }
+    final_prompt = prompts["last_n_summary"].format(**values)
     return llm.invoke(final_prompt).content
 
 
 def final_conversation_summary(summaries: List[str], llm, prompts):
     """Generates a final summary of the entire conversation using stored summaries."""
 
-    system_prompt = prompts["final_summary"]
-    summaries_text = "\n".join(summaries)
-    final_prompt = f"{system_prompt}\n\nPartial summaries:\n{summaries_text}"
+    summaries_text = "\n\n".join(summaries)
+    values = {
+        "partial_summaries":summaries_text,
+    }
+    final_prompt = prompts["final_summary"].format(**values)
     return llm.invoke(final_prompt).content
     
 
@@ -32,9 +36,11 @@ def extract_permanent_user_information(all_user_prompts: List[str], llm, prompts
     If thre is, it lists and returns it.
     It does not check if the information is already stored in the DB, this should be done separately"""
 
-    system_prompt = prompts["extract_permanent_user_info"]
-    all_conversation_user_prompts = "\n".join(all_user_prompts)
-    final_prompt = f"{system_prompt}\n\nUser questions:\n{all_conversation_user_prompts}"
+    all_conversation_user_prompts = "\n\n".join(all_user_prompts)
+    values = {
+        "user_questions":all_conversation_user_prompts,
+    }
+    final_prompt = prompts["extract_permanent_user_info"].format(**values)
     user_info_raw = llm.invoke(final_prompt).content
     user_info = extract_user_statements(user_info_raw)
     return user_info

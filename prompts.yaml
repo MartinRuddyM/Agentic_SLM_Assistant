@@ -1,27 +1,43 @@
 last_n_summary: >
   There was a Q&A conversation between a user and an expert. 
-  Given these previous questions and answers in the conversation, 
+  Given these questions and answers found in the conversation, 
   generate a **one-paragraph** summary of what the conversation was about.
   Include within the paragraph all relevant technical keywords, 
   and keep a mention of all important things related to the user context and situation.
   Do not mention the fact that you are making a summary. ONLY write the summary itself.
 
+  CONVERSATION:
+
+  {conversation_text}
+
+
+  SUMMARY OF CONVERSATION:
+
+
 final_summary: >
   There was a Q&A conversation between the user and an expert.
   These are summaries from parts of the conversation.
-  Generate an overall **one-paragraph** conversation summary.
+  Generate an overall, final **one-paragraph** conversation summary.
   Include within the paragraph all relevant technical keywords and details from the user mentioned.
   Do not mention the fact that you are making a summary. ONLY write the final summary itself.
+
+  Partial summaries of sections of the conversation:
+
+  {partial_summaries}
+
+  FINAL SUMMARY:
+
 
 
 extract_permanent_user_info: |
   There has been a conversation between an expert LLM and the user.
   Below is the list of questions and prompts that the user has asked during the conversation.
   We want to personalise the service so we need to identify personal information about the user.
+  It's like a marketing agency trying to store key personal information for sales and customer satisfaction.
   Look at the list of questions and prompts and focus on personal characteristics about the user or his/her life,
   things that are relevant for a Question & Answer service to know.
   Return a list of ONE-SENTENCE STATEMENTS about VERY IMPORTANT information that the user reveals. Use simple, plain English in second person.
-  If there is no relevant information don't write anything.
+  If there is no relevant information leave it empty.
   There is an example below. You should return a JSON format like the following cotaining the most relevant information:
 
   EXAMPLE USER QUESTIONS:
@@ -66,9 +82,16 @@ extract_permanent_user_info: |
   }
 
 
-  NOTICE how unimportant tasks or intermediate steps are left behind. Focus only on the most important personal information about the user, which could be useful to help in another Q&A session.
+  Notice how unimportant tasks or intermediate steps are left behind. Focus only on the most important personal information about the user, which could be useful to help in another Q&A session.
 
   Now search for the most important user details and list them in JSON format, if any.
+
+  USER QUESTIONS:
+
+  {user_questions}
+
+  KEY INFORMATION STATEMENTS IN JSON FORMAT:
+  
   
 
 personalize_final_asnwer: >
@@ -199,3 +222,5 @@ contrast_user_information: |
   Truly new statements in JSON format:
 
 
+feed_to_react: >
+  You have talked with me previously
