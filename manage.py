@@ -12,18 +12,21 @@ from tools.web_search import web_search
 
 
 class EmbeddingDB:
-    def __init__(self, db_path, faiss_conversation_path, faiss_user_info_path, embedding_model_name="sentence-transformers/all-MiniLM-L6-v2", create_db_files=False):
+    def __init__(self, db_path, faiss_conversation_path, faiss_user_info_path, embedding_model_name="sentence-transformers/all-MiniLM-L6-v2"):
         self.db_path = db_path
         self.faiss_conversation_path = faiss_conversation_path
         self.faiss_user_info_path = faiss_user_info_path
         self.model = SentenceTransformer(embedding_model_name)
         self.embedding_dim = self.model.get_sentence_embedding_dimension()
-
-        if create_db_files:
+        # Comprueba si existen las BBDD y si no, las crea.
+        files = [db_path, faiss_conversation_path, faiss_user_info_path]
+        existing = [os.path.exists(f) for f in files]
+        if all(existing):
+            pass
+        elif not any(existing):
             self._create_db_files()
         else:
-            if not all(os.path.exists(p) for p in [db_path, faiss_conversation_path, faiss_user_info_path]):
-                raise FileNotFoundError("One or more required files do not exist and create_db_files=False")
+            raise FileNotFoundError("Inconsistent state: some required files are missing")
         
         self.conn = sqlite3.connect(self.db_path)
         self.faiss_conversations = faiss.read_index(self.faiss_conversation_path)
