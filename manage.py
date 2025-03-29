@@ -7,6 +7,7 @@ from sentence_transformers import SentenceTransformer
 from datetime import datetime, timedelta
 from typing import Literal
 from langchain.agents import Tool, create_react_agent, AgentExecutor
+from langchain_core.prompts import PromptTemplate
 from tools.code import run_code
 from tools.web_search import web_search
 
@@ -34,6 +35,7 @@ class EmbeddingDB:
 
 
     def _create_db_files(self):
+        print("Creating DB files, this might take a while...")
         if not os.path.exists(self.db_path):
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
@@ -60,6 +62,8 @@ class EmbeddingDB:
         if not os.path.exists(self.faiss_user_info_path):
             user_index = faiss.IndexIDMap(faiss.IndexFlatL2(self.embedding_dim))
             faiss.write_index(user_index, self.faiss_user_info_path)
+
+        print("Successfully created DB files")
 
 
     def close_db(self):
@@ -166,11 +170,19 @@ def ReAct_process(query:str, prompts, llm, summarizer_llm, max_iter=10, debug=Fa
         Tool(name="Web Search", func=web_search_wrapper, description=prompts["web_search_tool_description"]),
         Tool(name="Run Code", func=run_code_wrapper, description=prompts["code_tool_description"]),
     ]
-    agent = create_react_agent(llm=llm, tools=tools)
+    #####################
+    ############TODO
+    #####################
+    # Adjust react prompt so it makes sense with my custom system prompt and I dont have to duplicate
+    prompt = PromptTemplate.from_template(prompts["react_prompt"])
+    agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=debug, max_iterations=max_iter, max_execution_time=180, early_stopping_method="generate", handle_parsing_errors=True)
     response = agent_executor.invoke({"input":query})
+    print(response)
     final_answer = response["output"]
     intermediate_steps = "\n".join(f"{action.log}\nObservation: {observation}" for action, observation in response["intermediate_steps"])
     if debug:
         return intermediate_steps, final_answer
     return None, final_answer
+
+    
