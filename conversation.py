@@ -1,16 +1,6 @@
 from tools.llm_functions import *
 from typing import List
-
-class Interaction:
-    """Stores each Question and Answer pair"""
-    
-    def __init__(self, question: str, answer: str):
-        self.question = question
-        self.answer = answer
-
-    def __repr__(self):
-        return f"Interaction(Q: {self.question}, A: {self.answer})"
-
+from interaction import Interaction
 
 class Conversation:
     """Stores each of the interactions.
