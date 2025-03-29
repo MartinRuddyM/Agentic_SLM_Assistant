@@ -1,3 +1,22 @@
+interaction_summary: >
+  A Q&A conversation between the user and an expert is taking place.
+  Below is the last Question and its corresponding expert answer.
+
+  Task:
+
+  Create a SHORT **one-paragraph** summary of what the Q&A interaction was about.
+  Include within the paragraph all relevant technical keywords, 
+  and keep a mention of all important things related to the user context and situation.
+  Do not mention the fact that you are making a summary. ONLY write the summary itself.
+
+  Question & Answer to summarize:
+
+  {interaction}
+
+
+  ONE-PARAGRAPH SHORT SUMMARY:
+
+
 last_n_summary: >
   There was a Q&A conversation between a user and an expert. 
   Given these questions and answers found in the conversation, 
@@ -16,16 +35,16 @@ last_n_summary: >
 
 final_summary: >
   There was a Q&A conversation between the user and an expert.
-  These are summaries from parts of the conversation.
+  Below are summaries from all Q&As of the conversation.
   Generate an overall, final **one-paragraph** conversation summary.
   Include within the paragraph all relevant technical keywords and details from the user mentioned.
   Do not mention the fact that you are making a summary. ONLY write the final summary itself.
 
-  Partial summaries of sections of the conversation:
+  Partial summaries of the sections of the conversation:
 
   {partial_summaries}
 
-  FINAL SUMMARY:
+  FINAL ONE-PARAGRAPH SUMMARY:
 
 
 

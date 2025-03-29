@@ -140,14 +140,14 @@ class EmbeddingDB:
 def prepare_prompt(conversation, relevant_user_info, query, prompts):
     """Given relevant contextual user info and past conversations, prepare the prompt
     to be fed into ReAct."""
-    summary_last_messages = conversation.recent_summary
+    summary_last_messages = conversation.get_last_n_summaries(n=5)
     user_info = "\n".join(text[0] for text in relevant_user_info)
     values = {
         "query":query,
         "past_messages":summary_last_messages,
         "user_info":user_info,
     }
-    final_prompt = prompts["last_n_summary"].format(**values)
+    final_prompt = prompts["feed_to_react"].format(**values)
     return final_prompt
 
 

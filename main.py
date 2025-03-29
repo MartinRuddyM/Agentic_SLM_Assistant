@@ -51,7 +51,7 @@ def main():
         print(final_answer)
         conversation.add_interaction(query, final_answer)
 
-    if len(conversation.conversation_history) > 0:
+    if len(conversation.history) > 0:
         final_summary, new_user_info = conversation.exit_conversation()
         db.add_conversation_summary(summary_text=final_summary)
         existing_user_info = db.get_all_user_information()
@@ -73,9 +73,3 @@ if __name__ == "__main__":
 # Siguientes pasos> Implementar el centro que son los pasos ReAct para llegar a respuestas. Luego, ver como insertar la info pasada. Luego, implementar funciones de chequeo que queden, como la de info del usuario nueva
 # Despues testear todo el sistema y presentarselo a Carlos
 # Puedo anadirle una interfaz basica que le dara muchos mas puntos.
-
-
-
-#TODO
-# Cambiar el sistema de resumenes para que no resuma de 5 en 5 sino de 1 en 1, y ajustar las funciones que lo usan actualmente
-#Tambien con eso cambiar el sistema de generacion de resumen final en la clase Conversation

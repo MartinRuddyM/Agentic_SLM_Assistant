@@ -6,17 +6,14 @@ import json
 from typing import Counter
 
 
-def last_n_interactions_summary(interactions: List[Interaction], llm, prompts):
-    """Provides summary of last few interactions within the conversation
-    Could be done INCREMENTALLY but might lead to loss of information"""
+def interaction_summary(interaction:Interaction, llm, prompts):
+    """Provides summary of given interaction within the conversation"""
 
-    conversation_text = "\n".join(
-        [f"Q: {interaction.question}\nA: {interaction.answer}" for interaction in interactions]
-    )
+    interaction_text = f"Q: {interaction.question}\n\nA: {interaction.answer}"
     values = {
-        "conversation_text":conversation_text,
+        "interaction":interaction_text,
     }
-    final_prompt = prompts["last_n_summary"].format(**values)
+    final_prompt = prompts["interaction_summary"].format(**values)
     return llm.invoke(final_prompt).content
 
 
@@ -57,7 +54,7 @@ def personalize_final_answer(query:str, current_answer: str, user_information: L
     values = {
         "user_info":user_info,
         "conversation_summaries":conversation_summaries,
-        "interactions_summary":conversation.recent_summary,
+        "interactions_summary":conversation.get_last_n_summaries(n=5),
         "query":query,
         "answer":current_answer
     }
