@@ -30,7 +30,8 @@ def main():
         system_prompts = yaml.safe_load(file)
 
     # Load DB and start processing
-    db = EmbeddingDB(db_path="db/user_data.db", faiss_path="db/faiss_index.index")
+    print("Loading DB...")
+    db = EmbeddingDB(db_path="db/user_data.db", faiss_conversation_path="db/faiss_conversations.index", faiss_user_info_path="db/faiss_user_info.index")
     conversation = Conversation(default_chat, cheap_chat, system_prompts)
     debug = False
     while True:

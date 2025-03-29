@@ -1,4 +1,4 @@
-from conversation import Interaction
+from interaction import Interaction
 from typing import List
 from datetime import datetime
 import re
