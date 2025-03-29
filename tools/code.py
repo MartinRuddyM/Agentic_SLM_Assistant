@@ -14,9 +14,11 @@ def run_code(query, llm, prompts, max_retries=3):
     If it was not possible to run code, an error message is returned instead."""
 
     def generate_code(query):
-        # TODO replace this by actual prompt from prompts file
-        system_prompt = "You are an AI that generates Python code. Omit explanations. Respond with only the Python code needed for the query. PRINT the results that will answer the query. Only printed results are valid to answer the query. Query: "
-        return llm.invoke(system_prompt + "\n" + query)
+        values = {
+            "task_description":query,
+        }
+        final_prompt = prompts["code_task_description"].format(**values)
+        return llm.invoke(final_prompt).content
 
     def extract_code(text):
         print(text)

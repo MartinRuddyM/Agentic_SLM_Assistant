@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_mistralai import ChatMistralAI
 
-def web_search(query):
+def web_search(query, prompts, llm):
     def extract_urls(text):
         return re.findall(r'https?://[^\s,]+', text)
 

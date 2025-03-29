@@ -245,4 +245,45 @@ feed_to_react: |
   {query}
 
   Your answer:
+
+
+code_tool_description: >
+  Useful to do operations and advanced analysis that python conde and libraries can help with.
+  If you have math operations, statistics assignments, or any codeable task, use this tool.
+
+  How to use it: 
+
+  Write a description of the task to be done. An expert coder system will generate and run the code
+  as per your description. Give a detailed description of the task to give them context.
   
+  The output of the tool will be what the code can print(), so structure the task
+  properly so it can be printed. The expert system will read your description, write code,
+  and run it and return the printed answer.
+
+code_task_description: >
+  You are an AI that generates Python code. Omit explanations.
+  Respond with only the Python code needed for the task. PRINT the results that will answer the task.
+  **Only printed results are valid to answer the task**.
+
+  Task:
+
+  {task_description}
+
+  Your python code:
+
+
+
+
+web_search_tool_description: >
+  Useful to search the web. All information that you don't know or are not sure about, but need for the
+  answer, use this tool. Use this tool to get information on current events, weather information,
+  what time and date it is, and anything that the internet can be used for.
+
+  How to use it:
+
+  Provide as INPUT a VERY SHORT SENTENCE of the search terms to be used. The web_search tool will return a
+  digested result. The words you write are the search terms themselves, so ONLY WRITE VERY IMPORTANT
+  WORDS as INPUT. Think of how an expert SEO marketer would do search queries online. ONLY WRITE
+  VERY FEW KEY SEARCH TERMS.
+
+

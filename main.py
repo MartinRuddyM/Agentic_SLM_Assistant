@@ -37,11 +37,8 @@ def main():
         query = input("Type question: ")
         if len(query) == 4 and query.lower() == "exit":
             break
-        # Informacion de contexto del usuario y conversaciones pasadas
+        # Informacion de contexto del usuario
         relevant_user_info = db.search(query, source="user_info", top_k=20)
-        relevant_past_conversations = db.search(query, source="conversation")
-        # Procesar query con ReAct
-        # Pasarle aqui PREVIOUS MESSAGES de la misma conversacion
         prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
         if debug:
             steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
@@ -49,6 +46,7 @@ def main():
         else:
             answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts)
         # Acabar de procesar mediante una query llm para personalizarlo mas al usuario.
+        relevant_past_conversations = db.search(query, source="conversation")
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         print(final_answer)
         conversation.add_interaction(query, final_answer)
@@ -58,10 +56,10 @@ def main():
         db.add_conversation_summary(summary_text=final_summary)
         existing_user_info = db.get_all_user_information()
         if len(existing_user_info) > 0:
-            # Comprobar que la user info sea realmente nueva, para ello hay que anadir una funcion de llm que devuelva solo los statements que son realmente nuevos
             new_user_info = contrast_user_information(existing_user_info, new_user_info)
         # Este paso se podria mejorar para que, ademas de detectar la info nueva, si hay info contradictoria modificara la BBDD para dejar la mas reciente
         # Tambien estaria bien una posibilidad del usuario de revisar su info para modificarla o borrarla manualmente
+        # Un posible problema es que las informaciones del usuario crezcan indefinidamente
         db.add_user_info(new_user_info)
     db.close_db()
     
@@ -75,3 +73,8 @@ if __name__ == "__main__":
 # Siguientes pasos> Implementar el centro que son los pasos ReAct para llegar a respuestas. Luego, ver como insertar la info pasada. Luego, implementar funciones de chequeo que queden, como la de info del usuario nueva
 # Despues testear todo el sistema y presentarselo a Carlos
 # Puedo anadirle una interfaz basica que le dara muchos mas puntos.
+
+
+
+#TODO
+# Cambiar el sistema de resumenes para que no resuma de 5 en 5 sino de 1 en 1, y ajustar las funciones que lo usan actualmente

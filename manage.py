@@ -154,9 +154,8 @@ def prepare_prompt(conversation, relevant_user_info, query, prompts):
 
 def ReAct_process(llm, query:str, prompts, max_iter=10, user_context:str="", debug=False):
     tools = [
-        # TO DO: Change the tool description with better prompts
-        Tool(name="Web Search", func=web_search, description="Useful for searching the web for current or permanent information"),
-        Tool(name="Run Code", func=run_code, description="Useful for executing Python code. The "),
+        Tool(name="Web Search", func=web_search, description=prompts["web_search_tool_description"]),
+        Tool(name="Run Code", func=run_code, description=prompts["code_tool_description"]),
     ]
     agent = create_react_agent(llm=llm, tools=tools)
     agent_executor = AgentExecutor(agent=agent, tools=tools, return_intermediate_steps=True, max_iterations=max_iter, max_execution_time=180, early_stopping_method="generate", handle_parsing_errors=True)
