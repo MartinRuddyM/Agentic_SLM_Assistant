@@ -53,7 +53,7 @@ def personalize_final_answer(query:str, current_answer: str, user_information: L
 
     conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
     conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
-    user_info = "\n".join(user_information)
+    user_info = "\n".join([text for (text,) in user_information])
     values = {
         "user_info":user_info,
         "conversation_summaries":conversation_summaries,
