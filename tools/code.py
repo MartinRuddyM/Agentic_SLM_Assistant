@@ -43,7 +43,7 @@ def run_code(query, llm, prompts, max_retries=3):
     while retries < max_retries:
         logger.info("Generating code")
         raw_code = generate_code(query)
-        code = extract_code(raw_code.content)
+        code = extract_code(raw_code)
         if code:
             ok, output = execute_code(code)
             if ok:
