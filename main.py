@@ -52,7 +52,7 @@ def main():
 
     if len(conversation.history) > 0:
         final_summary, new_user_info = conversation.exit_conversation()
-        db.add_conversation_summary(summary_text=final_summary)
+        db.add_conversation_summary(final_summary)
         existing_user_info = db.get_all_user_information()
         if len(existing_user_info) > 0:
             new_user_info = contrast_user_information(existing_user_info, new_user_info)
