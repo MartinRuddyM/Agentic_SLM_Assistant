@@ -3,15 +3,17 @@ from dotenv import load_dotenv
 import os
 import io
 import contextlib
+from logger import get_logger
 
-load_dotenv()
-MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
+logger = get_logger(__name__)
 
 def run_code(query, llm, prompts, max_retries=3):
     """Takes an instruction with the descriptions of what code to run and the original user
     query for context. Then, the LLM here writes code to solve the problem and prints its output.
     The output is returned as text to the ReAct system.
     If it was not possible to run code, an error message is returned instead."""
+
+    logger.info("Called Tool: Code")
 
     def generate_code(query):
         values = {
@@ -39,17 +41,21 @@ def run_code(query, llm, prompts, max_retries=3):
     original_query = query
     retries = 0
     while retries < max_retries:
+        logger.info("Generating code")
         raw_code = generate_code(query)
         code = extract_code(raw_code.content)
         if code:
             ok, output = execute_code(code)
             if ok:
+                logger.info("Code ran successfully, returning")
                 return "The output from the code was the following: " + output
             #print(f"Error running previous code:\n====\n{code}\n====\nError:\n====\n{error_message}\n====\nRetrying with improved prompt...\n")
             query = f"The previous code failed with error: {output}.\n\n Previous code: {code}\n\nOriginal problem to solve: {original_query}\n\n Solve the error and generate correct code"
         else:
             print("No valid Python code found, retrying...")
+        logger.info("Code failed, retrying")
         retries += 1
+    logger.info("Code Tool failed, no more retries left.")
     return prompts["code_tool_error"]
 
 if __name__ == "__main__":

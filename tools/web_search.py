@@ -2,6 +2,9 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from langchain_community.tools import DuckDuckGoSearchResults
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 def web_search(search_terms, original_user_query, prompts, llm):
     def extract_urls(text):
@@ -28,7 +31,8 @@ def web_search(search_terms, original_user_query, prompts, llm):
         }
         final_prompt = prompts["web_search_summarize_findings"].format(**values)
         return llm.invoke(final_prompt).content
-        
+    
+    logger.info("Called Tool: Web Search")
     search_tool = DuckDuckGoSearchResults(num_results=5)
     final_searches = []
     results = search_tool.run(search_terms)
@@ -45,6 +49,7 @@ def web_search(search_terms, original_user_query, prompts, llm):
     formatted = "\n\n".join([f'Search {i + 1}: "{text}"' for i, text in enumerate(final_searches)])
     if not formatted:
         return prompts["web_search_tool_error"]
+    logger.info("Summarizing web search findigns and returning...")
     return summarize_findings(formatted)
 
 if __name__ == "__main__":
