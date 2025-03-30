@@ -4,7 +4,8 @@ import yaml
 import os
 from dotenv import load_dotenv
 
-from manage import EmbeddingDB, prepare_prompt, ReAct_process
+from manage import EmbeddingDB, prepare_prompt
+from ReAct import ReAct_process
 from conversation import Conversation
 from tools.llm_functions import *
 from logger import get_logger
