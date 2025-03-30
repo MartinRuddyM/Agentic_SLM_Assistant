@@ -48,6 +48,9 @@ def personalize_final_answer(query:str, current_answer: str, user_information: L
     adapts the final answer to make reference to past conversations and user info.
     This is to try to give it a more personalized appearance"""
 
+    if len(user_information) == 0 or not past_conversations_summaries:
+        return current_answer
+
     conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
     conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
     user_info = "\n".join(user_information)
