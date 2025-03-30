@@ -40,12 +40,10 @@ def main():
             break
         relevant_user_info = db.search(query, source="user_info", top_k=20)
         prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
-        if debug:
-            steps, answer = ReAct_process(llm=default_chat, query=prompt, prompts=system_prompts, debug=True)
-            logger.debug(f"ReAct debug steps: {steps}")
-            print(steps)
-        else:
-            answer = ReAct_process(query=prompt, prompts=system_prompts, llm=default_chat, summarizer_llm=cheap_chat)
+        #######
+        ## Esto hay que cambiarlo ahora que la prompt de react la controlo yo, para que
+        # Solo ponga la info adecauda y donde toca. Puedo hacerlo poniendolo como "prepare_SYSTEM_prompt"
+        answer = ReAct_process(prompt, system_prompts, default_chat, cheap_chat)
         relevant_past_conversations = db.search(query, source="conversation")
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         logger.info("Final answer generated.")
