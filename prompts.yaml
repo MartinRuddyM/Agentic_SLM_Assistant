@@ -88,7 +88,7 @@ extract_permanent_user_info: |
   
 
   EXAMPLE OUTPUT WITH KEY INFORMATION FOR A PERSONALIZED Q&A SYSTEM TO KNOW:
-  {
+  {{
   "items": [
     "1. The user does projects with AutoCAD",
     "2. The user is writing a kitchen book",
@@ -98,7 +98,7 @@ extract_permanent_user_info: |
     "6. The user uses Facebook",
     "7. The user has a Gmail account"
   ]
-  }
+  }}
 
 
   Notice how unimportant tasks or intermediate steps are left behind. Focus only on the most important personal information about the user, which could be useful to help in another Q&A session.
