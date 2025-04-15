@@ -137,3 +137,17 @@ def extract_user_statements(text: str) -> list[str]:
     # Else, fallback to method 3 only (last method)
     return sorted(method3) if method3 else []
     
+
+def get_react_task_desc(relevant_user_info:str, past_conversations_summaries, conversation, query:str, llm, prompts):
+    conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
+    conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
+    user_info = "\n".join(text[0] for text in relevant_user_info)
+    past_questions = conversation.get_last_n_summaries(n=5)
+    values = {
+        "query":query,
+        "user_info":user_info,
+        "past_messages":past_questions,
+        "relevant_conversations":conversation_summaries,
+    }
+    final_prompt = prompts["react_get_task_description"].format(**values)
+    return llm.invoke(final_prompt).content
