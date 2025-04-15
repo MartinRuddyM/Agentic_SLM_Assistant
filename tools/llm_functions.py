@@ -138,12 +138,13 @@ def extract_user_statements(text: str) -> list[str]:
     return sorted(method3) if method3 else []
     
 
-def get_react_task_desc(relevant_user_info:str, past_conversations_summaries, conversation, query:str, llm, prompts):
+def get_react_task_desc(relevant_user_info:str, past_conversations_summaries, conversation, tool_names, query:str, llm, prompts):
     conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
     conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
     user_info = "\n".join(text[0] for text in relevant_user_info)
     past_questions = conversation.get_last_n_summaries(n=5)
     values = {
+        "tool_names":" ".join(tool_names),
         "query":query,
         "user_info":user_info,
         "past_messages":past_questions,
