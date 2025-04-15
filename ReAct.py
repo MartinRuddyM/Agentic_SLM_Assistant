@@ -105,11 +105,13 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         return {"error": "A Thought was parsed, but either there was nothing after it, or nothing useful was identified."}
 
 
+    logger.info(f"Starting ReAct process with max {max_iter} iterations.")
     tools = set_up_tools()
     agent_scratchpad = ""
     tool_names = list(tools.keys())
 
     for iteration in range(max_iter):
+        logger.info(f"\033[92mReAct step {iteration+1}\033[0m")
         react_prompt = build_react_prompt(agent_scratchpad, tools)
         output = cheap_llm.invoke(react_prompt).content
         parsed = parse_react_output(output, tool_names)
@@ -128,12 +130,14 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
             tool_func = tools.get(action_name, {}).get("func")
             if not tool_func:
                 agent_scratchpad += f"\nObservation: Tool '{action_name}' not found.\n"
+                logger.info(f"ReAct Error: Tool selected not available")
                 continue
 
             try:
                 observation = tool_func(action_input)
             except Exception as e:
                 observation = f"Tool execution error: {str(e)}"
+                logger.info(f"ReAct Error: error in tool execution. Error: {str(e)}")
 
             agent_scratchpad += (
                 f"\nThought: {thought}"
