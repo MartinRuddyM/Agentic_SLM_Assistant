@@ -1,14 +1,23 @@
-import re
 import requests
 from bs4 import BeautifulSoup
-from langchain_community.tools import DuckDuckGoSearchResults
+from duckduckgo_search import DDGS
 from logger import get_logger
 
 logger = get_logger(__name__)
 
 def web_search(search_terms, original_user_query, prompts, llm):
-    def extract_urls(text):
-        return re.findall(r'https?://[^\s,]+', text)
+    def get_ddg_search_results(query, max_results=5):
+        urls = []
+        try:
+            with DDGS() as ddgs:
+                results = ddgs.text(query, max_results=max_results)
+                for result in results:
+                    if 'href' in result:
+                        urls.append(result['href'])
+        except:
+            pass
+        return urls
+        
 
     def scrape_article(url):
         try:
@@ -23,6 +32,7 @@ def web_search(search_terms, original_user_query, prompts, llm):
         except Exception as e:
             return f"Error fetching {url}: {e}"
         
+
     def summarize_findings(search_results):
         values = {
             "query":original_user_query,
@@ -32,14 +42,13 @@ def web_search(search_terms, original_user_query, prompts, llm):
         final_prompt = prompts["web_search_summarize_findings"].format(**values)
         return llm.invoke(final_prompt).content
     
+
     logger.info("Called Tool: Web Search")
-    search_tool = DuckDuckGoSearchResults(num_results=5)
     final_searches = []
-    results = search_tool.run(search_terms)
-    urls = extract_urls(results)
+    urls = get_ddg_search_results(search_terms)
     if not urls:
         print("No valid URLs found.")
-        return
+        return "Error: No valod URLs were found during search"
     for url in urls:
         try:
             content = scrape_article(url)
@@ -53,5 +62,5 @@ def web_search(search_terms, original_user_query, prompts, llm):
     return summarize_findings(formatted)
 
 if __name__ == "__main__":
-    results = web_search("HOI4 how to win playing as Germany")
+    results = web_search("HOI4 how to win playing as Germany", None, None, None)
     print(results)
