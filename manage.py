@@ -6,11 +6,6 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from datetime import datetime, timedelta
 from typing import Literal
-from langchain.agents import Tool, create_react_agent, AgentExecutor
-from langchain_core.prompts import PromptTemplate
-from langchain.callbacks.base import BaseCallbackHandler
-from tools.code import run_code
-from tools.web_search import web_search
 from logger import get_logger
 
 logger = get_logger(__name__)
@@ -149,6 +144,7 @@ class EmbeddingDB:
 
 
 def prepare_prompt(conversation, relevant_user_info, query, prompts):
+    ## TODO this function is not in use anymore
     """Given relevant contextual user info and past conversations, prepare the prompt
     to be fed into ReAct."""
     summary_last_messages = conversation.get_last_n_summaries(n=5)
