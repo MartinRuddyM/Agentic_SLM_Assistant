@@ -6,14 +6,14 @@ from typing import List
 
 logger = get_logger(__name__)
 
-def ReAct_process(query:str, prompts:List[str], llm, summarizer_llm, max_iter=10):
-
+def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, cheap_llm, max_iter=10):
+    
     def set_up_tools():
         def run_code_wrapper(task_desc):
-            return run_code(task_desc, llm, prompts)
+            return run_code(task_desc, good_llm, prompts)
 
         def web_search_wrapper(search_terms):
-            return web_search(search_terms, query, prompts, summarizer_llm)
+            return web_search(search_terms, query, prompts, cheap_llm)
 
         tools = {
             "Web Search": {
@@ -27,84 +27,120 @@ def ReAct_process(query:str, prompts:List[str], llm, summarizer_llm, max_iter=10
         }
         return tools
 
-
+    
     def build_react_prompt(agent_scratchpad, tools):
         tool_descriptions = "\n".join(
             f"{name}: {tool['description']}" for name, tool in tools.items()
         )
         tool_names = ", ".join(tools.keys())
         values = {
+            "task_description":react_task_desc,
             "tool_descriptions":tool_descriptions,
             "tool_names":tool_names,
             "input":query,
             "agent_scratchpad":agent_scratchpad,
         }
-        return prompts["react_prompt"].format(**values)
-    #####################
-    ############TODO
-    #####################
-    # Adjust react prompt so it makes sense with my custom system prompt and I dont have to duplicate
+        print(prompts["react_step_by_step"].format(**values))
+        return prompts["react_step_by_step"].format(**values)
 
 
-    def parse_react_output(output):
-        action_match = re.search(r"Action: (.*)\nAction Input: (.*)", output)
-        final_answer_match = re.search(r"Final Answer: (.*)", output)
-        thought_match = re.search(r"Thought:(.*)", output)
+    def parse_react_output(output: str, tool_names: list):
+        """
+        Parse LLM's output and determine next step based on order:
+        - Thought followed by Final Answer => return final answer
+        - Thought followed by Action => return action & input
 
-        if final_answer_match:
-            return {"type": "final", "answer": final_answer_match.group(1).strip()}
+        All names are normalized to avoid possible simple mispelling errors from the LLM
 
-        if action_match:
-            return {
-                "type": "action",
-                "thought": thought_match.group(1).strip() if thought_match else "",
-                "tool": action_match.group(1).strip(),
-                "input": action_match.group(2).strip()
-            }
+        ALWAYS the LLM output, given the react prompt, should start with a Thought, then
+        either an Action with its Action Input OR a Final Answer.
+        """
 
-        return {"type": "unknown", "raw": output}
-    
+        normalized_tool_names = [re.sub(r'[\W_]+', '', t.lower()) for t in tool_names]
+        token_pattern = r"(thought|actioninput|action|observation|finalanswer)"
+        matches = re.findall(f"({token_pattern})\s*:\s*(.*?)\s*(?=(?:{token_pattern})\s*:|\Z)", 
+                            output, re.IGNORECASE | re.DOTALL)
+        if not matches:
+            return {"error": "Could not parse any valid Thought/Action/Final Answer entries."}
 
-    def normalize_tool_name(name):
-        return name.lower().replace("_", " ").strip()
+        steps = []
+        for label, content in matches:
+            key = re.sub(r'[\W_]+', '', label.lower())
+            steps.append((key, content.strip()))
+        if not steps or steps[0][0] != "thought":
+            return {"error": "First step must be a Thought."}
+        thought = steps[0][1]
 
+        if len(steps) > 1:
+            next_key, next_content = steps[1]
+            if next_key == "finalanswer":
+                return {
+                    "type": "final_answer",
+                    "content": next_content
+                }
+            elif next_key == "action":
+                action_raw = next_content
+                normalized_action = re.sub(r'[\W_]+', '', action_raw.lower())
+                if normalized_action not in normalized_tool_names:
+                    return {"error": f"Unknown action/tool selected: '{action_raw}'."}
 
-    def run_ReAct(tools):
-        logger.info(f"Initializing ReAct with max {max_iter} iter.")
-        history = ""
-        for _ in range(max_iter):
-            logger.info(f"ReAct step {_+1}")
-            prompt = build_react_prompt(history, tools)
-            response = llm.invoke(prompt).content
-            #print(f"LLM:\n{response}\n")
-            parsed = parse_react_output(response)
+                # Try to find corresponding Action Input
+                action_input = None
+                for k, v in steps[2:]:
+                    if k == "actioninput":
+                        action_input = v
+                        break
 
-            if parsed["type"] == "final":
-                return parsed["answer"]
+                if not action_input:
+                    return {"error": f"Action '{action_raw}' given but no Action Input provided."}
 
-            elif parsed["type"] == "action":
-                thought, tool_name, action_input = parsed["thought"], parsed["tool"], parsed["input"]
-                logger.info(f"ReAct:\nAction:{tool_name}\nInput:{action_input}")
-                norm_tool_name = normalize_tool_name(tool_name)
-
-                tool_key = next((name for name in tools if normalize_tool_name(name) == norm_tool_name), None)
-                if not tool_key:
-                    history += f"Thought: Tool {tool_name} not found.\nObservation: None\n"
-                    continue
-                tool = tools[tool_key]
-
-                try:
-                    observation = tool["func"](action_input)
-                except Exception as e:
-                    observation = f"Error: {e}"
-
-                history += f"Thought: \nAction: {tool_name}\nAction Input: {action_input}\nObservation: {observation}\n"
-            
-            else:
-                history += f"Thought: Couldn't parse response.\nObservation: {parsed['raw']}\n"
-
-        return "Could not find final answer within max steps. Please retry."
+                return {
+                    "type": "action",
+                    "content": {
+                        "thought": thought,
+                        "action": action_raw,
+                        "input": action_input
+                    }
+                }
+        return {"error": "A Thought was parsed, but either there was nothing after it, or nothing useful was identified."}
 
 
     tools = set_up_tools()
-    return run_ReAct(tools)
+    agent_scratchpad = ""
+    tool_names = list(tools.keys())
+
+    for iteration in range(max_iter):
+        react_prompt = build_react_prompt(agent_scratchpad, tools)
+        output = cheap_llm.invoke(react_prompt).content
+        parsed = parse_react_output(output, tool_names)
+
+        if parsed.get("error"):
+            agent_scratchpad += f"\nObservation: {parsed['error']}\n"
+            continue
+
+        if parsed["type"] == "final_answer":
+            return parsed["content"]
+        
+        if parsed["type"] == "action":
+            thought = parsed["content"]["thought"]
+            action_name = parsed["content"]["action"]
+            action_input = parsed["content"]["input"]
+            tool_func = tools.get(action_name, {}).get("func")
+            if not tool_func:
+                agent_scratchpad += f"\nObservation: Tool '{action_name}' not found.\n"
+                continue
+
+            try:
+                observation = tool_func(action_input)
+            except Exception as e:
+                observation = f"Tool execution error: {str(e)}"
+
+            agent_scratchpad += (
+                f"\nThought: {thought}"
+                f"\nAction: {action_name}"
+                f"\nAction Input: {action_input}"
+                f"\nObservation: {observation}\n"
+            )
+            
+
+    return "Failed to reach a final answer after maximum iterations."
