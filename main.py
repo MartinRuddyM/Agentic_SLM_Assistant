@@ -13,12 +13,14 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 def main():
+    logger.info("Starting system...")
     load_dotenv()
     MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
     default_chat = ChatMistralAI(
-        model="open-mistral-7b",
+        #model="open-mistral-7b",
+        model="mistral-large-latest",
         api_key=MISTRAL_API_KEY
     )
     cheap_chat = ChatGoogleGenerativeAI(
@@ -39,12 +41,10 @@ def main():
             logger.info("Exiting conversation...")
             break
         relevant_user_info = db.search(query, source="user_info", top_k=20)
-        prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
-        #######
-        ## Esto hay que cambiarlo ahora que la prompt de react la controlo yo, para que
-        # Solo ponga la info adecauda y donde toca. Puedo hacerlo poniendolo como "prepare_SYSTEM_prompt"
-        answer = ReAct_process(prompt, system_prompts, default_chat, cheap_chat)
         relevant_past_conversations = db.search(query, source="conversation")
+        #prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
+        react_task_desc = get_react_task_desc(relevant_user_info, relevant_past_conversations, conversation, query, default_chat, system_prompts)
+        answer = ReAct_process(query, react_task_desc, system_prompts, default_chat, cheap_chat)
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         logger.info("Final answer generated.")
         print(final_answer)
@@ -67,9 +67,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-# Siguientes pasos> Implementar el centro que son los pasos ReAct para llegar a respuestas. Luego, ver como insertar la info pasada. Luego, implementar funciones de chequeo que queden, como la de info del usuario nueva
-# Despues testear todo el sistema y presentarselo a Carlos
-# Puedo anadirle una interfaz basica que le dara muchos mas puntos.
