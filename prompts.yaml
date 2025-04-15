@@ -366,6 +366,10 @@ react_prompt: |
 
 
 react_step_by_step: |
+  The original question:
+
+  {input}
+
   This is the task guidelines:
 
   {task_description}
@@ -393,9 +397,10 @@ react_step_by_step: |
 
 react_get_task_description: >
   You are a project manager going to assign a task to an expert question/problem solver.
-  The solver needs very specific planned instructions of how to solve the problem STEP BY STEP given the goal and the available tools.
-  The solver has access to the following tools: {tool_names} and you should plan to use them in the steps. Plan to use them on all
-  steps necessary to guarantee a better quality of answer, because the solver has limited world knowledge and limited calculation capabilities.
+  The solver needs specific planned instructions of how to solve the problem STEP BY STEP given the goal and the available tools.
+  The solver has access to the following tools: {tool_names} and you should plan to use them in the steps.
+  They have limited world knowledge, so always plan to use web search for knowledge things.
+  Only use code if really necessary to do any kind of calculation or other specific technical stuff.
 
   This is the question/problem to be answered:
 
@@ -431,7 +436,7 @@ react_get_task_description: >
   {relevant_conversations}
 
 
-  Now as the project manager write detailed, STEP BY STEP planned instructions so the solver knows all the steps to solve them problem
+  Now as the project manager write detailed, concise, STEP BY STEP planned instructions so the solver knows all the steps to solve them problem
   and which tool to use in each step. Tailor the answering of the problem according to the user specific information.
 
 
