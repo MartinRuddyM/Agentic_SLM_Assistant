@@ -396,6 +396,10 @@ react_step_by_step: |
 
 
 react_get_task_description: >
+  .
+
+
+react_get_task_description_1: >
   You are a project manager going to assign a task to an expert question/problem solver.
   The solver needs specific planned instructions of how to solve the problem STEP BY STEP given the goal and the available tools.
   The solver has access to the following tools: {tool_names} and you should plan to use them in the steps.

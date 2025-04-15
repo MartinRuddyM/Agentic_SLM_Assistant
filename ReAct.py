@@ -56,54 +56,83 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         either an Action with its Action Input OR a Final Answer.
         """
 
+        # Normalize tool names for robust matching
         normalized_tool_names = [re.sub(r'[\W_]+', '', t.lower()) for t in tool_names]
-        token_pattern = r"question|thought|actioninput|action|observation|finalanswer"
-        matches = re.findall(f"({token_pattern})\s*:\s*(.*?)\s*(?=(?:{token_pattern})\s*:|\Z)", 
-                            output, re.IGNORECASE | re.DOTALL)
-        if not matches:
-            return {"error": "Could not parse any valid Thought/Action/Final Answer entries."}
 
+        # Flexible token pattern: accepts spaces, underscores, etc.
+        token_pattern = (
+            r"question"
+            r"|thought"
+            r"|action[\s_]*input"
+            r"|action"
+            r"|observation"
+            r"|final[\s_]*answer"
+        )
+
+        # Extract labeled blocks
+        pattern = rf"(?i)\b({token_pattern})\b\s*:\s*(.*?)\s*(?=\b(?:{token_pattern})\b\s*:|\Z)"
+        matches = re.findall(pattern, output, re.DOTALL)
+
+        if not matches:
+            return {"error": "Could not parse any valid steps (Thought, Action, Final Answer, etc.)."}
+
+        # Build normalized (label, content) pairs
         steps = []
         for label, content in matches:
-            key = re.sub(r'[\W_]+', '', label.lower())
+            key = re.sub(r'[\W_]+', '', label.lower())  # normalize label (e.g., Action Input → actioninput)
             steps.append((key, content.strip()))
-        steps = [(k, v) for k, v in steps if k != "question"] # ignore question elemnts that were repeate by the LLM
-        if not steps or steps[0][0] != "thought":
-            return {"error": "First step must be a Thought."}
-        thought = steps[0][1]
 
-        if len(steps) > 1:
-            next_key, next_content = steps[1]
-            if next_key == "finalanswer":
+        # Remove 'question' entries
+        steps = [(k, v) for k, v in steps if k != "question"]
+
+        if not steps:
+            return {"error": "No valid steps found after removing 'Question'."}
+
+        last_thought = None
+
+        for i, (key, value) in enumerate(steps):
+            if key == "thought":
+                last_thought = value
+
+            elif key == "finalanswer":
                 return {
                     "type": "final_answer",
-                    "content": next_content
+                    "content": value
                 }
-            elif next_key == "action":
-                action_raw = next_content
+
+            elif key == "action":
+                action_raw = value
                 normalized_action = re.sub(r'[\W_]+', '', action_raw.lower())
+
                 if normalized_action not in normalized_tool_names:
                     return {"error": f"Unknown action/tool selected: '{action_raw}'."}
 
-                # Try to find corresponding Action Input
+                # Look ahead for Action Input
                 action_input = None
-                for k, v in steps[2:]:
-                    if k == "actioninput":
-                        action_input = v
+                for j in range(i + 1, len(steps)):
+                    next_key, next_val = steps[j]
+                    if next_key == "actioninput":
+                        action_input = next_val
                         break
+                    elif next_key in ["thought", "action", "finalanswer", "observation"]:
+                        break  # Stop if another main step appears before input
 
                 if not action_input:
                     return {"error": f"Action '{action_raw}' given but no Action Input provided."}
 
+                if not last_thought:
+                    return {"error": "Action found, but no preceding Thought."}
+
                 return {
                     "type": "action",
                     "content": {
-                        "thought": thought,
+                        "thought": last_thought,
                         "action": action_raw,
                         "input": action_input
                     }
                 }
-        return {"error": "A Thought was parsed, but either there was nothing after it, or nothing useful was identified."}
+
+        return {"error": "No actionable step found (Final Answer or Action missing)."}
 
 
     logger.info(f"Starting ReAct process with max {max_iter} iterations.")
