@@ -6,7 +6,7 @@ from typing import List
 
 logger = get_logger(__name__)
 
-def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, cheap_llm, max_iter=10):
+def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, cheap_llm, max_iter=3):
     
     def set_up_tools():
         def run_code_wrapper(task_desc):
@@ -57,7 +57,7 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         """
 
         normalized_tool_names = [re.sub(r'[\W_]+', '', t.lower()) for t in tool_names]
-        token_pattern = r"(thought|actioninput|action|observation|finalanswer)"
+        token_pattern = r"question|thought|actioninput|action|observation|finalanswer"
         matches = re.findall(f"({token_pattern})\s*:\s*(.*?)\s*(?=(?:{token_pattern})\s*:|\Z)", 
                             output, re.IGNORECASE | re.DOTALL)
         if not matches:
@@ -67,6 +67,7 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         for label, content in matches:
             key = re.sub(r'[\W_]+', '', label.lower())
             steps.append((key, content.strip()))
+        steps = [(k, v) for k, v in steps if k != "question"] # ignore question elemnts that were repeate by the LLM
         if not steps or steps[0][0] != "thought":
             return {"error": "First step must be a Thought."}
         thought = steps[0][1]
@@ -115,6 +116,7 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         react_prompt = build_react_prompt(agent_scratchpad, tools)
         output = cheap_llm.invoke(react_prompt).content
         parsed = parse_react_output(output, tool_names)
+        print(f"\n\nOUTPUT:\n{output}\n\nPARSED\n\n{parsed}\n\n")
 
         if parsed.get("error"):
             agent_scratchpad += f"\nObservation: {parsed['error']}\n"
