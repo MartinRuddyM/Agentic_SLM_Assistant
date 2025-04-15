@@ -241,7 +241,7 @@ contrast_user_information: |
   Truly new statements in JSON format:
 
 
-feed_to_react: |
+feed_to_react_1: |
   This is my question:
   {query}
 
@@ -264,6 +264,11 @@ feed_to_react: |
   {query}
 
   Your answer:
+
+
+feed_to_react: |
+  {query}
+  TRY TO USE AT LEAST ONE OF THE TOOLS ONCE!!!
 
 
 code_tool_description: >
@@ -359,5 +364,77 @@ react_prompt: |
   Question: {input}  
   {agent_scratchpad}
 
+
+react_step_by_step: |
+  This is the task guidelines:
+
+  {task_description}
+
+  You have access to these tools:
+
+  {tool_descriptions}
+
+  Use the following format:
+
+  Question: the input question you must answer  
+  Thought: you should always think about what to do  
+  Action: the action to take, should be one of [{tool_names}]  
+  Action Input: the input to the action  
+  Observation: the result of the action  
+  ... (this Thought/Action/Action Input/Observation can repeat N times)  
+  Thought: I now know the final answer  
+  Final Answer: the final answer to the original input question
+
+  Begin!
+
+  Question: {input}  
+  {agent_scratchpad}
+
+
+react_get_task_description: >
+  You are a project manager going to assign a task to an expert question/problem solver.
+  The solver needs very specific planned instructions of how to solve the problem STEP BY STEP given the goal and the available tools.
+  The solver has access to the following tools: {tool_names} and you should plan to use them in the steps. Plan to use them on all
+  steps necessary to guarantee a better quality of answer, because the solver has limited world knowledge and limited calculation capabilities.
+
+  This is the question/problem to be answered:
+
+
+  {query}
+
+
+  We want the final answer to be personalized to the user. Below is some gathered personal information from the user
+  which you should take into account and explicitly mention in your planned instructions. The solver will not see it so
+  make sure to devise your plan and instructions with it in mind, if useful.
+
+  Personal user information we have:
+
+
+  {user_info}
+
+
+  Within this same session, the user has had some previous messages with our team of experts.
+  Make sure that the new plan takes this into account to give the feeling of a smooth
+  conversation to the user with our team of experts.
+  Here is a summary of the immediately previous questions the user had (if any):
+
+
+  {past_messages}
+
+
+  Here is a summary of some previous conversations the user has had with our expert, also take it into account for the plan if any useful
+  to better answer or personalize the solution.
+
+  Past conversations the user had:
+
+
+  {relevant_conversations}
+
+
+  Now as the project manager write detailed, STEP BY STEP planned instructions so the solver knows all the steps to solve them problem
+  and which tool to use in each step. Tailor the answering of the problem according to the user specific information.
+
+
+  STEP BY STEP INSTRUCTIONS:
 
 
