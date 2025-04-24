@@ -1,7 +1,8 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 from duckduckgo_search import DDGS
 from logger import get_logger
+from googlesearch import search
 
 logger = get_logger(__name__)
 
@@ -17,20 +18,46 @@ def web_search(search_terms, original_user_query, prompts, llm):
         except:
             pass
         return urls
-        
+    
+    def get_google_search_results(query, max_results=5):
+        return list(search(query, num_results=max_results))
 
     def scrape_article(url):
+        def is_visible(element):
+            if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]', 'noscript']:
+                return False
+            if isinstance(element, Comment):
+                return False
+            return True
+    
         try:
             response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
             if response.status_code != 200:
                 return f"Failed to retrieve content from {url}"
+
             soup = BeautifulSoup(response.text, "html.parser")
-            article = soup.find("article") or soup.find("main")
-            paragraphs = article.find_all("p") if article else soup.find_all("p")
-            text_content = "\n".join([p.get_text() for p in paragraphs if p.get_text().strip()])
-            return text_content if text_content else "No readable content found."
+
+            # Remove irrelevant tags
+            for tag in soup(["script", "style", "header", "footer", "nav", "form", "noscript"]):
+                tag.decompose()
+
+            # Use visible text only
+            texts = soup.find_all(string=True)
+            visible_texts = filter(is_visible, texts)
+            visible_lines = [t.strip() for t in visible_texts if t.strip()]
+
+            # De-duplicate and filter short/irrelevant lines
+            seen = set()
+            filtered = []
+            for line in visible_lines:
+                if line not in seen and len(line) > 30:
+                    seen.add(line)
+                    filtered.append(line)
+
+            return "\n".join(filtered[:30]) if filtered else "No readable content found."
+
         except Exception as e:
-            return f"Error fetching {url}: {e}"
+            return f"Error scraping {url}: {e}"
         
 
     def summarize_findings(search_results):
@@ -45,7 +72,10 @@ def web_search(search_terms, original_user_query, prompts, llm):
 
     logger.info("Called Tool: Web Search")
     final_searches = []
-    urls = get_ddg_search_results(search_terms)
+    try:
+        urls = get_ddg_search_results(search_terms)
+    except:
+        urls = get_google_search_results(search_terms)
     if not urls:
         print("No valid URLs found.")
         return "Error: No valod URLs were found during search"
