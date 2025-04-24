@@ -19,8 +19,8 @@ def main():
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
     default_chat = ChatMistralAI(
-        #model="open-mistral-7b",
-        model="mistral-large-latest",
+        model="open-mistral-7b",
+        #model="mistral-large-latest",
         api_key=MISTRAL_API_KEY
     )
     cheap_chat = ChatGoogleGenerativeAI(
@@ -46,6 +46,9 @@ def main():
         relevant_past_conversations = db.search(query, source="conversation")
         #prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
         react_task_desc = get_react_task_desc(relevant_user_info, relevant_past_conversations, conversation, available_tools, query, default_chat, system_prompts)
+        ############
+        ####Queda por hacer, cambiar la prompt de task desc para que sea mucho mas
+        # corto lo que anada y solo si hay algo de contexto importante, si no no.
         answer = ReAct_process(query, react_task_desc, system_prompts, default_chat, cheap_chat)
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         logger.info("Final answer generated.")

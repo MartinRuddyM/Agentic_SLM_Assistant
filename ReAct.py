@@ -18,11 +18,13 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         tools = {
             "Web Search": {
                 "func": web_search_wrapper,
-                "description": prompts["web_search_tool_description"]
+                "description": prompts["web_search_tool_description"],
+                "normalized_name": re.sub(r'[\\W_]+', '', "Web Search".lower())
             },
             "Run Code": {
                 "func": run_code_wrapper,
-                "description": prompts["code_tool_description"]
+                "description": prompts["code_tool_description"],
+                "normalized_name": re.sub(r'[\\W_]+', '', "Run Code".lower())
             }
         }
         return tools
@@ -42,6 +44,111 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         }
         print(prompts["react_step_by_step"].format(**values))
         return prompts["react_step_by_step"].format(**values)
+
+
+    def parser(output:str):
+        token_pattern = (
+            r"question"
+            r"|thought"
+            r"|action[\s_]*input"
+            r"|action"
+            r"|observation"
+            r"|final[\s_]*answer"
+        )
+
+        pattern = rf"(?i)\b({token_pattern})\b\s*:\s*(.*?)\s*(?=\b(?:{token_pattern})\b\s*:|\Z)"
+        matches = re.findall(pattern, output, re.DOTALL)
+
+        if not matches:
+            return []
+
+        steps = []
+        for label, content in matches:
+            normalized_label = re.sub(r'[\W_]+', '', label.lower())  # normalize e.g. Action Input → actioninput
+            if normalized_label != "question":
+                steps.append((normalized_label, content.strip()))
+        return steps
+
+
+    def decision_logic(steps, tool_names):
+        answer = {
+            "type": None,
+            "content": None,
+            "agent_scratchpad": None,
+            }
+        normalized_tool_names = [re.sub(r'[\W_]+', '', t.lower()) for t in tool_names]
+
+        for i, (label, content) in enumerate(steps):
+            if label == "action" and re.sub(r'[\W_]+', '', content.lower()) in normalized_tool_names:
+                tool_call = re.sub(r'[\W_]+', '', content.lower())
+
+                if i + 1 < len(steps) and steps[i + 1][0] == "actioninput":
+                    input_value = steps[i + 1][1]
+                    return {
+                        "type": "tool_call",
+                        "tool": tool_call,
+                        "input": input_value,
+                        "agent_scratchpad": steps[:i+1]
+                    }
+                else:
+                    return {
+                        "type": "error",
+                        "content": f"Expected 'Action Input' immediately after action '{content}', but not found.",
+                    }
+
+        # No valid action, look for final answer
+        for label, content in steps:
+            if label == "finalanswer":
+                return {
+                    "type": "final_answer",
+                    "content": content,
+                }
+
+        return {
+            "type": "error",
+            "content": 'No valid action or final answer found in the steps. Make sure your steps follow the available tools or provide a clear "Final answer"',
+        }
+    
+
+    logger.info(f"Starting ReAct process with max {max_iter} iterations.")
+    tools = set_up_tools()
+    agent_scratchpad = ""
+    tool_names = list(tools.keys())
+
+    for iteration in range(max_iter):
+        logger.info(f"\033[92mReAct step {iteration+1}\033[0m")
+        react_prompt = build_react_prompt(agent_scratchpad, tools)
+        output = cheap_llm.invoke(react_prompt).content
+        parsed_steps = parser(output)
+        decision = decision_logic(parsed_steps, tool_names)
+        if decision["type"] == "error":
+            agent_scratchpad += decision["content"]
+        elif decision["type"] == "final_asnwer":
+            return decision["content"]
+        elif decision["type"] == "tool_call" and iteration + 1 < max_iter:
+            tool_name_normalized = decision["tool"]
+            input_value = decision["input"]
+            tool = next((t for t in tools.values() if t["normalized_name"] == tool_name_normalized), None)
+            if not tool:
+                agent_scratchpad += f"Error: Tool '{tool_name_normalized}' not found.\n"
+                continue
+            result = tool["func"](input_value) # Call the tool
+            # Ahora mismo no utiliza la info de agent scratchpad que pueda devolver el parser
+            # (el modelo a veces inventa steps adicionales de razonamiento)
+            # Solo se anade actualmente la llamada a la tool y su resultado
+            agent_scratchpad += (
+                f"Action: {tool_name_normalized}\n"
+                f"Action Input: {input_value}\n"
+                f"Observation: {result}\n"
+            )
+
+    return "Failed to reach a final answer after maximum iterations."
+                
+
+
+
+
+
 
 
     def parse_react_output(output: str, tool_names: list):
