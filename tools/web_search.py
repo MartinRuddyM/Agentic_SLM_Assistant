@@ -73,9 +73,9 @@ def web_search(search_terms, original_user_query, prompts, llm):
     logger.info("Called Tool: Web Search")
     final_searches = []
     try:
-        urls = get_ddg_search_results(search_terms)
-    except:
         urls = get_google_search_results(search_terms)
+    except:
+        urls = get_ddg_search_results(search_terms)
     if not urls:
         print("No valid URLs found.")
         return "Error: No valod URLs were found during search"
