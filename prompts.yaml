@@ -366,13 +366,13 @@ react_prompt: |
 
 
 react_step_by_step: |
-  The original question:
+  The original user question:
 
   {input}
 
-  This is the task guidelines:
+  This is some basic user context to help you:
 
-  {task_description}
+  {user_context}
 
   You have access to these tools:
 
@@ -394,9 +394,6 @@ react_step_by_step: |
   Question: {input}  
   {agent_scratchpad}
 
-
-react_get_task_description: >
-  .
 
 
 react_get_task_description_1: >
@@ -447,3 +444,37 @@ react_get_task_description_1: >
   STEP BY STEP INSTRUCTIONS:
 
 
+react_get_user_context: >
+
+  You are part of our company of experts who answer queries. Another better expert will
+  soon work on the following query:
+
+
+  {query}
+
+
+  Your job is to help this other expert by looking at the KEY information below about the user
+  and helping to identify if something is VERY IMPORTANT to answer the query. If so, you should
+  write at most 2 TWO LINES with all the needed information to give better context to the
+  expert.
+  For example, you might find relevant for a query about how to install a software the fact
+  that the user has Windows 64. Or, if asking about a food recipe, it would be relevant info if
+  the available info says the user is allergic to something.
+
+
+  Now look at the available info from the user and their past conversations. USER INFO:
+
+
+  {user_info}
+
+
+  PAST USER CONVERSATIONS:
+
+
+  {past_conversations}
+
+
+  Now write AT MAXIMUM 2 LINES stating the most relevant info to answer the query. Keep it only to the
+  most important. If nothing important, write "No relevant info.".
+
+  2 LINES SUMMARY OF KEY INFO:

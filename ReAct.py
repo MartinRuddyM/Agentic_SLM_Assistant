@@ -6,7 +6,7 @@ from typing import List
 
 logger = get_logger(__name__)
 
-def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, cheap_llm, max_iter=3):
+def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm, cheap_llm, max_iter=3):
     
     def set_up_tools():
         def run_code_wrapper(task_desc):
@@ -36,7 +36,7 @@ def ReAct_process(query:str, react_task_desc:str, prompts:List[str], good_llm, c
         )
         tool_names = ", ".join(tools.keys())
         values = {
-            "task_description":react_task_desc,
+            "user_context":basic_user_context,
             "tool_descriptions":tool_descriptions,
             "tool_names":tool_names,
             "input":query,

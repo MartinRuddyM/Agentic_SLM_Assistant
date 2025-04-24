@@ -138,7 +138,8 @@ def extract_user_statements(text: str) -> list[str]:
     return sorted(method3) if method3 else []
     
 
-def get_react_task_desc(relevant_user_info:str, past_conversations_summaries, conversation, tool_names, query:str, llm, prompts):
+def get_react_task_desc(relevant_user_info, past_conversations_summaries, conversation, tool_names, query:str, llm, prompts):
+    #### NO SE USA. TODO Not in use
     conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
     conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
     user_info = "\n".join(text[0] for text in relevant_user_info)
@@ -151,4 +152,17 @@ def get_react_task_desc(relevant_user_info:str, past_conversations_summaries, co
         "relevant_conversations":conversation_summaries,
     }
     final_prompt = prompts["react_get_task_description"].format(**values)
+    return llm.invoke(final_prompt).content
+
+
+def get_react_user_context(relevant_user_info:str, past_conversations_summaries, query:str, llm, prompts):
+    conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
+    conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
+    user_info = "\n".join(text[0] for text in relevant_user_info)
+    values = {
+        "query": query,
+        "past_conversations":conversation_summaries,
+        "user_info":user_info,
+    }
+    final_prompt = prompts["react_get_user_context"].format(**values)
     return llm.invoke(final_prompt).content
