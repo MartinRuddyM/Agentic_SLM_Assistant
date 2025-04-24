@@ -44,11 +44,7 @@ def main():
             break
         relevant_user_info = db.search(query, source="user_info", top_k=20)
         relevant_past_conversations = db.search(query, source="conversation")
-        #prompt = prepare_prompt(conversation, relevant_user_info, query, system_prompts)
         react_user_context = get_react_user_context(relevant_user_info, relevant_past_conversations, query, cheap_chat, system_prompts)
-        ############
-        ####Queda por hacer, cambiar la prompt de task desc para que sea mucho mas
-        # corto lo que anada y solo si hay algo de contexto importante, si no no.
         answer = ReAct_process(query, react_user_context, system_prompts, default_chat, cheap_chat)
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         logger.info("Final answer generated.")
