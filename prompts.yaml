@@ -153,8 +153,7 @@ personalize_final_asnwer: >
   Your should make the user feel welcome and have a personalized experience. You should make them feel
   like we know them personally. Your task is to rewrite the system's answer by adding references to
   the contextual USER INFO we have as well as to previous conversations, if you deem it necessary.
-  The goal is to make them feel like we remember about their past queries and make them feel like we
-  know them.
+  The goal is to make them feel like we remember about their past queries (if relevant to this one).
 
   You should try to put some reference at the beginning to the user info, and some at the end. In the
   middle of the answer, you can insert references to previous conversations. Do not modify the previous
@@ -188,7 +187,7 @@ personalize_final_asnwer: >
 
 
   Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
-  Remember to use second person tenses.
+  Remember to use second person tenses. Do not make it too formal or weird sounding, just casual.
 
   Personalized answer:
 
