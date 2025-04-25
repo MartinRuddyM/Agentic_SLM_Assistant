@@ -23,6 +23,15 @@ def run_code(query, llm, prompts, max_retries=3):
         return llm.invoke(final_prompt).content
 
     def extract_code(text):
+        # Recortar si el codigo contiene la palabra "output" ya que el LLM
+        # tiende a poner un ejemplo de como sera el output pero eso
+        # no tiene codigo y da error, es mejor borrarlo
+        if text.count("```") >= 2:
+            first = text.find("```")
+            second = text.find("```", first + 3)
+            output_index = text.find("output", second + 3)
+            if output_index != -1:
+                text = text[:output_index]
         print(text)
         matches = re.findall(r'```(?:python)?(.*?)```', text, re.DOTALL)
         return "\n\n".join(match.strip() for match in matches) if matches else None
@@ -44,6 +53,7 @@ def run_code(query, llm, prompts, max_retries=3):
         logger.info("Generating code")
         raw_code = generate_code(query)
         code = extract_code(raw_code)
+        print("\033[35m" +  "CODE to be RUN\n" + code + "\033[0m")
         if code:
             ok, output = execute_code(code)
             if ok:
