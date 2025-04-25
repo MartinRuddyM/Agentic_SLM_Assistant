@@ -143,21 +143,6 @@ class EmbeddingDB:
         return [row[0] for row in rows] if rows else []
 
 
-def prepare_prompt(conversation, relevant_user_info, query, prompts):
-    ## TODO this function is not in use anymore
-    """Given relevant contextual user info and past conversations, prepare the prompt
-    to be fed into ReAct."""
-    summary_last_messages = conversation.get_last_n_summaries(n=5)
-    user_info = "\n".join(text[0] for text in relevant_user_info)
-    values = {
-        "query":query,
-        "past_messages":summary_last_messages,
-        "user_info":user_info,
-    }
-    final_prompt = prompts["feed_to_react"].format(**values)
-    return final_prompt
-
-
 if __name__ == "__main__":
     db = EmbeddingDB(db_path="db/user_data.db", faiss_conversation_path="db/faiss_conversations.index", faiss_user_info_path="db/faiss_user_info.index")
     info = db.get_all_user_information()
