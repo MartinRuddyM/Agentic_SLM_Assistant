@@ -127,7 +127,8 @@ personalize_final_asnwer: >
 
   You should try to put some reference at the beginning to the user info, and some at the end. In the
   middle of the answer, you can insert references to previous conversations. Do not modify the previous
-  answer's meaning or examples, just change a bit the format to add personalization into it.
+  answer's meaning or examples, just change a bit the format to add personalization into it. USE SECOND
+  PERSON to talk to the user.
   Also at the end add one sentence of suggestions of how to help next.
 
   This is the personal user info:
@@ -156,6 +157,7 @@ personalize_final_asnwer: >
 
 
   Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
+  Remember to use second person tenses.
 
   Personalized answer:
 
@@ -326,43 +328,21 @@ web_search_summarize_findings: >
 
   
   Given the search results below, summarize the findings of each of the results according
-  to the user query. Make a lengthy summary of each of the results by keeping all information
-  that could be related to the user query. Do not include information that is clearly irrelevant to
-  answer the query or the search terms. For the relevant information, keep all of it, and repect it
-  leave it as it is.
+  to the user query. Make a one-paragraph summary of each of the results by keeping all information
+  that could be related to the user query. If it can still be vaguely relevant, include it.
+  Only exclude info if it is TOTALLY irrelevant. If in doub, include it.
+  For the relevant information, keep all of it, and respect it as it is.
 
   SEARCH RESULTS:
 
   {search_results}
 
 
-  YOUR LENGTHY SUMMARY OF IMPORTANT INFORMATION:
+  YOUR ONE-PARAGRAPH SUMMARIES OF IMPORTANT INFORMATION:
 
 
 web_search_tool_error: >
   No valid search results were found. Some error happened in search tool.
-
-
-react_prompt: |
-  Answer the following questions as best you can. You have access to the following tools:
-
-  {tool_descriptions}
-
-  Use the following format:
-
-  Question: the input question you must answer  
-  Thought: you should always think about what to do  
-  Action: the action to take, should be one of [{tool_names}]  
-  Action Input: the input to the action  
-  Observation: the result of the action  
-  ... (this Thought/Action/Action Input/Observation can repeat N times)  
-  Thought: I now know the final answer  
-  Final Answer: the final answer to the original input question
-
-  Begin!
-
-  Question: {input}  
-  {agent_scratchpad}
 
 
 react_step_by_step: |
@@ -370,7 +350,7 @@ react_step_by_step: |
 
   {input}
 
-  This is some basic user context to help you:
+  Some task guidelines you should follow:
 
   {user_context}
 
@@ -378,9 +358,9 @@ react_step_by_step: |
 
   {tool_descriptions}
 
-  Use the following format:
+  We are using this format:
 
-  Question: the input question you must answer  
+  Question: the input question you must answer.
   Thought: you should always think about what to do  
   Action: the action to take, should be one of [{tool_names}]  
   Action Input: the input to the action  
@@ -389,12 +369,51 @@ react_step_by_step: |
   Thought: I now know the final answer  
   Final Answer: the final answer to the original input question. Make it long enough but not too much.
 
+  When using this format, DO NOT REWRITE ANYTHING ABOVE. ONLY WRITE THE TRULY NEW STEPS.
+
   Begin!
 
   Question: {input}  
   {agent_scratchpad}
-  DO NOT REPEAT - WRITE STEPS YOU ALREADY DID!
+  DO NOT REPEAT-WRITE STEPS ALREADY DONE!
+  ONLY WRITE TRULY NEW STEPS. DO NOT RE-WRITE STEPS OR RE-CALL ACTIONS. TRY TO
+  GIVE THE FINAL ANSWER AS SOON AS READY WITHOUT NAMING ANY MORE ACTION
 
+
+react_get_task_description: >
+  You are part of our company of experts answering user queries. A teammate of you is going
+  to answer the following query:
+
+  {query}
+
+
+  They don't know any more context. Below is some KEY user context, summaries of past conversations the same
+  user had, and most importantly, the immediately prvious questions the user asked in their conversation.
+  You should look at all this info and provide a 4 FOUR LINES MAXIMUM summarized but coherent KEY CONTEXT
+  that your teammate will need to answer the question.
+
+  For example, if the user query makes reference to something that happened before in the conversation,
+  you MUST include what it is so your teammate knows. Also, if the user asks something related to some
+  previous conversation then include that so your teammate can better tailor the answer.
+
+  Relevant user information (if any):
+
+  {user_info}
+
+
+  Relevant past conversations (if any):
+
+  {past_conversations}
+
+
+  Previous Q&As from this conversation (if any):
+
+  {previous_messages}
+
+
+  Now write the relevant context. If nothing relevant, write "No relevant context."
+
+  SHORT (4 LINES MAX) RELEVANT CONTEXT:
 
 
 react_get_task_description_1: >

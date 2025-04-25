@@ -44,11 +44,12 @@ def main():
             break
         relevant_user_info = db.search(query, source="user_info", top_k=20)
         relevant_past_conversations = db.search(query, source="conversation")
-        react_user_context = get_react_user_context(relevant_user_info, relevant_past_conversations, query, cheap_chat, system_prompts)
-        answer = ReAct_process(query, react_user_context, system_prompts, default_chat, cheap_chat)
+        #react_user_context = get_react_user_context(relevant_user_info, relevant_past_conversations, query, cheap_chat, system_prompts)
+        react_task_desc = get_react_task_desc(relevant_user_info, relevant_past_conversations, conversation, query, cheap_chat, system_prompts)
+        answer = ReAct_process(query, react_task_desc, system_prompts, default_chat, cheap_chat)
         final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, conversation, default_chat, system_prompts)
         logger.info("Final answer generated.")
-        print(final_answer)
+        print("\033[33m" + "FINAL ANSWER\n" + final_answer + "\033[0m")
         conversation.add_interaction(query, final_answer)
 
     if len(conversation.history) > 0:

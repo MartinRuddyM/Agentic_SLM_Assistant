@@ -6,7 +6,7 @@ from typing import List
 
 logger = get_logger(__name__)
 
-def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm, cheap_llm, max_iter=3):
+def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm, cheap_llm, max_iter=5):
     
     def set_up_tools():
         def run_code_wrapper(task_desc):
@@ -19,12 +19,12 @@ def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm
             "Web Search": {
                 "func": web_search_wrapper,
                 "description": prompts["web_search_tool_description"],
-                "normalized_name": re.sub(r'[\\W_]+', '', "Web Search".lower())
+                "normalized_name": re.sub(r'[\W_]+', '', "Web Search".lower())
             },
             "Run Code": {
                 "func": run_code_wrapper,
                 "description": prompts["code_tool_description"],
-                "normalized_name": re.sub(r'[\\W_]+', '', "Run Code".lower())
+                "normalized_name": re.sub(r'[\W_]+', '', "Run Code".lower())
             }
         }
         return tools
@@ -42,8 +42,9 @@ def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm
             "input":query,
             "agent_scratchpad":agent_scratchpad,
         }
-        print(prompts["react_step_by_step"].format(**values))
-        return prompts["react_step_by_step"].format(**values)
+        final_prompt = prompts["react_step_by_step"].format(**values)
+        print("\033[94m" + final_prompt + "\033[0m")
+        return final_prompt
 
 
     def parser(output:str):
@@ -70,17 +71,16 @@ def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm
         return steps
 
 
-    def decision_logic(steps, tool_names):
-        answer = {
-            "type": None,
-            "content": None,
-            "agent_scratchpad": None,
-            }
+    def decision_logic(steps, tool_names, taken_decisions):
         normalized_tool_names = [re.sub(r'[\W_]+', '', t.lower()) for t in tool_names]
-
         for i, (label, content) in enumerate(steps):
-            if label == "action" and re.sub(r'[\W_]+', '', content.lower()) in normalized_tool_names:
+            if label == "action":
                 tool_call = re.sub(r'[\W_]+', '', content.lower())
+                if tool_call not in normalized_tool_names:
+                    continue
+                # Avoid calling same tool 3 times in a row
+                if len(taken_decisions) >= 2 and all(t[1] == tool_call for t in taken_decisions[-2:]):
+                    continue
 
                 if i + 1 < len(steps) and steps[i + 1][0] == "actioninput":
                     input_value = steps[i + 1][1]
@@ -114,19 +114,23 @@ def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm
     tools = set_up_tools()
     agent_scratchpad = ""
     tool_names = list(tools.keys())
+    taken_decisions = []
 
     for iteration in range(max_iter):
         logger.info(f"\033[92mReAct step {iteration+1}\033[0m")
         react_prompt = build_react_prompt(agent_scratchpad, tools)
-        output = cheap_llm.invoke(react_prompt).content
+        output = good_llm.invoke(react_prompt).content
+        print("\033[31m" +  "MODEL OUTPUT\n" + output + "\033[0m")
         parsed_steps = parser(output)
-        decision = decision_logic(parsed_steps, tool_names)
+        decision = decision_logic(parsed_steps, tool_names, taken_decisions)
         if decision["type"] == "error":
+            taken_decisions.append(("error", None))
             agent_scratchpad += decision["content"]
-        elif decision["type"] == "final_asnwer":
+        elif decision["type"] == "final_answer":
             return decision["content"]
         elif decision["type"] == "tool_call" and iteration + 1 < max_iter:
             tool_name_normalized = decision["tool"]
+            taken_decisions.append(("action", tool_name_normalized))
             input_value = decision["input"]
             tool = next((t for t in tools.values() if t["normalized_name"] == tool_name_normalized), None)
             if not tool:
