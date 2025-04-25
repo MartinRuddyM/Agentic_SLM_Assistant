@@ -6,7 +6,7 @@ from googlesearch import search
 
 logger = get_logger(__name__)
 
-def web_search(search_terms, original_user_query, prompts, llm):
+def web_search(search_terms:str, original_user_query, prompts, llm):
     def get_ddg_search_results(query, max_results=5):
         urls = []
         try:
@@ -71,6 +71,8 @@ def web_search(search_terms, original_user_query, prompts, llm):
     
 
     logger.info("Called Tool: Web Search")
+    search_terms = search_terms.replace('"', '') # Quitar comillas para no forzar una busqueda especifica
+    # Ya que los buscadores suelen forzar un match exacto al usar comillas
     final_searches = []
     try:
         urls = get_google_search_results(search_terms)
