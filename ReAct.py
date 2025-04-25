@@ -127,7 +127,7 @@ def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm
             taken_decisions.append(("error", None))
             agent_scratchpad += decision["content"]
         elif decision["type"] == "final_answer":
-            return decision["content"]
+            return decision["content"], agent_scratchpad
         elif decision["type"] == "tool_call" and iteration + 1 < max_iter:
             tool_name_normalized = decision["tool"]
             taken_decisions.append(("action", tool_name_normalized))
@@ -146,7 +146,7 @@ def ReAct_process(query:str, basic_user_context:str, prompts:List[str], good_llm
                 f"Observation: {result}\n"
             )
 
-    return "Failed to reach a final answer after maximum iterations."
+    return "Failed to reach a final answer after maximum iterations.", None
                 
 
 

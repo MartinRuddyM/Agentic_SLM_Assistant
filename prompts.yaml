@@ -17,6 +17,37 @@ interaction_summary: >
   ONE-PARAGRAPH SHORT SUMMARY:
 
 
+interaction_summary_with_reasoning: >
+  A Q&A conversation between the user and an expert is taking place.
+  Below is the last Question and its corresponding expert answer.
+  Also, the ReAct steps reasoning for the answer is provided.
+
+  Task:
+
+  Create a SHORT **one-paragraph** summary of what the Q&A interaction was about.
+  Include within the paragraph all relevant technical keywords, 
+  and keep a mention of all important things related to the user context and situation.
+  Do not mention the fact that you are making a summary. ONLY write the summary itself.
+
+  After the summary itself, append (add, write) as a copy ALL THE SPECIFIC DATA and 
+  textual information that was used to get to the answer, if any.
+
+  For example, in case the answer was achieved researching some numbers and getting to a
+  list and making python code, you MUST write a copy of the list of data, and write the
+  python code used (final version is enough). Another example, if the user asked about 
+  different famous writers, write exactly ALL AUTHORS that were discussed and their books, etc.
+
+  All this information MUST BE TOTALLY RE-WRITTEN for archive purposes so WRITE IT ALL as it is
+  and do not make any shortenings.
+
+  Question & Answer to summarize, and Reasoning:
+
+  {interaction}
+
+
+  ONE-PARAGRAPH SHORT SUMMARY (plus Annex of source data and code & things used):
+
+
 last_n_summary: >
   There was a Q&A conversation between a user and an expert. 
   Given these questions and answers found in the conversation, 
@@ -295,6 +326,8 @@ code_task_description: >
 
   {task_description}
 
+  If the task is just python code, then REWRITE THE EXACT SMAE CODE AND KEEP IT AS IT IS.
+
   Your python code:
 
 code_tool_error: >
@@ -339,7 +372,13 @@ web_search_summarize_findings: >
   {search_results}
 
 
-  YOUR ONE-PARAGRAPH SUMMARIES OF IMPORTANT INFORMATION:
+  REMEMBER, don't just make a description of the sources, rather, WRITE ALL IMPORTANT
+  INFORMATION IN THEM FOR THE QUERY.
+  You must write all the information that is needed for the query. Only the information
+  that you actually write can be used!!
+  Write the information even if a bit inconsistent. Just write the information, dont
+  add notes and judgements.
+  IMPORTANT INFORMATION:
 
 
 web_search_tool_error: >
@@ -397,6 +436,9 @@ react_get_task_description: >
   you MUST include what it is so your teammate knows. Also, if the user asks something related to some
   previous conversation then include that so your teammate can better tailor the answer.
 
+  MAKE SURE TO INCLUDE ALL SPECIFIC DATA THAT THE USER IS REFERENCING FROM PREVIOUS ANSWERS.
+  If it is referenced, you must re-write it all exactly! Only thingss you re-write can be used!
+
   Relevant user information (if any):
 
   {user_info}
@@ -413,8 +455,13 @@ react_get_task_description: >
 
 
   Now write the relevant context. If nothing relevant, write "No relevant context."
+  Include the specific data or previous answer context that is needed to answer
+  the query (for this case you can exceed the max length).
+  EXPLICITLY INCLUDE ALL NECESSARY DATA AND PREVIOUS ANSWER REFERENCES. DO NOT SHORTEN IT.
+  INCLUDE ALL PREVIOUS INFO THAT IS NEEDED FOR REFERENCE.
+  Make sure to include what the previous messages were about so the conversation can flow smooth.
 
-  SHORT (4 LINES MAX) RELEVANT CONTEXT:
+  RELEVANT CONTEXT:
 
 
 react_get_task_description_1: >

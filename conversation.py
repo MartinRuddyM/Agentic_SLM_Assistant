@@ -17,16 +17,16 @@ class Conversation:
         print("Type exit to exit the conversation")
 
 
-    def add_interaction(self, question: str, answer: str):
+    def add_interaction(self, question: str, answer: str, reasoning: str):
         "Add new Interaction to the Conversation"
         new_interaction = Interaction(question, answer)
         self.history.append(new_interaction)
-        self._create_interaction_summary(new_interaction)
+        self._create_interaction_summary(new_interaction, reasoning)
 
 
-    def _create_interaction_summary(self, interaction):
+    def _create_interaction_summary(self, interaction, reasoning):
         "Creates a summary of the given interaction"
-        summary = interaction_summary(interaction, self.cheap_chat, self.prompts)
+        summary = interaction_summary(interaction, reasoning, self.cheap_chat, self.prompts)
         self.summaries.append(summary)
     
 
@@ -59,4 +59,5 @@ class Conversation:
             return ""
         limit = min(n, len(self.summaries))
         return "\n\n".join(self.summaries[-limit:])
+
 

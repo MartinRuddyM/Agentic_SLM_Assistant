@@ -6,14 +6,20 @@ import json
 from typing import Counter
 
 
-def interaction_summary(interaction:Interaction, llm, prompts):
-    """Provides summary of given interaction within the conversation"""
+def interaction_summary(interaction:Interaction, reasoning, llm, prompts):
+    """Provides summary of given interaction within the conversation
+    If a reasoning is provided, it tries to get the important
+    data also into the summary, so it can be used at later Questions"""
 
     interaction_text = f"Q: {interaction.question}\n\nA: {interaction.answer}"
     values = {
         "interaction":interaction_text,
     }
-    final_prompt = prompts["interaction_summary"].format(**values)
+    if reasoning:
+        interaction_text += f"\n\nReasoning: {reasoning}"
+        final_prompt = prompts["interaction_summary_with_reasoning"].format(**values)
+    else:
+        final_prompt = prompts["interaction_summary"].format(**values)
     return llm.invoke(final_prompt).content
 
 
