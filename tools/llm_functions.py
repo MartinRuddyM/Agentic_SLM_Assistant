@@ -46,6 +46,8 @@ def extract_permanent_user_information(all_user_prompts: List[str], llm, prompts
     final_prompt = prompts["extract_permanent_user_info"].format(**values)
     user_info_raw = llm.invoke(final_prompt).content
     user_info = extract_user_statements(user_info_raw)
+    print("EXTRACTED USER INFO")
+    print(user_info)
     return user_info
 
 
@@ -73,8 +75,8 @@ def personalize_final_answer(query:str, current_answer: str, user_information: L
 
 def contrast_user_information(existing_info: List[str], new_info: List[str], llm, prompts):
     values = {
-        "user_info":"\n".join(existing_info),
-        "conversation_summaries":"\n".join(new_info),
+        "original_statements":"\n".join(existing_info),
+        "new_statements":"\n".join(new_info),
     }
     final_prompt = prompts["contrast_user_information"].format(**values)
     user_info_raw = llm.invoke(final_prompt).content
