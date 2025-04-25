@@ -156,3 +156,12 @@ def prepare_prompt(conversation, relevant_user_info, query, prompts):
     }
     final_prompt = prompts["feed_to_react"].format(**values)
     return final_prompt
+
+
+if __name__ == "__main__":
+    db = EmbeddingDB(db_path="db/user_data.db", faiss_conversation_path="db/faiss_conversations.index", faiss_user_info_path="db/faiss_user_info.index")
+    info = db.get_all_user_information()
+    if info:
+        for data in info:
+            print(data)
+    db.close_db()

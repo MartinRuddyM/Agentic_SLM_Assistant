@@ -311,6 +311,8 @@ code_tool_description: >
 
   Write a description of the task to be done. An expert coder system will generate and run the code
   as per your description. Give a detailed description of the task to give them context.
+  If data is needed for the task, MAKE SURE TO INCLUDE IT IN YOUR DESCRIPTION.
+  The code tool only has access to what you input it.
   
   The output of the tool will be what the code can print(), so structure the task
   properly so it can be printed. The expert system will read your description, write code,
@@ -326,6 +328,8 @@ code_task_description: >
   {task_description}
 
   If the task is just python code, then REWRITE THE EXACT SMAE CODE AND KEEP IT AS IT IS.
+  DO NOT PROVIDE EXAMPLES OR MULTIPLE CASES. ONLY WRITE ONE SINGLE BLOCK OF CODE THAT
+  WILL ANSWER THE TASK. NO EXAMPLES OR CASES.
 
   Your python code:
 

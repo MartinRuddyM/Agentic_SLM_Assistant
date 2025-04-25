@@ -23,6 +23,9 @@ def run_code(query, llm, prompts, max_retries=3):
         return llm.invoke(final_prompt).content
 
     def extract_code(text):
+        """ Extracts the code excluding everything after 'output' word.
+        Tries to get all chunks, but also returns only the first chunk.
+        This is due to how the LLMs tend to structure code outputs"""
         # Recortar si el codigo contiene la palabra "output" ya que el LLM
         # tiende a poner un ejemplo de como sera el output pero eso
         # no tiene codigo y da error, es mejor borrarlo
@@ -34,28 +37,38 @@ def run_code(query, llm, prompts, max_retries=3):
                 text = text[:output_index]
         print(text)
         matches = re.findall(r'```(?:python)?(.*?)```', text, re.DOTALL)
-        return "\n\n".join(match.strip() for match in matches) if matches else None
+        return ("\n\n".join(match.strip() for match in matches), matches[0].strip()) if matches else (None, None)
 
-    def execute_code(code):
+
+    def execute_code(code, first_code_block):
         output_buffer = io.StringIO()
         try:
             with contextlib.redirect_stdout(output_buffer):
                 exec(code)
                 captured_output = output_buffer.getvalue()
-        except Exception as e:
-            #print(f"Execution failed: {e}")
-            return False, str(e)
-        return True, captured_output
+            return True, captured_output
+        except Exception as e1:
+            output_buffer = io.StringIO()  # Reset buffer
+            try:
+                with contextlib.redirect_stdout(output_buffer):
+                    exec(first_code_block)
+                    captured_output = output_buffer.getvalue()
+                return True, captured_output
+            except Exception as e2:
+                return False, f"Primary execution failed: {e1}\nFallback also failed: {e2}"
+        
     
     original_query = query
     retries = 0
     while retries < max_retries:
         logger.info("Generating code")
         raw_code = generate_code(query)
-        code = extract_code(raw_code)
+        code, first_code = extract_code(raw_code)
+        print("code")
+        print(code)
         print("\033[35m" +  "CODE to be RUN\n" + code + "\033[0m")
         if code:
-            ok, output = execute_code(code)
+            ok, output = execute_code(code, first_code)
             if ok:
                 logger.info("Code ran successfully, returning")
                 return "The output from the code was the following: " + output
