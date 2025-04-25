@@ -315,7 +315,7 @@ web_search_tool_description: >
 
 web_search_summarize_findings: >
   A web search has been performed and some results have appeared.
-  The original user query that we are trying to solve with this searchings is this:
+  The original user query that we are trying to solve:
 
   Original user query:
 
@@ -327,11 +327,12 @@ web_search_summarize_findings: >
   {search_terms}
 
   
-  Given the search results below, summarize the findings of each of the results according
-  to the user query. Make a one-paragraph summary of each of the results by keeping all information
-  that could be related to the user query. If it can still be vaguely relevant, include it.
-  Only exclude info if it is TOTALLY irrelevant. If in doub, include it.
-  For the relevant information, keep all of it, and respect it as it is.
+  Another teammate of you is going to answer the query based on what you provide them.
+  They will NOT have access to the web searches. For each of the findings, you must
+  write all the information in them that your colleague will need to answer the
+  query. Avoid non-necessary information. Try to summarize the infromation so they
+  can focus on the important and have all they need,
+  but WRITE ALL DETAILED DATA WHEN NECESSARY for the query.
 
   SEARCH RESULTS:
 
