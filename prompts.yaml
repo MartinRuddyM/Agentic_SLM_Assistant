@@ -133,7 +133,7 @@ extract_permanent_user_info: |
 
 
   Notice how unimportant tasks or intermediate steps are left behind. Focus only on the most important personal information about the user, which could be useful to help in another Q&A session.
-
+  Make your statements specific as to where, what, when, etc. NOT vague.
   Now search for the most important user details and list them in JSON format, if any.
 
   USER QUESTIONS:
@@ -142,9 +142,59 @@ extract_permanent_user_info: |
 
   KEY INFORMATION STATEMENTS IN JSON FORMAT:
   
-  
+
 
 personalize_final_asnwer: >
+  You are a marketing expert trying to make the customer happy with our Q&A system experience.
+  An expert system has written an answer to the user's question. Below you can find the user question,
+  the system's answer, and also some relevant contextual USER INFO and summaries of PREVIOUS CONVERSATIONS
+  that the system previously had with the same user, and also from this current conversation the
+  immediately previous messages.
+
+  Your task is to rewrite the Expert Answer and make sure it addresses the user (using the information
+  provided). If the topic is related, you can make a reference to a past conversation the user had with
+  us. Write in SECOND PERSON in a CASUAL tone, not sounding weird. Just like a common Q&A Chat system but
+  sounding more personalized. Make references to the user's information and integrate it into the answer
+  when necessary to make it better address the user. Otherwise, DO NOT MODIFY the content and meaning of
+  the answer. You can put the references (if any) at the end alongside a question reminding about the
+  info or past interaction and suggesting other ways to help (further questions). So either put it at
+  the end, at the beginning, in the middle, or nowehre at all(safe bet)!
+
+  Overall keep your additions SHORT! If the answer is per se short keep it also short!
+
+  This is the personal user info:
+
+  {user_info}
+
+
+  This is summaries from previous conversations:
+
+  {conversation_summaries}
+
+
+  This is a summary of the last Q&A interactions just before this query, for conversational context:
+  
+  {interactions_summary}
+
+
+  This is the original user query so you have context:
+
+  {query}
+
+
+  This is the expert Q&A answer:
+
+  {answer}
+
+
+  Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
+  Remember to use second person tenses. Do not make it too formal or weird sounding, just casual.
+  DO NOT ADD TOO MUCH, JUST A LITTLE BIT. Talk from "I" perspective.
+
+  Personalized answer:
+
+
+personalize_final_asnwer1: >
   You are a marketing expert trying to make the customer happy with our Q&A system experience.
   An expert system has written an answer to the user's question. Below you can find the user question,
   the system's answer, and also some relevant contextual USER INFO and summaries of PREVIOUS CONVERSATIONS
@@ -188,6 +238,7 @@ personalize_final_asnwer: >
 
   Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
   Remember to use second person tenses. Do not make it too formal or weird sounding, just casual.
+  DO NOT ADD TOO MUCH, JUST A LITTLE BIT. Talk from "I" perspective.
 
   Personalized answer:
 
@@ -217,11 +268,11 @@ contrast_user_information: |
   Andrew plays Minecraft on weekends.
 
   Truly new statements in JSON format:
-  {
+  {{
   "items": [
     "1. The user frequently attends to baasketball matches."
   ]
-  }
+  }}
 
   Example 2:
 
@@ -239,12 +290,12 @@ contrast_user_information: |
   She has coursework on graphic pencil design.
 
   Truly new statements in JSON format:
-  {
+  {{
   "items": [
     "1. The user studies in Beijing University.",
     "2. The user has coursework on graphic pencil design.",
   ]
-  }
+  }}
 
   Example 3:
 
@@ -258,10 +309,10 @@ contrast_user_information: |
   The user lives in Chile.
 
   Truly new statements in JSON format:
-  {
+  {{
   "items": [
   ]
-  }
+  }}
 
   Now provide the truly new statements for the user below.
 
