@@ -66,8 +66,8 @@ def run_code(query, llm, prompts, max_retries=3):
         code, first_code = extract_code(raw_code)
         print("code")
         print(code)
-        print("\033[35m" +  "CODE to be RUN\n" + code + "\033[0m")
         if code:
+            print("\033[35m" +  "CODE to be RUN\n" + code + "\033[0m")
             ok, output = execute_code(code, first_code)
             if ok:
                 logger.info("Code ran successfully, returning")
