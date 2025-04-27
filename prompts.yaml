@@ -1,3 +1,5 @@
+run_system: "python -m streamlit run app.py"
+
 interaction_summary: >
   A Q&A conversation between the user and an expert is taking place.
   Below is the last Question and its corresponding expert answer.
