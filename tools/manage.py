@@ -28,7 +28,7 @@ class EmbeddingDB:
         else:
             raise FileNotFoundError("Inconsistent state: some required DB files are missing while others are available")
         
-        self.conn = sqlite3.connect(self.db_path)
+        self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.faiss_conversations = faiss.read_index(self.faiss_conversation_path)
         self.faiss_user_info = faiss.read_index(self.faiss_user_info_path)
 
@@ -36,7 +36,7 @@ class EmbeddingDB:
     def _create_db_files(self):
         logger.info("DB not fouund. Creating DB files, this might take a while...")
         if not os.path.exists(self.db_path):
-            conn = sqlite3.connect(self.db_path)
+            conn = sqlite3.connect(self.db_path, check_same_thread=False)
             cursor = conn.cursor()
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS conversation (
