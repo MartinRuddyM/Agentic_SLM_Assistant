@@ -39,7 +39,7 @@ class AppContext:
             api_key=MISTRAL_API_KEY
         )
 
-        self.default_chat = chat4
+        self.default_chat = chat2
         self.cheap_chat = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
             google_api_key=GEMINI_API_KEY
