@@ -3,11 +3,10 @@ from tools.web_search import web_search
 from logger import get_logger
 import re
 from typing import List
-from conversation import Conversation
 
 logger = get_logger(__name__)
 
-def ReAct_process(query:str, basic_user_context:str, conversation:Conversation, prompts:List[str], good_llm, cheap_llm, max_iter=5):
+def ReAct_process(query:str, basic_user_context:str, user_info, prompts:List[str], good_llm, cheap_llm, max_iter=5):
     
     def set_up_tools():
         def run_code_wrapper(task_desc):
@@ -36,15 +35,11 @@ def ReAct_process(query:str, basic_user_context:str, conversation:Conversation, 
             f"{name}: {tool['description']}" for name, tool in tools.items()
         )
         tool_names = ", ".join(tools.keys())
-        last_question, last_answer = "", ""
-        if len(conversation.history) > 0:
-            last_question, last_answer = conversation.history[-1].question, conversation.history[-1].answer
         values = {
             "user_context":basic_user_context,
             "tool_descriptions":tool_descriptions,
             "tool_names":tool_names,
-            "last_question":last_question,
-            "last_answer":last_answer,
+            "user_info":user_info,
             "input":query,
             "agent_scratchpad":agent_scratchpad,
         }

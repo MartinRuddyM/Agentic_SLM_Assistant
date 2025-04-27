@@ -67,12 +67,9 @@ class AppContext:
         relevant_user_info = self.db.search(query, source="user_info", top_k=20)
         relevant_past_conversations = self.db.search(query, source="conversation")
 
-        react_task_desc = get_react_task_desc(
-            relevant_user_info, relevant_past_conversations, self.conversation,
-            query, self.cheap_chat, self.system_prompts
-        )
-        answer, reasoning = ReAct_process(query, react_task_desc, self.conversation, self.system_prompts, self.default_chat, self.cheap_chat)
-        final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, self.conversation, self.default_chat, self.system_prompts)
+        react_task_desc = get_react_task_desc(relevant_user_info, relevant_past_conversations, self.conversation, query, self.cheap_chat, self.system_prompts)
+        answer, reasoning = ReAct_process(query, react_task_desc, relevant_user_info, self.system_prompts, self.default_chat, self.cheap_chat)
+        final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, self.conversation, self.cheap_chat, self.system_prompts)
 
         self.conversation.add_interaction(query, final_answer, reasoning)
         logger.info("Final answer generated.")

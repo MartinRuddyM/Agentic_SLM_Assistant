@@ -4,6 +4,7 @@ from datetime import datetime
 import re
 import json
 from typing import Counter
+import random
 
 
 def interaction_summary(interaction:Interaction, reasoning, llm, prompts):
@@ -51,25 +52,34 @@ def extract_permanent_user_information(all_user_prompts: List[str], llm, prompts
     return user_info
 
 
-def personalize_final_answer(query:str, current_answer: str, user_information: List[str], past_conversations_summaries, conversation, llm, prompts):
+def personalize_final_answer(query:str, current_answer: str, user_information: List[str], past_conversations_summaries, conversation, llm, prompts, reference_rate: float=0.2):
     """Given past history of interactions and personal user information,
     adapts the final answer to make reference to past conversations and user info.
-    This is to try to give it a more personalized appearance"""
+    This is to try to give it a more personalized appearance.
+    It will include references to previous conversations at a random rate.
+    Keeping this rate low ensures the user does not get bombarded with unsolicited suggestions."""
 
     if len(user_information) == 0 or not past_conversations_summaries:
         return current_answer
-
-    conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
-    conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
-    user_info = "\n".join([text for (text,) in user_information])
-    values = {
-        "user_info":user_info,
-        "conversation_summaries":conversation_summaries,
-        "interactions_summary":conversation.get_last_n_summaries(n=5),
-        "query":query,
-        "answer":current_answer
-    }
-    final_prompt = prompts["personalize_final_asnwer"].format(**values)
+    if random.random() < reference_rate:
+        conversation_summaries = [(summary, datetime.fromisoformat(date).strftime("%d %B")) for summary, date in past_conversations_summaries]
+        #conversation_summaries = "\n\n".join(f"{date}\n{summary}" for summary, date in conversation_summaries)
+        #user_info = "\n".join([text for (text,) in user_information])
+        values = {
+            "user_info":user_information,
+            "conversation_summaries":conversation_summaries,
+            "interactions_summary":conversation.get_last_n_summaries(n=5),
+            "query":query,
+            "answer":current_answer
+        }
+        final_prompt = prompts["personalize_final_asnwer"].format(**values)
+    else:
+        values = {
+            "interactions_summary":conversation.get_last_n_summaries(n=5),
+            "query":query,
+            "answer":current_answer
+        }
+        final_prompt = prompts["personalize_final_asnwer_simplified"].format(**values)
     return llm.invoke(final_prompt).content
 
 

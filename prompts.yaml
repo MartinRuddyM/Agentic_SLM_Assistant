@@ -137,6 +137,7 @@ extract_permanent_user_info: |
   Notice how unimportant tasks or intermediate steps are left behind. Focus only on the most important personal information about the user, which could be useful to help in another Q&A session.
   Make your statements specific as to where, what, when, etc. NOT vague.
   Now search for the most important user details and list them in JSON format, if any.
+  BASE YOUR ANSWER ONLY ON THE INFORMATION PROVIDED. DO NOT MAKE ANYTHING UP.
 
   USER QUESTIONS:
 
@@ -148,7 +149,26 @@ extract_permanent_user_info: |
 personalize_final_asnwer_simplified: >
   An expert Q&A system has answered the following query:
 
-  {query}
+  Query: {query}
+
+  Answer: {answer}
+
+  Just previously in the conversation, these Questions and Answers happened:
+
+  {interactions_summary}
+
+  Rewrite the Answer KEEPING ALL INFO AND MEANING THE SAME. Use the tone "I"
+  and talk to the user of "You". KEEP ALL INFORMATION THE SAME you should only change the
+  tone of the answer. At the end, add a VERY BRIEF suggestion of how you can
+  help next regarding the Query. Rewrite it now.
+
+  Rewritten Answer changing the tone: (answer directly as if talking to the user, do not mention your task)
+
+
+
+
+
+
 
 
 personalize_final_asnwer: >
@@ -172,19 +192,19 @@ personalize_final_asnwer: >
 
   Rewrite the system answer below KEEPING ALL INFO AND MEANING THE SAME. Use the tone "I"
   and talk to the user of "You".
-  BY FAR the most important is to keep the conversation flowing logically so really focus
-  on the last Q&A interactions given so your answer makes conversational sense.
+  KEEP THE CONVERSATION FLOWING LOGICALLY given the last Q&A interactions so
+  the answer makes conversational sense.
   Additionally, ONLY IF YOU FIND some VERY RELEANT and similar thing in the user info or
-  context, you can make a reference to it somewhere in your answer, so the uer feels
+  context, you can make a reference to it somewhere in your answer, so the user feels
   like we remember about him. SKIP THIS by default and ONLY add something if there
   REALLY is something really matching. At the end, make suggestions regarding what to help with next
   with regards to the Question and Answer the user is just getting.
   
   Here is the system answer to rewrite:
 
-  {answer}
+  Answer: {answer}
 
-  Now your rewritten answer: (answer directly as if talking to the user, do not mention your task)
+  Now your Rewritten Answer: (answer directly as if talking to the user, do not mention your task)
 
 
 personalize_final_asnwer1: >
@@ -406,21 +426,19 @@ web_search_tool_error: >
 react_step_by_step: |
   The original user question:
 
-  {input}
+  Question: {input}
 
-  Some context you can use to guide your answer:
+  Use this task context to guide your answer:
 
-  {user_context}
+  Task context: {user_context}
+
+  Additionally to the task context, here is some information of the user which might be relevant:
+
+  User info: {user_info}
 
   You have access to these tools:
 
   {tool_descriptions}
-
-  The last question and answer the user had (this is CRITICALLY IMPORTANT. If they reference something it is likely this):
-
-  {last_question}
-
-  {last_answer}
 
   We are using this format:
 
@@ -441,6 +459,32 @@ react_step_by_step: |
 
 
 react_get_task_description: >
+  Within an ongoing conversation, a user asked this query:
+
+  Query: {query}
+
+  Just previously in the conversation, these Questions and Answers happened:
+
+  {previous_messages}
+
+  An expert is going to answer the query, but they don't know anything about these previous messages.
+  Make a Contextual Summary of where the previous conversation was heading, especially
+  regarding everything that is relevant to answer the Query. Include all data that is necessary to answer
+  the Query by copying it fully and without shortening. Disregard unimportant things to the Query.
+  Think and try to guide the answer of the expert to the Query based on the contextual information.
+  Assume that if the query refers to something, it is refering to something in the previous
+  Questions and Answers above.
+
+  BASE YOUR ANSWER ONLY ON THE PREVIOUS MESSAGES.
+  In total, make FOUR LINES of the Contextual Summary.
+  If no info was given, write "No previous questions".
+
+  Now, WRITE THE FOUR LINES of Contextual Summary.
+
+  Contextual Summary:
+
+
+react_get_task_description1: >
   You are part of our company of experts answering user queries. A teammate of you is going
   to answer the following query:
 
