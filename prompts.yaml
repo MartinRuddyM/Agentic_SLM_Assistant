@@ -145,8 +145,49 @@ extract_permanent_user_info: |
   KEY INFORMATION STATEMENTS IN JSON FORMAT:
   
 
+personalize_final_asnwer_simplified: >
+  An expert Q&A system has answered the following query:
+
+  {query}
+
 
 personalize_final_asnwer: >
+  An expert Q&A system has answered the following query:
+
+  {query}
+
+  There is some personal info from the user below:
+
+  {user_info}
+
+
+  This is summaries from previous conversations with our system:
+
+  {conversation_summaries}
+
+
+  This is a summary of the last Q&A interactions just before this query, for conversational context:
+  
+  {interactions_summary}
+
+  Rewrite the system answer below KEEPING ALL INFO AND MEANING THE SAME. Use the tone "I"
+  and talk to the user of "You".
+  BY FAR the most important is to keep the conversation flowing logically so really focus
+  on the last Q&A interactions given so your answer makes conversational sense.
+  Additionally, ONLY IF YOU FIND some VERY RELEANT and similar thing in the user info or
+  context, you can make a reference to it somewhere in your answer, so the uer feels
+  like we remember about him. SKIP THIS by default and ONLY add something if there
+  REALLY is something really matching. At the end, make suggestions regarding what to help with next
+  with regards to the Question and Answer the user is just getting.
+  
+  Here is the system answer to rewrite:
+
+  {answer}
+
+  Now your rewritten answer: (answer directly as if talking to the user, do not mention your task)
+
+
+personalize_final_asnwer1: >
   You are a marketing expert trying to make the customer happy with our Q&A system experience.
   An expert system has written an answer to the user's question. Below you can find the user question,
   the system's answer, and also some relevant contextual USER INFO and summaries of PREVIOUS CONVERSATIONS
@@ -163,55 +204,6 @@ personalize_final_asnwer: >
   the end, at the beginning, in the middle, or nowehre at all(safe bet)!
 
   Overall keep your additions SHORT! If the answer is per se short keep it also short!
-
-  This is the personal user info:
-
-  {user_info}
-
-
-  This is summaries from previous conversations:
-
-  {conversation_summaries}
-
-
-  This is a summary of the last Q&A interactions just before this query, for conversational context:
-  
-  {interactions_summary}
-
-
-  This is the original user query so you have context:
-
-  {query}
-
-
-  This is the expert Q&A answer:
-
-  {answer}
-
-
-  Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
-  Remember to use second person tenses. Do not make it too formal or weird sounding, just casual.
-  DO NOT ADD TOO MUCH, JUST A LITTLE BIT. Talk from "I" perspective.
-
-  Personalized answer:
-
-
-personalize_final_asnwer1: >
-  You are a marketing expert trying to make the customer happy with our Q&A system experience.
-  An expert system has written an answer to the user's question. Below you can find the user question,
-  the system's answer, and also some relevant contextual USER INFO and summaries of PREVIOUS CONVERSATIONS
-  that the system previously had with the same user.
-
-  Your should make the user feel welcome and have a personalized experience. You should make them feel
-  like we know them personally. Your task is to rewrite the system's answer by adding references to
-  the contextual USER INFO we have as well as to previous conversations, if you deem it necessary.
-  The goal is to make them feel like we remember about their past queries (if relevant to this one).
-
-  You should try to put some reference at the beginning to the user info, and some at the end. In the
-  middle of the answer, you can insert references to previous conversations. Do not modify the previous
-  answer's meaning or examples, just change a bit the format to add personalization into it. USE SECOND
-  PERSON to talk to the user.
-  Also at the end add one sentence of suggestions of how to help next.
 
   This is the personal user info:
 
@@ -326,36 +318,6 @@ contrast_user_information: |
   Truly new statements in JSON format:
 
 
-feed_to_react_1: |
-  This is my question:
-  {query}
-
-  For answering my question, remember that we have spoken before in this conversation. Below you can find
-  a summary of the last interactions we had, so you can give a contextually appropiate answer.
-
-  Summaries of past messages of this conversation (if any):
-
-  {past_messages}
-
-  Also, here is some contextual information of me as a user. This might be relevant to your answer and help
-  you to decide how to approach it.
-
-  Useful user info for the answer:
-
-  {user_info}
-
-  Now please answer my original question. Remember the question:
-
-  {query}
-
-  Your answer:
-
-
-feed_to_react: |
-  {query}
-  TRY TO USE AT LEAST ONE OF THE TOOLS ONCE!!!
-
-
 code_tool_description: >
   Useful to do operations and advanced analysis that python conde and libraries can help with.
   If you have math operations, statistics assignments, or any codeable task, use this tool.
@@ -446,13 +408,19 @@ react_step_by_step: |
 
   {input}
 
-  Some task guidelines you should follow:
+  Some context you can use to guide your answer:
 
   {user_context}
 
   You have access to these tools:
 
   {tool_descriptions}
+
+  The last question and answer the user had (this is CRITICALLY IMPORTANT. If they reference something it is likely this):
+
+  {last_question}
+
+  {last_answer}
 
   We are using this format:
 
@@ -463,17 +431,13 @@ react_step_by_step: |
   Observation: the result of the action  
   ... (this Thought/Action/Action Input/Observation can repeat N times)  
   Thought: I now know the final answer  
-  Final Answer: the final answer to the original input question. Make it long enough but not too much.
-
-  When using this format, DO NOT REWRITE ANYTHING ABOVE. ONLY WRITE THE TRULY NEW STEPS.
+  Final Answer: the final answer to the original input question. Make it long enough and detailed if necessary.
 
   Begin!
 
   Question: {input}  
   {agent_scratchpad}
-  DO NOT REPEAT-WRITE STEPS ALREADY DONE!
-  ONLY WRITE TRULY NEW STEPS. DO NOT RE-WRITE STEPS OR RE-CALL ACTIONS. TRY TO
-  GIVE THE FINAL ANSWER AS SOON AS READY WITHOUT NAMING ANY MORE ACTION
+  DO NOT REPEAT-WRITE STEPS ALREADY DONE! Write the final answer as soon as ready.
 
 
 react_get_task_description: >
@@ -494,111 +458,36 @@ react_get_task_description: >
 
   MAKE SURE TO INCLUDE ALL SPECIFIC DATA THAT THE USER IS REFERENCING FROM PREVIOUS ANSWERS.
   If it is referenced, you must re-write it all exactly! Only thingss you re-write can be used!
+  DO NOT INCLUDE things the user is not talking about!!
 
-  Relevant user information (if any):
+  Relevant user information (if any) (light importance):
 
   {user_info}
 
 
-  Relevant past conversations (if any):
+  Relevant past conversations (if any) (light importance):
 
   {past_conversations}
 
 
-  Previous Q&As from this conversation (if any):
+  Previous Q&As from THIS CURRENT CONVERSATION (if any) (CRITICALLY IMPORTANT):
 
   {previous_messages}
 
 
   Now write the relevant context. If nothing relevant, write "No relevant context."
-  Include the specific data or previous answer context that is needed to answer
-  the query (for this case you can exceed the max length).
   EXPLICITLY INCLUDE ALL NECESSARY DATA AND PREVIOUS ANSWER REFERENCES. DO NOT SHORTEN IT.
-  INCLUDE ALL PREVIOUS INFO THAT IS NEEDED FOR REFERENCE.
+  INCLUDE ALL PREVIOUS INFO THAT IS NEEDED FOR REFERENCE. (for this case you can exceed the max length)
+  But do not include about irrelevant topics to the question!
   Make sure to include what the previous messages were about so the conversation can flow smooth.
 
+  START BY reflecting on the previous messages of THIS CURRENT CONVERSATION that is the most important.
+  If any other context sounds relevant, talk about it afterwards.
+
+  Remember the query: {query}
+
+  IF THE USER IS REFERENCING SOMETHING IN THE QUERY, it very likely is from his previous Q&As in this
+  conversation AND NOT from past conversations or user info. So, decide if the user is referencing
+  something, and advice that on your answer.
+
   RELEVANT CONTEXT:
-
-
-react_get_task_description_1: >
-  You are a project manager going to assign a task to an expert question/problem solver.
-  The solver needs specific planned instructions of how to solve the problem STEP BY STEP given the goal and the available tools.
-  The solver has access to the following tools: {tool_names} and you should plan to use them in the steps.
-  They have limited world knowledge, so always plan to use web search for knowledge things.
-  Only use code if really necessary to do any kind of calculation or other specific technical stuff.
-
-  This is the question/problem to be answered:
-
-
-  {query}
-
-
-  We want the final answer to be personalized to the user. Below is some gathered personal information from the user
-  which you should take into account and explicitly mention in your planned instructions. The solver will not see it so
-  make sure to devise your plan and instructions with it in mind, if useful.
-
-  Personal user information we have:
-
-
-  {user_info}
-
-
-  Within this same session, the user has had some previous messages with our team of experts.
-  Make sure that the new plan takes this into account to give the feeling of a smooth
-  conversation to the user with our team of experts.
-  Here is a summary of the immediately previous questions the user had (if any):
-
-
-  {past_messages}
-
-
-  Here is a summary of some previous conversations the user has had with our expert, also take it into account for the plan if any useful
-  to better answer or personalize the solution.
-
-  Past conversations the user had:
-
-
-  {relevant_conversations}
-
-
-  Now as the project manager write detailed, concise, STEP BY STEP planned instructions so the solver knows all the steps to solve them problem
-  and which tool to use in each step. Tailor the answering of the problem according to the user specific information.
-
-
-  STEP BY STEP INSTRUCTIONS:
-
-
-react_get_user_context: >
-
-  You are part of our company of experts who answer queries. Another better expert will
-  soon work on the following query:
-
-
-  {query}
-
-
-  Your job is to help this other expert by looking at the KEY information below about the user
-  and helping to identify if something is VERY IMPORTANT to answer the query. If so, you should
-  write at most 2 TWO LINES with all the needed information to give better context to the
-  expert.
-  For example, you might find relevant for a query about how to install a software the fact
-  that the user has Windows 64. Or, if asking about a food recipe, it would be relevant info if
-  the available info says the user is allergic to something.
-
-
-  Now look at the available info from the user and their past conversations. USER INFO:
-
-
-  {user_info}
-
-
-  PAST USER CONVERSATIONS:
-
-
-  {past_conversations}
-
-
-  Now write AT MAXIMUM 2 LINES stating the most relevant info to answer the query. Keep it only to the
-  most important. If nothing important, write "No relevant info.".
-
-  2 LINES SUMMARY OF KEY INFO:

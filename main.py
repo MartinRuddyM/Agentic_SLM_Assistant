@@ -15,7 +15,7 @@ logger = get_logger(__name__)
 
 class AppContext:
     def __init__(self):
-        logger.info("Initializing AppContext...")
+        logger.info("Starting system...")
         load_dotenv()
 
         MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
@@ -39,7 +39,7 @@ class AppContext:
             api_key=MISTRAL_API_KEY
         )
 
-        self.default_chat = chat3
+        self.default_chat = chat4
         self.cheap_chat = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
             google_api_key=GEMINI_API_KEY
@@ -48,11 +48,13 @@ class AppContext:
         with open("prompts.yaml", "r") as file:
             self.system_prompts = yaml.safe_load(file)
 
+        logger.info(f"Loading DB...")
         self.db = EmbeddingDB(
             db_path="db/user_data.db",
             faiss_conversation_path="db/faiss_conversations.index",
             faiss_user_info_path="db/faiss_user_info.index"
         )
+        logger.info(f"DB Loaded succesfully")
 
         self.conversation = Conversation(
             self.default_chat,
@@ -69,12 +71,8 @@ class AppContext:
             relevant_user_info, relevant_past_conversations, self.conversation,
             query, self.cheap_chat, self.system_prompts
         )
-        answer, reasoning = ReAct_process(query, react_task_desc, self.system_prompts,
-                                          self.default_chat, self.cheap_chat)
-        final_answer = personalize_final_answer(
-            query, answer, relevant_user_info, relevant_past_conversations,
-            self.conversation, self.default_chat, self.system_prompts
-        )
+        answer, reasoning = ReAct_process(query, react_task_desc, self.conversation, self.system_prompts, self.default_chat, self.cheap_chat)
+        final_answer = personalize_final_answer(query, answer, relevant_user_info, relevant_past_conversations, self.conversation, self.default_chat, self.system_prompts)
 
         self.conversation.add_interaction(query, final_answer, reasoning)
         logger.info("Final answer generated.")
