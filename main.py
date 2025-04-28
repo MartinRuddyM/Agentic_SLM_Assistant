@@ -23,7 +23,8 @@ class AppContext:
         GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
         chat1 = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash",
+            #model="gemini-1.5-flash-8b",
+            model="gemma-3-4b-it",
             google_api_key=GEMINI_API_KEY
         )
         chat2 = ChatMistralAI(
@@ -31,7 +32,7 @@ class AppContext:
             api_key=MISTRAL_API_KEY
         )
         chat3 = ChatGroq(
-            model="llama3-8b-8192",
+            model="llama3-8b-8192", # Llama 3 8B
             api_key=GROQ_API_KEY
         )
         chat4 = ChatMistralAI(
@@ -39,7 +40,7 @@ class AppContext:
             api_key=MISTRAL_API_KEY
         )
 
-        self.default_chat = chat2
+        self.default_chat = chat1
         self.cheap_chat = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash-8b",
             google_api_key=GEMINI_API_KEY

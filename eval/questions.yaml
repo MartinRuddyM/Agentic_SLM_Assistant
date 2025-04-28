@@ -1,0 +1,58 @@
+code_1: |
+  Given these 2 lists of numbers, please merge them in the correct ascending order.
+  [1843, 8265, 1375, 2904, 5079, 994, 7675, 9837, 3600, 5380, 3808, 2357, 786, 9326, 1090, 734, 3431, 5892, 6252, 2254]
+  [8971, 573, 4094, 6114, 7956, 7335, 6183, 4934, 1136, 8347, 1643, 7552, 1712, 1713, 3447, 3790, 3689, 4968, 3823, 3785]
+
+code_2: |
+  Given this paragraph:
+
+  Fashion is a powerful form of expression, where a designer uses fabric, color, and texture to build a unique vision. Every fabric chosen must connect with the idea, allowing the garment to reflect mood, time, and emotion. A designer often starts with a concept, shaping each color and texture to fit a theme. Fashion depends on detail; the texture of a material, the depth of a color, and the structure of a fabric all work together to create impact. In every collection, a designer aims to tell a story through fabric and color, letting fashion move beyond simple clothing into art. Texture plays a key role, giving fashion both physical feeling and visual emotion. Strong fashion relies not just on the outer look, but also on the deep connection between designer, fabric, color, and vision.
+
+  Please count the number of words and tell me the TOP 5 MOST COMMON WORDS and their COUNT.
+
+code_3: >
+  You are tasked with preparing a batch of concrete for a small construction project.
+  The required mix ratio by weight is Cement : Sand : Gravel = 1 : 2 : 4.
+  You are required to prepare 700 kilograms of total concrete mix.
+
+  Your tasks are as follows:
+  First, determine how many kilograms of cement, sand, and gravel are needed to meet the specified ratio.
+  Second, provide your answer rounded to two decimal places.
+
+  Given Data:
+  The total concrete weight to be prepared is 700 kg.
+  The mix ratio is 1 part cement, 2 parts sand, and 4 parts gravel.
+
+
+code_and_search: |
+  Find the list of the 10 largest earthquakes globally in 2024.
+  Then, calculate the average magnitude and standard deviation of these earthquakes.
+
+search_1: |
+  Find who is the current president of Nepal and summarize in one paragraph their political career.
+
+search_2: |
+  What is the weather forecast for the next seven days in Brussels, Belgium?
+
+search_3: |
+  Summarize the main tourist attractions of visiting Sydney, Australia. One paragraph.
+
+search_4: >
+  How have the native plant species of the Albufera Natural Park
+  adapted to increasing salinity levels over the past two decades?
+
+personalization_1: |
+  I am making a trip to Barcelona. Can you tell me how long it will take to get there by bus?
+  I have a discount and cannot take the train.
+
+personalization_2: |
+  I am travelling to England next week. Can you tell me if there are any big matches happening to attend?
+
+continuation_1: |
+  What is the weather forecast for Brussels next week?
+  Can you suggest some places to visit there?
+
+continuation_2: |
+  Can you describe the features of the DeepSeek V1 LLM model?
+  Can it work with images as imput or output?
+  
