@@ -39,8 +39,8 @@ interaction_summary_with_reasoning: >
   python code used (final version is enough). Another example, if the user asked about 
   different famous writers, write exactly ALL AUTHORS that were discussed and their books, etc.
 
-  All this information MUST BE TOTALLY RE-WRITTEN for archive purposes so WRITE IT ALL as it is
-  and do not make any shortenings.
+  All of the important information must be ENTIRELY REWRITTEN for record purposes. However, do not
+  just copy everything, only important stuff, but the important stuff write it fully.
 
   Question & Answer to summarize, and Reasoning:
 
@@ -147,17 +147,24 @@ extract_permanent_user_info: |
   
 
 personalize_final_asnwer_simplified: >
-  An expert Q&A system has answered the following query:
+  There is a conversation between a user and an expert Q&A system.
+  Just previously in the conversation, these Questions and Answers happened (if any):
+
+  {interactions_summary}
+
+
+
+  The expert Q&A system has answered the following query:
 
   Query: {query}
 
   Answer: {answer}
 
-  Just previously in the conversation, these Questions and Answers happened:
 
-  {interactions_summary}
 
-  Rewrite the Answer KEEPING ALL INFO AND MEANING THE SAME. Use the tone "I"
+  Rewrite the Answer KEEPING ALL INFO AND MEANING THE SAME. If there is an annex
+  above, do not focus on it, it is just meant to contextually help. Focus on the user
+  Query and answer which is the one you must personalize. Use the tone "I"
   and talk to the user of "You". KEEP ALL INFORMATION THE SAME you should only change the
   tone of the answer. At the end, add a VERY BRIEF suggestion of how you can
   help next regarding the Query. Rewrite it now.
@@ -172,7 +179,19 @@ personalize_final_asnwer_simplified: >
 
 
 personalize_final_asnwer: >
-  An expert Q&A system has answered the following query:
+  There is a conversation between a user and an expert Q&A system.
+  Just previously in the conversation, these Questions and Answers happened (if any):
+
+  {interactions_summary}
+
+
+  This is summaries from previous conversations with our system for contextualization (if any):
+
+  {conversation_summaries}
+
+
+
+  The expert Q&A system has answered the following query:
 
   {query}
 
@@ -181,14 +200,8 @@ personalize_final_asnwer: >
   {user_info}
 
 
-  This is summaries from previous conversations with our system:
-
-  {conversation_summaries}
 
 
-  This is a summary of the last Q&A interactions just before this query, for conversational context:
-  
-  {interactions_summary}
 
   Rewrite the system answer below KEEPING ALL INFO AND MEANING THE SAME. Use the tone "I"
   and talk to the user of "You".
