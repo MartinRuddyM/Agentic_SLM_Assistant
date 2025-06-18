@@ -77,9 +77,10 @@ maintainability by forbidding to store prompts in random, maybe hidden places in
 identify the best performing ones. Also, a comparison should be made against a reference
 large language model.
 
+## Solution
 
-
-
+![Todos los diagramas_page-0001](https://github.com/user-attachments/assets/51d5eab0-2561-4d86-93d4-37039939ca09)
+![Todos los diagramas_page-0002](https://github.com/user-attachments/assets/5fc35ae2-b77d-4e97-b2d4-2e3c76f30727)
 
 
 #### Ejecutar el código
