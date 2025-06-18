@@ -1,21 +1,27 @@
 Trabajo Final de Grado en Ciencia de Datos. Final thesis work (Bachelor of Science, Data Science).
 
-### Abstract
+## Abstract
 
 The emergence of large language models has led to the creation of many AI assistants. While a lot of
 focus has been placed on massive models, less attention is paid to small models, which are often
 significantly cheaper to run and still have good analytical abilities. This project builds and evaluates a
 ReAct-based assistant with small language models. To do this, an intelligent breakdown of tasks is done
 into small reasoning steps, and great care is taken to adequately retrieve the decisions of the model.
+
+
 Models are aided by two custom-made tools, to do web search and coding, allowing for an agentic
 behaviour. The system is also designed for a great degree of personalization, leading to a better user
 experience. To do this, a new approach is taken to extract, store, and adequately employ user
 information. A final evaluation of the system is carried out, featuring the performance comparison of
 different small models and one large model.
+
+
 The solution is custom built and non-dependent on third party abstraction libraries to interact with
 the language models (such as langchain). This provides a more efficient use of the calls and more
 customization over the use of the program. It also represents a better opportunity to learn from the
 inner workings and details of LLM systems.
+
+
 During the development, interesting issues arose that point to new challenges specific to LLM
 applications. These involved the difficulty of parsing answers from small-sized models, managing and
 versioning the system prompts, and the appearance of a new type of bugs related to prompts, which
@@ -27,7 +33,7 @@ LLM, Large Language Models, Agentic systems, Retrieval Augmented Generation, RAG
 Small Language Models, Prompt Engineering.
 
 
-### Goals
+## Goals
 
 > The goal of this project is to build an agent-based, personalized AI assistant powered by small language models, and through this, evaluate the capabilities of SLMs to power such a system.
 
@@ -39,12 +45,12 @@ processing power of AI systems? What are the main challenges when powering appli
 SLMs? Can SLMs effectively choose and call the appropriate tool in an agentic setup? How can AI
 assistants be improved through personalization?
 These general objectives can be specified into a more detailed breakdown:
-• Develop a personalized AI assistant capable of answering moderately difficult queries. The
+- Develop a personalized AI assistant capable of answering moderately difficult queries. The
 program must be able to store current conversation information and leverage its reasoning
 system through sequential and logical calls to the SLM to arrive at a final answer. It must also
 automatically identify, store, and adequately retrieve and use relevant user information to help
 to better tailor its answers to each user.
-• Allow for a separation of difficulty levels of intermediate language model processing steps. The
+- Allow for a separation of difficulty levels of intermediate language model processing steps. The
 system must be able to handle two different qualities of models, to leave the most complicated
 steps to the best model and use the lower quality and cheaper model to handle less critical
 steps. This will make the system more cost efficient when deployed.
