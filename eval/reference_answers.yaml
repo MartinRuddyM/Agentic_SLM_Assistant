@@ -1,117 +1,348 @@
-code_1: |
-  [573, 734, 786, 994, 1090, 1136, 1375, 1643, 1712, 1713, 1843, 2254, 2357, 2904, 3431, 3447, 3600, 3689, 3785, 3790, 3808, 3823, 4094, 4934, 4968, 5079, 5380, 5892, 6114, 6183, 6252, 7335, 7552, 7675, 7865, 7956, 8265, 8347, 8971, 9326, 9837]
+code_1: '[573, 734, 786, 994, 1090, 1136, 1375, 1643, 1712, 1713, 1843, 2254, 2357,
+  2904, 3431, 3447, 3600, 3689, 3785, 3790, 3808, 3823, 4094, 4934, 4968, 5079, 5380,
+  5892, 6114, 6183, 6252, 7335, 7552, 7675, 7956, 8265, 8347, 8971, 9326, 9837]
 
-code_2: |
-  fashion	5
-  fabric	5
-  designer	4
-  color	4
-  texture	4
+  '
+code_2: "fashion\t5\nfabric\t5\ndesigner\t4\ncolor\t4\ntexture\t4\n"
+code_3: "Material\tWeight(kg)\nCement\t100.00\nSand\t200.00\nGravel\t400.00\n"
+code_4: '["apple", "banana", "cherry", "date", "elderberry", "fig", "guava", "honeydew",
+  "ilama", "jackfruit", "kiwi", "lime", "mango", "nectarine", "orange", "papaya",
+  "quince", "raspberry", "strawberry", "tangerine", "ugli", "vanilla", "watermelon",
+  "ximenia"]
 
-code_3: |
-  Material	Weight(kg)
-  Cement	100.00
-  Sand	200.00
-  Gravel	400.00
+  '
+code_5: '165.13
 
-code_and_search: |
-  The magnitudes are: [7.5, 7.4, 7.4, 7.3, 7.2, 7.1, 7.1, 7.0, 7.0, 7.0]
+  '
+code_6: 'slope: 4.08
+
+  intercept: 6.73
+
+  '
+code_and_search_1: 'The magnitudes are: [7.5, 7.4, 7.4, 7.3, 7.2, 7.1, 7.1, 7.0, 7.0,
+  7.0]
+
   Average: 7.2
+
   Std: 0.189
 
-search_1: |
-  As of April 2025, the President of Nepal is Ram Chandra Paudel, who assumed office on 13 March 2023. A veteran of Nepalese politics, Paudel has been a prominent figure in the Nepali Congress party for decades. His political journey began in the early 1960s when he joined movements opposing the Panchayat system, leading to multiple imprisonments totaling over 15 years. Paudel was a founding member of the Nepal Students Union in 1970 and steadily rose through the party ranks. He was first elected to Parliament in 1991 and served in various capacities, including Speaker of the House of Representatives (1994–1999), Deputy Prime Minister and Minister for Home Affairs (1999–2002), and Minister for Peace and Reconstruction (2007–2008). Despite facing setbacks, such as losing the prime ministerial election in 2010 after 17 rounds of voting, Paudel remained a steadfast advocate for democracy and peace. His election as the third President of Nepal marked the culmination of a political career spanning over six decades .​
+  '
+code_and_search_2: 'tallest_skyscrapers: ["Burj Khalifa: 828m / 2717ft", "Merdeka
+  118: 679m / 2227ft", "Shanghai Tower: 632m / 2073ft", "Makkah Royal Clock Tower:
+  601m / 1972ft", "Ping An Finance Center: 599m / 1965ft"]
 
-search_2: |
-  See weather forecast.
+  average_height: "667.8m / 2190.8ft"
 
-search_3: |
-  Sydney, Australia, is renowned for its stunning harbor and iconic landmarks, making it a top destination for travelers. The Sydney Opera House and Sydney Harbour Bridge are must-see attractions, offering breathtaking views and architectural marvels. Bondi Beach and Manly Beach provide classic Australian coastal experiences, perfect for surfing and relaxation. Visitors can explore the historic Rocks district, enjoy ferry rides to Taronga Zoo, or stroll through the lush Royal Botanic Garden. Darling Harbour offers vibrant dining, shopping, and entertainment, while the nearby Blue Mountains provide an easy escape into nature with dramatic scenery and hiking trails.
+  '
+code_and_search_3: 'exchange_rates: "EUR: 0.8914"
 
-search_4: >
-  Over the past two decades, native plant species in Albufera Natural Park have adapted to increasing salinity levels through various physiological and ecological mechanisms. In salt marsh areas, succulent plants like cordgrass (Spartina spp.) and saltwort (Salsola spp.) have thrived by developing salt-excreting glands and water-storing tissues, enabling them to survive in high-salinity conditions. These halophytic adaptations allow them to maintain cellular function despite osmotic stress. Additionally, the park's vegetation includes species such as dune grass, mastic, and myrtle, which are adapted to the coastal dunes and Mediterranean forest ecosystems. The dynamic interplay between freshwater inflows from rivers and increasing salinity due to sea-level rise and reduced freshwater inputs has led to shifts in plant community compositions, favoring salt-tolerant species. Conservation efforts, including the creation of reserves for endangered species like the samaruc fish and the white water lily, aim to preserve the park's biodiversity amid these changing conditions.
+  converted_amounts: "EUR: 445.70"
 
-personalization_1: |
-  Traveling from Valencia to Barcelona by bus is a convenient and budget-friendly option, especially with your discount. The journey typically takes between 4 to 5 hours, depending on the specific service and traffic conditions. For instance, ALSA offers direct buses that complete the trip in as little as 4 hours.
-  Buses depart from the Estación de Autobuses de Valencia (Carrer de Menéndez Pidal) and arrive at Barcelona's Estació d'Autobusos Nord (Carrer d'Alí Bei). The earliest departures are around 1:00 AM, with services running throughout the day until approximately 9:00 PM.
-  Ticket prices vary, but with your discount, you might find fares starting from around €20. Booking in advance is recommended to secure the best rates.
-  Given your travel photography project, the bus journey offers scenic views along the Mediterranean coast, providing great opportunities for capturing beautiful landscapes. Also, considering your preference for warmer climates, this route should be quite comfortable.
-  If you need help booking or planning anything else for your Barcelona trip, feel free to ask!
+  '
+code_and_search_4: 'city_populations: ["Tokyo: 37,036,200", "Delhi: 34,665,600", "Shanghai:
+  30,482,100", "São Paulo: 22,990,000", "Mexico City: 22,752,400"]
 
-personalization_2: |
-  Absolutely! If you're traveling to England next week and looking to attend some big football matches, here are the key fixtures:
+  total_population: 147,926,300
 
-  **Premier League Matches:**
+  '
+continuation_1: "Of course! Here’s a curated list of must-visit spots in Brussels,\
+  \ perfect for your travel photography project and personal interests:\n\n1. Grand-Place\
+  \ (Grote Markt)\n  - Why go? This UNESCO World Heritage site is the heart of Brussels,\
+  \ surrounded by stunning Baroque guildhalls and the historic Town Hall. It’s especially\
+  \ beautiful at golden hour and during special events like the Flower Carpet.\n\n\
+  2. Atomium\n  - Why go? An iconic Brussels landmark built for the 1958 World Expo.\
+  \ Its futuristic design and panoramic views of the city make it a fantastic photography\
+  \ subject.\n\n3. Mont des Arts (Kunstberg)\n  - Why go? Offers one of the best elevated\
+  \ views in the city — ideal for capturing the skyline, beautiful gardens, and nearby\
+  \ architecture, especially around sunset.\n\n4. Royal Greenhouses of Laeken\n  -\
+  \ Why go? These historic greenhouses are a hidden gem filled with exotic plants\
+  \ and beautiful glass architecture. They’re only open for a few weeks in spring,\
+  \ so it’s a special opportunity.\n\n5. Comic Art Museum (Centre Belge de la Bande\
+  \ Dessinée)\n  - Why go? Belgium is famous for comics like Tintin! This museum is\
+  \ housed in a gorgeous Art Nouveau building, providing both cultural and architectural\
+  \ photography material.\n\n6. Sablon & Marolles Districts\n  - Why go? These areas\
+  \ are full of antique shops, art galleries, and charming streets — perfect for candid\
+  \ street photography and soaking up the local atmosphere.\n\n7. Galeries Royales\
+  \ Saint-Hubert\n  - Why go? A historic shopping arcade with a beautiful glass roof\
+  \ and elegant storefronts — great for capturing classic European charm.\n\n8. Parc\
+  \ du Cinquantenaire\n  - Why go? A large park featuring beautiful arches, museums,\
+  \ and fountains. It’s a peaceful, photogenic spot to relax and shoot.\n\n9. Place\
+  \ Sainte-Catherine\n  - Why go? This lively square has a great mix of seafood restaurants\
+  \ and casual bars. It’s a nice place to experience the local life and take casual\
+  \ lifestyle photos.\n\n10. Manneken Pis & Het Zinneke\n    - Why go? Manneken Pis\
+  \ is the famous little statue, but for something quirkier, check out Het Zinneke,\
+  \ the statue of a dog. Both are fun photography stops that reflect Brussels’ playful\
+  \ character.\n\nWeather Tip: Brussels in May usually enjoys mild, pleasant weather\
+  \ (around 18°C), so walking around with your camera will be quite comfortable!\n\
+  \nIf you want, I can also suggest a few hidden photography spots based on your style!\n"
+continuation_2: 'DeepSeek V1 is a text-only model, meaning it cannot work directly
+  with images as input or output. It was designed specifically for natural language
+  processing (NLP) tasks like text generation, summarization, translation, and basic
+  reasoning over text and structured data.
 
-  - **Thursday, May 1, 2025:**
-    - Nottingham Forest vs. Brentford at 19:30 BST
 
-  - **Friday, May 2, 2025:**
-    - Manchester City vs. Wolverhampton Wanderers at 20:00 BST
+  At the time of DeepSeek V1’s release, multimodal capabilities — the ability to process
+  images, video, or audio alongside text — were not yet part of its architecture.
+  DeepSeek focused on building a strong foundation in text understanding first.
 
-  - **Saturday, May 3, 2025:**
-    - Aston Villa vs. Fulham at 12:30 BST
-    - Everton vs. Ipswich Town at 15:00 BST
-    - Leicester City vs. Southampton at 15:00 BST
-    - Arsenal vs. Bournemouth at 17:30 BST
 
-  - **Sunday, May 4, 2025:**
-    - Brentford vs. Manchester United at 14:00 BST
-    - Brighton & Hove Albion vs. Newcastle United at 14:00 BST
-    - West Ham United vs. Tottenham Hotspur at 14:00 BST
-    - Chelsea vs. Liverpool at 16:30 BST
+  However, later versions of DeepSeek (like DeepSeek-VL and DeepSeek-R1) started to
+  introduce multimodal abilities. These newer models are designed to handle both text
+  and images, allowing for tasks like visual question answering (VQA), image captioning,
+  and grounded text generation based on visual inputs.
 
-  - **Monday, May 5, 2025:**
-    - Crystal Palace vs. Nottingham Forest at 20:00 BST
 
-  These matches are part of the Premier League's final stretch, so the atmosphere is bound to be electric, especially for top-table clashes like Chelsea vs. Liverpool. Given your interest in football and photography, attending one of these games could provide both an exciting experience and great photo opportunities.
+  So, if you specifically need a model that works with images, you would want to look
+  at a later DeepSeek version, or alternatively consider multimodal models like OpenAI’s
+  GPT-4V (Vision) or Google’s Gemini family.'
+continuation_3: '"Rebound" by Sadie Kincaid is a standalone second-chance romance
+  novel that delves into the complexities of a failing marriage. The story follows
+  Elijah, the eldest of the James brothers, and his wife Amber, who maintain the facade
+  of a happy couple in public while grappling with emotional distance and unresolved
+  issues in private. As they confront their past and the challenges of their relationship,
+  the narrative explores themes of love, vulnerability, and the possibility of rekindling
+  a lost connection. Given your interest in travel photography, the emotional depth
+  and character development in this novel might offer inspiration for capturing nuanced
+  human experiences through your lens.
 
-  If you're interested in securing tickets, it's advisable to check the official club websites or authorized ticket sellers as soon as possible, as matches during this period tend to sell out quickly.
+  '
+continuation_4: 'Spain clinched the UEFA Euro 2024 title by defeating England 2–1
+  in the final held in Berlin, marking their record-breaking fourth European Championship
+  victory. This triumph adds to their previous wins in 1964, 2008, and 2012. While
+  Spain has secured multiple European titles, they have won the FIFA World Cup once,
+  in 2010. As a football enthusiast residing in Spain, this recent achievement by
+  the national team might resonate with your passion for the sport and provide vibrant
+  moments to capture in your photography projects.
 
-  Let me know if you need assistance with ticket booking or have any other questions!
+  '
+continuation_5: 'Common over-the-counter medications recommended for managing seasonal
+  allergy symptoms include second-generation antihistamines such as cetirizine (Zyrtec),
+  loratadine (Claritin), and fexofenadine (Allegra), which are less likely to cause
+  drowsiness. Nasal corticosteroid sprays like fluticasone (Flonase) and triamcinolone
+  (Nasacort) are effective in reducing inflammation and relieving nasal congestion.
+  Decongestants such as pseudoephedrine (Sudafed) can alleviate nasal stuffiness but
+  should be used cautiously and for short durations. Considering your frequent travels
+  between Valencia and Barcelona, staying informed about local pollen forecasts and
+  having these medications on hand can help manage allergy symptoms effectively during
+  your journeys.
 
-continuation_1: |
-  Of course! Here’s a curated list of must-visit spots in Brussels, perfect for your travel photography project and personal interests:
+  '
+continuation_6: 'Three significant historical sites in Pretoria include the Union
+  Buildings, which serve as the official seat of the South African government and
+  house the offices of the president; the Voortrekker Monument, a granite structure
+  commemorating the Voortrekkers who embarked on the Great Trek during the 1830s;
+  and Freedom Park, a heritage site and museum that honors those who contributed to
+  South Africa''s liberation. These landmarks offer rich insights into the nation''s
+  history and could provide compelling subjects for your travel photography, especially
+  if you''re exploring themes of cultural heritage and historical narratives.
 
-  1. Grand-Place (Grote Markt)
-    - Why go? This UNESCO World Heritage site is the heart of Brussels, surrounded by stunning Baroque guildhalls and the historic Town Hall. It’s especially beautiful at golden hour and during special events like the Flower Carpet.
+  '
+continuation_7: '"The Great Gatsby" primarily depicts the 1920s, an era often referred
+  to as the Jazz Age. Set in 1922, the novel captures the opulence, social upheaval,
+  and moral ambiguity of post-World War I America, particularly focusing on the affluent
+  society of Long Island, New York. This period''s distinctive fashion, architecture,
+  and cultural dynamics might offer aesthetic inspiration for your photography projects,
+  especially if you''re interested in exploring themes of nostalgia and historical
+  settings.
 
-  2. Atomium
-    - Why go? An iconic Brussels landmark built for the 1958 World Expo. Its futuristic design and panoramic views of the city make it a fantastic photography subject.
+  '
+continuation_8: 'As of 2025, Brazil''s population is approximately 203 million, reflecting
+  a modest increase from around 201.7 million in 2015. This growth indicates a relatively
+  stable demographic trend over the past decade. Understanding such population dynamics
+  can be valuable for your AI project involving LLM reasoning techniques, as it provides
+  context for analyzing social and economic patterns within large datasets.
 
-  3. Mont des Arts (Kunstberg)
-    - Why go? Offers one of the best elevated views in the city — ideal for capturing the skyline, beautiful gardens, and nearby architecture, especially around sunset.
+  '
+personalization_1: 'Traveling from Valencia to Barcelona by bus is a convenient and
+  budget-friendly option, especially with your discount. The journey typically takes
+  between 4 to 5 hours, depending on the specific service and traffic conditions.
+  For instance, ALSA offers direct buses that complete the trip in as little as 4
+  hours.
 
-  4. Royal Greenhouses of Laeken
-    - Why go? These historic greenhouses are a hidden gem filled with exotic plants and beautiful glass architecture. They’re only open for a few weeks in spring, so it’s a special opportunity.
+  Buses depart from the Estación de Autobuses de Valencia (Carrer de Menéndez Pidal)
+  and arrive at Barcelona''s Estació d''Autobusos Nord (Carrer d''Alí Bei). The earliest
+  departures are around 1:00 AM, with services running throughout the day until approximately
+  9:00 PM.
 
-  5. Comic Art Museum (Centre Belge de la Bande Dessinée)
-    - Why go? Belgium is famous for comics like Tintin! This museum is housed in a gorgeous Art Nouveau building, providing both cultural and architectural photography material.
+  Ticket prices vary, but with your discount, you might find fares starting from around
+  €20. Booking in advance is recommended to secure the best rates.
 
-  6. Sablon & Marolles Districts
-    - Why go? These areas are full of antique shops, art galleries, and charming streets — perfect for candid street photography and soaking up the local atmosphere.
+  Given your travel photography project, the bus journey offers scenic views along
+  the Mediterranean coast, providing great opportunities for capturing beautiful landscapes.
+  Also, considering your preference for warmer climates, this route should be quite
+  comfortable.
 
-  7. Galeries Royales Saint-Hubert
-    - Why go? A historic shopping arcade with a beautiful glass roof and elegant storefronts — great for capturing classic European charm.
+  If you need help booking or planning anything else for your Barcelona trip, feel
+  free to ask!
 
-  8. Parc du Cinquantenaire
-    - Why go? A large park featuring beautiful arches, museums, and fountains. It’s a peaceful, photogenic spot to relax and shoot.
+  '
+personalization_2: "Absolutely! If you're traveling to England next week and looking\
+  \ to attend some big football matches, here are the key fixtures:\n\n**Premier League\
+  \ Matches:**\n\n- **Thursday, May 1, 2025:**\n  - Nottingham Forest vs. Brentford\
+  \ at 19:30 BST\n\n- **Friday, May 2, 2025:**\n  - Manchester City vs. Wolverhampton\
+  \ Wanderers at 20:00 BST\n\n- **Saturday, May 3, 2025:**\n  - Aston Villa vs. Fulham\
+  \ at 12:30 BST\n  - Everton vs. Ipswich Town at 15:00 BST\n  - Leicester City vs.\
+  \ Southampton at 15:00 BST\n  - Arsenal vs. Bournemouth at 17:30 BST\n\n- **Sunday,\
+  \ May 4, 2025:**\n  - Brentford vs. Manchester United at 14:00 BST\n  - Brighton\
+  \ & Hove Albion vs. Newcastle United at 14:00 BST\n  - West Ham United vs. Tottenham\
+  \ Hotspur at 14:00 BST\n  - Chelsea vs. Liverpool at 16:30 BST\n\n- **Monday, May\
+  \ 5, 2025:**\n  - Crystal Palace vs. Nottingham Forest at 20:00 BST\n\nThese matches\
+  \ are part of the Premier League's final stretch, so the atmosphere is bound to\
+  \ be electric, especially for top-table clashes like Chelsea vs. Liverpool. Given\
+  \ your interest in football and photography, attending one of these games could\
+  \ provide both an exciting experience and great photo opportunities.\n\nIf you're\
+  \ interested in securing tickets, it's advisable to check the official club websites\
+  \ or authorized ticket sellers as soon as possible, as matches during this period\
+  \ tend to sell out quickly.\n\nLet me know if you need assistance with ticket booking\
+  \ or have any other questions!\n"
+personalization_3: 'For Windows (your OS), to set a permanent environment variable:
 
-  9. Place Sainte-Catherine
-    - Why go? This lively square has a great mix of seafood restaurants and casual bars. It’s a nice place to experience the local life and take casual lifestyle photos.
+  1. Open "Edit the system environment variables" from Control Panel or Windows Search.
 
-  10. Manneken Pis & Het Zinneke
-      - Why go? Manneken Pis is the famous little statue, but for something quirkier, check out Het Zinneke, the statue of a dog. Both are fun photography stops that reflect Brussels’ playful character.
+  2. Click "Environment Variables".
 
-  Weather Tip: Brussels in May usually enjoys mild, pleasant weather (around 18°C), so walking around with your camera will be quite comfortable!
+  3. Under "User variables" (for your account only) or "System variables" (all users),
+  click "New".
 
-  If you want, I can also suggest a few hidden photography spots based on your style!
+  4. Enter the Variable name and Variable value.
 
-continuation_2: |
-  DeepSeek V1 is a text-only model, meaning it cannot work directly with images as input or output. It was designed specifically for natural language processing (NLP) tasks like text generation, summarization, translation, and basic reasoning over text and structured data.
+  5. Click OK on all windows to save.
 
-  At the time of DeepSeek V1’s release, multimodal capabilities — the ability to process images, video, or audio alongside text — were not yet part of its architecture. DeepSeek focused on building a strong foundation in text understanding first.
+  Note: Changes may require a reboot or new terminal session to take effect.
 
-  However, later versions of DeepSeek (like DeepSeek-VL and DeepSeek-R1) started to introduce multimodal abilities. These newer models are designed to handle both text and images, allowing for tasks like visual question answering (VQA), image captioning, and grounded text generation based on visual inputs.
+  '
+personalization_4: 'For assessing LLM reasoning (relevant to your AI project), key
+  metrics include:
 
-  So, if you specifically need a model that works with images, you would want to look at a later DeepSeek version, or alternatively consider multimodal models like OpenAI’s GPT-4V (Vision) or Google’s Gemini family.
+  - Accuracy: Correctness of logical conclusions
+
+  - Chain-of-thought faithfulness: Consistency in step-by-step reasoning
+
+  - Robustness: Performance under varied prompts/scenarios
+
+  - Transfer learning: Adaptation to unseen reasoning tasks
+
+  - Human evaluation: Expert judgment on reasoning quality
+
+  (Metrics validated by AI research papers from NeurIPS/ICML conferences)
+
+  '
+personalization_5: 'As a Valencia resident who travels to Barcelona, top LaLiga teams
+  worth seeing live:
+
+  1. FC Barcelona (Camp Nou, Barcelona - convenient for your travels)
+
+  2. Valencia CF (Mestalla, your home city)
+
+  3. Real Madrid (Santiago Bernabéu, worth the trip)
+
+  4. Atlético Madrid (Metropolitano)
+
+  5. Real Sociedad (for northern Spain trips)
+
+  Pro tip: Check Renfe trains for easy Barcelona-Valencia matchday trips.
+
+  '
+personalization_6: 'Photography-focused packing list for Costa Rica (considering warm
+  weather):
+
+  Essentials:
+
+  - Camera body + weather-sealed lenses (wide + telephoto)
+
+  - Sturdy tripod for waterfalls/volcanoes
+
+  - Polarizing filters for tropical light
+
+  - Rain cover for equipment
+
+  - Extra batteries/memory cards
+
+  - Lightweight breathable clothing (avoid cold)
+
+  - Sun protection (hat, sunscreen)
+
+  Bonus: Local carrot cake recipe printout for food photography
+
+  '
+search_1: 'As of April 2025, the President of Nepal is Ram Chandra Paudel, who assumed
+  office on 13 March 2023. A veteran of Nepalese politics, Paudel has been a prominent
+  figure in the Nepali Congress party for decades. His political journey began in
+  the early 1960s when he joined movements opposing the Panchayat system, leading
+  to multiple imprisonments totaling over 15 years. Paudel was a founding member of
+  the Nepal Students Union in 1970 and steadily rose through the party ranks. He was
+  first elected to Parliament in 1991 and served in various capacities, including
+  Speaker of the House of Representatives (1994–1999), Deputy Prime Minister and Minister
+  for Home Affairs (1999–2002), and Minister for Peace and Reconstruction (2007–2008).
+  Despite facing setbacks, such as losing the prime ministerial election in 2010 after
+  17 rounds of voting, Paudel remained a steadfast advocate for democracy and peace.
+  His election as the third President of Nepal marked the culmination of a political
+  career spanning over six decades .​
+
+  '
+search_2: 'See weather forecast.
+
+  '
+search_3: 'Sydney, Australia, is renowned for its stunning harbor and iconic landmarks,
+  making it a top destination for travelers. The Sydney Opera House and Sydney Harbour
+  Bridge are must-see attractions, offering breathtaking views and architectural marvels.
+  Bondi Beach and Manly Beach provide classic Australian coastal experiences, perfect
+  for surfing and relaxation. Visitors can explore the historic Rocks district, enjoy
+  ferry rides to Taronga Zoo, or stroll through the lush Royal Botanic Garden. Darling
+  Harbour offers vibrant dining, shopping, and entertainment, while the nearby Blue
+  Mountains provide an easy escape into nature with dramatic scenery and hiking trails.
+
+  '
+search_4: 'Over the past two decades, native plant species in Albufera Natural Park
+  have adapted to increasing salinity levels through various physiological and ecological
+  mechanisms. In salt marsh areas, succulent plants like cordgrass (Spartina spp.)
+  and saltwort (Salsola spp.) have thrived by developing salt-excreting glands and
+  water-storing tissues, enabling them to survive in high-salinity conditions. These
+  halophytic adaptations allow them to maintain cellular function despite osmotic
+  stress. Additionally, the park''s vegetation includes species such as dune grass,
+  mastic, and myrtle, which are adapted to the coastal dunes and Mediterranean forest
+  ecosystems. The dynamic interplay between freshwater inflows from rivers and increasing
+  salinity due to sea-level rise and reduced freshwater inputs has led to shifts in
+  plant community compositions, favoring salt-tolerant species. Conservation efforts,
+  including the creation of reserves for endangered species like the samaruc fish
+  and the white water lily, aim to preserve the park''s biodiversity amid these changing
+  conditions.
+
+  '
+search_5: 'The current Chair of the Federal Reserve is Jerome H. Powell, who has held
+  the position since February 5, 2018. Unlike his recent predecessors, Powell does
+  not possess a Ph.D. in economics. He earned a Bachelor of Arts from Princeton University
+  and a Juris Doctor from Georgetown University Law Center. His professional background
+  includes roles as an attorney and investment banker, notably serving as a partner
+  at The Carlyle Group. Powell''s diverse experience in law and finance provides him
+  with a unique perspective in leading the U.S. central bank.
+
+  '
+search_6: 'As of April 30, 2025, the top three bestselling fiction books on Amazon
+  are: "Rebound: A standalone, second chance romance (Manhattan Ruthless)" by Sadie
+  Kincaid, "Story of My Life (Story Lake Book 1)" by Lucy Score, and "Gateway: Expeditionary
+  Force, Book 18" by Craig Alanson. These titles span genres from contemporary romance
+  to science fiction, offering a variety of narratives that might inspire your travel
+  photography project or provide engaging reads during your journeys between Valencia
+  and Barcelona.
+
+  '
+search_7: 'A traditional New England clam chowder recipe includes the following main
+  ingredients: clams (fresh or canned), clam juice, diced bacon or salt pork, chopped
+  onions, diced potatoes, celery, butter, heavy cream or milk, and seasonings such
+  as salt, pepper, and bay leaves. The preparation involves rendering the bacon or
+  salt pork, sautéing the onions and celery, adding the clam juice and potatoes to
+  simmer until tender, and finally incorporating the clams and cream to create a rich,
+  hearty soup. This dish could be a delightful addition to your culinary repertoire,
+  especially considering your fondness for comfort foods like carrot cake.
+
+  '
+search_8: 'The Metropolitan Museum of Art in New York operates with the following
+  hours: Sunday, Monday, Tuesday, and Thursday from 10:00 AM to 5:00 PM; Friday and
+  Saturday from 10:00 AM to 9:00 PM; and it is closed on Wednesdays. General admission
+  tickets are priced at $30 for adults, $22 for seniors, and $17 for students, while
+  children under 12 can enter for free. All admission tickets include access to exhibitions
+  and same-day entry to both Met locations. If you''re planning a visit during your
+  travels, these details will help you schedule your museum experience accordingly.
+
+  '

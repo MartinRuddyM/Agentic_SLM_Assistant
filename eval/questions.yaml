@@ -1,58 +1,178 @@
-code_1: |
-  Given these 2 lists of numbers, please merge them in the correct ascending order.
-  [1843, 8265, 1375, 2904, 5079, 994, 7675, 9837, 3600, 5380, 3808, 2357, 786, 9326, 1090, 734, 3431, 5892, 6252, 2254]
-  [8971, 573, 4094, 6114, 7956, 7335, 6183, 4934, 1136, 8347, 1643, 7552, 1712, 1713, 3447, 3790, 3689, 4968, 3823, 3785]
+code_1: 'Given these 2 lists of numbers, please merge them in the correct ascending
+  order.
 
-code_2: |
-  Given this paragraph:
+  [1843, 8265, 1375, 2904, 5079, 994, 7675, 9837, 3600, 5380, 3808, 2357, 786, 9326,
+  1090, 734, 3431, 5892, 6252, 2254]
 
-  Fashion is a powerful form of expression, where a designer uses fabric, color, and texture to build a unique vision. Every fabric chosen must connect with the idea, allowing the garment to reflect mood, time, and emotion. A designer often starts with a concept, shaping each color and texture to fit a theme. Fashion depends on detail; the texture of a material, the depth of a color, and the structure of a fabric all work together to create impact. In every collection, a designer aims to tell a story through fabric and color, letting fashion move beyond simple clothing into art. Texture plays a key role, giving fashion both physical feeling and visual emotion. Strong fashion relies not just on the outer look, but also on the deep connection between designer, fabric, color, and vision.
+  [8971, 573, 4094, 6114, 7956, 7335, 6183, 4934, 1136, 8347, 1643, 7552, 1712, 1713,
+  3447, 3790, 3689, 4968, 3823, 3785]
 
-  Please count the number of words and tell me the TOP 5 MOST COMMON WORDS and their COUNT.
+  '
+code_2: 'Given this paragraph:
 
-code_3: >
-  You are tasked with preparing a batch of concrete for a small construction project.
-  The required mix ratio by weight is Cement : Sand : Gravel = 1 : 2 : 4.
+
+  Fashion is a powerful form of expression, where a designer uses fabric, color, and
+  texture to build a unique vision. Every fabric chosen must connect with the idea,
+  allowing the garment to reflect mood, time, and emotion. A designer often starts
+  with a concept, shaping each color and texture to fit a theme. Fashion depends on
+  detail; the texture of a material, the depth of a color, and the structure of a
+  fabric all work together to create impact. In every collection, a designer aims
+  to tell a story through fabric and color, letting fashion move beyond simple clothing
+  into art. Texture plays a key role, giving fashion both physical feeling and visual
+  emotion. Strong fashion relies not just on the outer look, but also on the deep
+  connection between designer, fabric, color, and vision.
+
+
+  Please count the number of words LONGER THAN 3 CHARACTERS and tell me the TOP 5
+  MOST COMMON WORDS and their COUNT.
+
+  '
+code_3: 'You are tasked with preparing a batch of concrete for a small construction
+  project. The required mix ratio by weight is Cement : Sand : Gravel = 1 : 2 : 4.
   You are required to prepare 700 kilograms of total concrete mix.
 
-  Your tasks are as follows:
-  First, determine how many kilograms of cement, sand, and gravel are needed to meet the specified ratio.
-  Second, provide your answer rounded to two decimal places.
+  Your tasks are as follows: First, determine how many kilograms of cement, sand,
+  and gravel are needed to meet the specified ratio. Second, provide your answer rounded
+  to two decimal places.
 
-  Given Data:
-  The total concrete weight to be prepared is 700 kg.
-  The mix ratio is 1 part cement, 2 parts sand, and 4 parts gravel.
+  Given Data: The total concrete weight to be prepared is 700 kg. The mix ratio is
+  1 part cement, 2 parts sand, and 4 parts gravel.
 
+  '
+code_4: 'Given these two lists of strings, merge them alphabetically in ascending
+  order.
 
-code_and_search: |
-  Find the list of the 10 largest earthquakes globally in 2024.
+  ["apple", "banana", "cherry", "date", "elderberry", "fig", "guava", "honeydew",
+  "ilama", "jackfruit", "kiwi", "lime"]
+
+  ["mango", "nectarine", "orange", "papaya", "quince", "raspberry", "strawberry",
+  "tangerine", "ugli", "vanilla", "watermelon", "ximenia"]
+
+  '
+code_5: "Calculate the area of a circle with radius 7.25 units. \nUse π = 3.14159\
+  \ and round the result to two decimal places.\n"
+code_6: 'Given these arrays of numbers:
+
+  x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  y: [10, 16, 18, 24, 26, 33, 35, 40, 42, 48]
+
+  Perform a linear regression and give the slope and intercept.
+  '
+code_and_search_1: 'Find the list of the 10 largest earthquakes globally in 2024 in
+  magnitude.
+
   Then, calculate the average magnitude and standard deviation of these earthquakes.
 
-search_1: |
-  Find who is the current president of Nepal and summarize in one paragraph their political career.
+  '
+code_and_search_2: 'Find the 5 tallest skyscrapers in the world and their heights
+  in meters.
 
-search_2: |
-  What is the weather forecast for the next seven days in Brussels, Belgium?
+  Convert these heights to feet (1m = 3.28084ft) and calculate the average height
+  in both units.
 
-search_3: |
-  Summarize the main tourist attractions of visiting Sydney, Australia. One paragraph.
+  '
+code_and_search_3: 'Search for the current exchange rates between USD and EUR.
 
-search_4: >
-  How have the native plant species of the Albufera Natural Park
-  adapted to increasing salinity levels over the past two decades?
+  Calculate how much $500 USD would be in EUR to two decimal places.
 
-personalization_1: |
-  I am making a trip to Barcelona. Can you tell me how long it will take to get there by bus?
-  I have a discount and cannot take the train.
+  '
+code_and_search_4: 'Find the current populations of these cities: Tokyo, Delhi, Shanghai,
+  São Paulo, Mexico City. (Any rcent year is valid)
 
-personalization_2: |
-  I am travelling to England next week. Can you tell me if there are any big matches happening to attend?
+  Calculate the total population of them combined.
 
-continuation_1: |
-  What is the weather forecast for Brussels next week?
+  '
+continuation_1: 'What is the weather forecast for Brussels next week?
+
   Can you suggest some places to visit there?
 
-continuation_2: |
-  Can you describe the features of the DeepSeek V1 LLM model?
+  '
+continuation_2: 'Can you describe the features of the DeepSeek V1 LLM model?
+
   Can it work with images as imput or output?
-  
+
+  '
+continuation_3: 'What is the current top bestselling fiction book on Amazon?
+
+  Now briefly summarize what it is about.
+
+  '
+continuation_4: 'Which team won the most recent UEFA Eurocup?
+
+  How many World Championships have they won?
+
+  '
+continuation_5: 'What are the symptoms of seasonal allergies?
+
+  What over-the-counter medications are commonly recommended?
+
+  '
+continuation_6: 'What is the capital of South Africa?
+
+  What are three important historical sites there?
+
+  '
+continuation_7: 'Who is the author of "The Great Gatsby"?
+
+  What decade does the novel primarily depict?
+
+  '
+continuation_8: 'What is the current population of Brazil?
+
+  How does this compare to its population 10 years ago?'
+personalization_1: 'I am making a trip to Barcelona. Can you tell me how long it will
+  take to get there by bus?
+
+  I have a discount and cannot take the train.
+
+  '
+personalization_2: 'I am travelling to England next week. Can you tell me if there
+  are any big matches happening to attend?
+
+  '
+personalization_3: 'How do I set an environment variable permanently in my computer?
+
+  '
+personalization_4: 'What evaluation metrics are most meaningful for assessing reasoning
+  capabilities?
+
+  '
+personalization_5: 'I''m beginning to watch football games but don''t know much about
+  LaLiga. Which are the best teams in Spain that would be worth to go to the stadium
+  to see and convenient for me?
+
+  '
+personalization_6: 'Suggest packing essentials for my upcoming trip. I want to go
+  full on photography.
+
+  '
+search_1: 'Find who is the current president of Nepal and summarize in one paragraph
+  their political career.
+
+  '
+search_2: 'What is the weather forecast for the next seven days in Brussels, Belgium?
+
+  '
+search_3: 'Summarize the main tourist attractions of visiting Sydney, Australia. One
+  paragraph.
+
+  '
+search_4: 'How have the native plant species of the Albufera Natural Park adapted
+  to increasing salinity levels over the past two decades?
+
+  '
+search_5: 'Who is the current chairperson of the Federal Reserve and what academic
+  background do they have?
+
+  '
+search_6: 'What are the current top 3 bestselling fiction books on Amazon?
+
+  '
+search_7: 'Find the recipe for traditional New England clam chowder and list the main
+  ingredients.
+
+  '
+search_8: 'What are the opening hours and ticket prices for the Metropolitan Museum
+  of Art in New York?
+
+  '
