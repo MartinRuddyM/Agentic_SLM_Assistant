@@ -80,7 +80,6 @@ final_summary: >
   FINAL ONE-PARAGRAPH SUMMARY:
 
 
-
 extract_permanent_user_info: |
   There has been a conversation between an expert LLM and the user.
   Below is the list of questions and prompts that the user has asked during the conversation.
@@ -172,12 +171,6 @@ personalize_final_asnwer_simplified: >
   Rewritten Answer changing the tone: (answer directly as if talking to the user, do not mention your task)
 
 
-
-
-
-
-
-
 personalize_final_asnwer: >
   There is a conversation between a user and an expert Q&A system.
   Just previously in the conversation, these Questions and Answers happened (if any):
@@ -218,56 +211,6 @@ personalize_final_asnwer: >
   Answer: {answer}
 
   Now your Rewritten Answer: (answer directly as if talking to the user, do not mention your task)
-
-
-personalize_final_asnwer1: >
-  You are a marketing expert trying to make the customer happy with our Q&A system experience.
-  An expert system has written an answer to the user's question. Below you can find the user question,
-  the system's answer, and also some relevant contextual USER INFO and summaries of PREVIOUS CONVERSATIONS
-  that the system previously had with the same user, and also from this current conversation the
-  immediately previous messages.
-
-  Your task is to rewrite the Expert Answer and make sure it addresses the user (using the information
-  provided). If the topic is related, you can make a reference to a past conversation the user had with
-  us. Write in SECOND PERSON in a CASUAL tone, not sounding weird. Just like a common Q&A Chat system but
-  sounding more personalized. Make references to the user's information and integrate it into the answer
-  when necessary to make it better address the user. Otherwise, DO NOT MODIFY the content and meaning of
-  the answer. You can put the references (if any) at the end alongside a question reminding about the
-  info or past interaction and suggesting other ways to help (further questions). So either put it at
-  the end, at the beginning, in the middle, or nowehre at all(safe bet)!
-
-  Overall keep your additions SHORT! If the answer is per se short keep it also short!
-
-  This is the personal user info:
-
-  {user_info}
-
-
-  This is summaries from previous conversations:
-
-  {conversation_summaries}
-
-
-  This is a summary of the last Q&A interactions just before this query, for conversational context:
-  
-  {interactions_summary}
-
-
-  This is the original user query so you have context:
-
-  {query}
-
-
-  This is the expert Q&A answer:
-
-  {answer}
-
-
-  Now rewrite the system's answer addressing the user, and personalize it a bit with the inormation provided.
-  Remember to use second person tenses. Do not make it too formal or weird sounding, just casual.
-  DO NOT ADD TOO MUCH, JUST A LITTLE BIT. Talk from "I" perspective.
-
-  Personalized answer:
 
 
 contrast_user_information: |
@@ -366,6 +309,7 @@ code_tool_description: >
   properly so it can be printed. The expert system will read your description, write code,
   and run it and return the printed answer.
 
+
 code_task_description: >
   You are an AI that generates Python code. Omit explanations.
   Respond with only the Python code needed for the task. PRINT the results that will answer the task.
@@ -380,6 +324,7 @@ code_task_description: >
   WILL ANSWER THE TASK. NO EXAMPLES OR CASES.
 
   Your python code:
+
 
 code_tool_error: >
   Max retries reached. Unable to generate working code. Please try with a different, better description, or with another tool.
@@ -396,6 +341,7 @@ web_search_tool_description: >
   digested result. The words you write are the search terms themselves, so ONLY WRITE VERY IMPORTANT
   WORDS as INPUT. Think of how an expert SEO marketer would do search queries online. ONLY WRITE
   VERY FEW KEY SEARCH TERMS.
+
 
 web_search_summarize_findings: >
   A web search has been performed and some results have appeared.
@@ -496,55 +442,3 @@ react_get_task_description: >
 
   Contextual Summary:
 
-
-react_get_task_description1: >
-  You are part of our company of experts answering user queries. A teammate of you is going
-  to answer the following query:
-
-  {query}
-
-
-  They don't know any more context. Below is some KEY user context, summaries of past conversations the same
-  user had, and most importantly, the immediately prvious questions the user asked in their conversation.
-  You should look at all this info and provide a 4 FOUR LINES MAXIMUM summarized but coherent KEY CONTEXT
-  that your teammate will need to answer the question.
-
-  For example, if the user query makes reference to something that happened before in the conversation,
-  you MUST include what it is so your teammate knows. Also, if the user asks something related to some
-  previous conversation then include that so your teammate can better tailor the answer.
-
-  MAKE SURE TO INCLUDE ALL SPECIFIC DATA THAT THE USER IS REFERENCING FROM PREVIOUS ANSWERS.
-  If it is referenced, you must re-write it all exactly! Only thingss you re-write can be used!
-  DO NOT INCLUDE things the user is not talking about!!
-
-  Relevant user information (if any) (light importance):
-
-  {user_info}
-
-
-  Relevant past conversations (if any) (light importance):
-
-  {past_conversations}
-
-
-  Previous Q&As from THIS CURRENT CONVERSATION (if any) (CRITICALLY IMPORTANT):
-
-  {previous_messages}
-
-
-  Now write the relevant context. If nothing relevant, write "No relevant context."
-  EXPLICITLY INCLUDE ALL NECESSARY DATA AND PREVIOUS ANSWER REFERENCES. DO NOT SHORTEN IT.
-  INCLUDE ALL PREVIOUS INFO THAT IS NEEDED FOR REFERENCE. (for this case you can exceed the max length)
-  But do not include about irrelevant topics to the question!
-  Make sure to include what the previous messages were about so the conversation can flow smooth.
-
-  START BY reflecting on the previous messages of THIS CURRENT CONVERSATION that is the most important.
-  If any other context sounds relevant, talk about it afterwards.
-
-  Remember the query: {query}
-
-  IF THE USER IS REFERENCING SOMETHING IN THE QUERY, it very likely is from his previous Q&As in this
-  conversation AND NOT from past conversations or user info. So, decide if the user is referencing
-  something, and advice that on your answer.
-
-  RELEVANT CONTEXT:

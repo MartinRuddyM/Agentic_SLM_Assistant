@@ -80,31 +80,3 @@ def run_code(query, llm, prompts, max_retries=3):
         retries += 1
     logger.info("Code Tool failed, no more retries left.")
     return prompts["code_tool_error"]
-
-if __name__ == "__main__":
-    # Sample query to test the working
-    #print("Given an A/B experiment, perform a one-way ANOVA on this data: method_A = [85, 90, 88]  method_B = [78, 82, 80]. Show if there is significative difference")
-
-    from langchain_google_genai import ChatGoogleGenerativeAI
-    from langchain_mistralai import ChatMistralAI
-    import yaml
-    import os
-    from dotenv import load_dotenv
-
-    # API key setups
-    load_dotenv()
-    MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
-
-    with open("prompts.yaml", "r") as file:
-        prompts = yaml.safe_load(file)
-
-    default_chat = ChatMistralAI(
-        model="open-mistral-7b",
-        api_key=MISTRAL_API_KEY
-    )
-
-    query = "Make code to compute the following equation: ((123 * 300) - 200 + 45) / 33. Make sure to print ONLY UP TO 3 decimals"
-
-    print(1)
-    output = run_code(query, default_chat, prompts)
-    print(output)

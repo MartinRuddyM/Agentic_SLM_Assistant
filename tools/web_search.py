@@ -37,16 +37,13 @@ def web_search(search_terms:str, original_user_query, prompts, llm):
 
             soup = BeautifulSoup(response.text, "html.parser")
 
-            # Remove irrelevant tags
             for tag in soup(["script", "style", "header", "footer", "nav", "form", "noscript"]):
                 tag.decompose()
 
-            # Use visible text only
             texts = soup.find_all(string=True)
             visible_texts = filter(is_visible, texts)
             visible_lines = [t.strip() for t in visible_texts if t.strip()]
 
-            # De-duplicate and filter short/irrelevant lines
             seen = set()
             filtered = []
             for line in visible_lines:
@@ -72,7 +69,7 @@ def web_search(search_terms:str, original_user_query, prompts, llm):
 
     logger.info("Called Tool: Web Search")
     search_terms = search_terms.replace('"', '') # Quitar comillas para no forzar una busqueda especifica
-    # Ya que los buscadores suelen forzar un match exacto al usar comillas
+    # Ya que los buscadores web suelen forzar un match exacto al usar comillas
     final_searches = []
     try:
         urls = get_google_search_results(search_terms)

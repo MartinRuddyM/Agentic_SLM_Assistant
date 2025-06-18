@@ -103,7 +103,7 @@ def extract_user_statements(text: str) -> list[str]:
     
     method_results = []
 
-    # --- Method 1: Try to extract JSON block ---
+    # Method 1: Try to extract JSON block
     method1 = set()
     curly_match = re.search(r'\{.*\}', text, re.DOTALL)
     if curly_match:
@@ -118,7 +118,7 @@ def extract_user_statements(text: str) -> list[str]:
             pass
     method_results.append(method1)
 
-    # --- Method 2: Regex to extract "items": [ ... ] block ---
+    # Method 2: Regex to extract "items": [ ... ] block
     method2 = set()
     square_match = re.search(r'"items"\s*:\s*\[(.*?)\]', text, re.DOTALL)
     if square_match:
@@ -130,7 +130,7 @@ def extract_user_statements(text: str) -> list[str]:
                 method2.add(cleaned)
     method_results.append(method2)
 
-    # --- Method 3: Fallback – regex to find all numbered lines anywhere ---
+    # Method 3: Fallback – regex to find all numbered lines anywhere
     method3 = set()
     numbered_lines = re.findall(r'\d+\.\s+(.*?)(?=\n|,|"|$)', text)
     for item in numbered_lines:
@@ -139,20 +139,18 @@ def extract_user_statements(text: str) -> list[str]:
             method3.add(cleaned)
     method_results.append(method3)
 
-    # --- Combine and count occurrences across methods ---
     counter = Counter()
     for method in method_results:
         for item in method:
             counter[item] += 1
 
-    # --- Choose reliable entries: at least 2 method votes ---
     reliable_items = [item for item, count in counter.items() if count >= 2]
 
     # If we have at least 1 reliable item, return them
     if reliable_items:
         return sorted(set(reliable_items))
 
-    # Else, fallback to method 3 only (last method)
+    # If no reliable doubled output, fallback to method 3 only
     return sorted(method3) if method3 else []
     
 

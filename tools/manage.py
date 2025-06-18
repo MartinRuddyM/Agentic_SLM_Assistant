@@ -66,8 +66,6 @@ class EmbeddingDB:
 
 
     def close_db(self):
-        #faiss.write_index(self.faiss_conversations, self.faiss_conversation_path)
-        #faiss.write_index(self.faiss_user_info, self.faiss_user_info_path)
         self.conn.close()
 
 
