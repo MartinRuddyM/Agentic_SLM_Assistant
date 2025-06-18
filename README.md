@@ -1,4 +1,6 @@
-Trabajo Final de Grado en Ciencia de Datos. Final thesis work (Bachelor of Science, Data Science).
+###### Trabajo Final del Grado en Ciencia de Datos.
+###### Final thesis work, BSc. in Data Science.
+###### Universitat Politècnica de València.
 
 ## Abstract
 
