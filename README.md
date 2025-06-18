@@ -54,24 +54,24 @@ to better tailor its answers to each user.
 system must be able to handle two different qualities of models, to leave the most complicated
 steps to the best model and use the lower quality and cheaper model to handle less critical
 steps. This will make the system more cost efficient when deployed.
-• Identify and develop the necessary tools to power the assistant. Language models, especially
+- Identify and develop the necessary tools to power the assistant. Language models, especially
 small ones, need external tools to be able to handle nontrivial queries. Use the Reason-Act
 framework to guide the reasoning steps and select the adequate tool. To avoid
 overrunning the SLM capabilities, special care must be taken to separate all internal tasks into
 very simple actionable steps.
-• Create a mechanism to correctly identify the call of tools and their input. Parse the raw model
+- Create a mechanism to correctly identify the call of tools and their input. Parse the raw model
 output to identify, within the ReAct steps, the correct tool calls and their associated input.
 Then, run the tools with basic troubleshooting and retry mechanisms and return their result.
 The parser should also correctly identify when the model has reached the final answer.
-• Design a scalable architecture that easily allows to integrate new tools and models in the
+- Design a scalable architecture that easily allows to integrate new tools and models in the
 future. Scalability will help the system to evolve, by improving the current tools and adding
 new technology as it becomes available. It also simplifies troubleshooting and code
 maintenance.
 12
-• Create a traceable and organized system to store the prompts. Collect all used system prompts
+- Create a traceable and organized system to store the prompts. Collect all used system prompts
 into a single location and make the relevant loading from the code. This will improve
 maintainability by forbidding to store prompts in random, maybe hidden places in the code.
-• Perform a thorough evaluation of the system. Include several candidate models to try to
+- Perform a thorough evaluation of the system. Include several candidate models to try to
 identify the best performing ones. Also, a comparison should be made against a reference
 large language model.
 
