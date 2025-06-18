@@ -79,6 +79,8 @@ large language model.
 
 ## Solution
 
+Note: overview. For detailed explanation, reasonings, and architecture, refer to the project document.
+
 ![Todos los diagramas_page-0001](https://github.com/user-attachments/assets/51d5eab0-2561-4d86-93d4-37039939ca09)
 ![Todos los diagramas_page-0002](https://github.com/user-attachments/assets/5fc35ae2-b77d-4e97-b2d4-2e3c76f30727)
 
